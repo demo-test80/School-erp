@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic - Khatamari Shishu Bikash Academy</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Academic Page Specific Styles */
+        .academic-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('images/academic-bg.jpg') no-repeat center center/cover;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: white;
+            margin-top: 90px;
+        }
+        
+        .academic-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .breadcrumb {
+            padding: 15px 0;
+            background-color: #f8f9fa;
+            margin-bottom: 50px;
+        }
+        
+        .breadcrumb ul {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .breadcrumb ul li {
+            margin-right: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .breadcrumb ul li:after {
+            content: '/';
+            margin-left: 10px;
+            color: #6c757d;
+        }
+        
+        .breadcrumb ul li:last-child:after {
+            content: '';
+        }
+        
+        .breadcrumb ul li a {
+            color: #6c757d;
+        }
+        
+        .breadcrumb ul li:last-child a {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        .academic-intro {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 60px;
+        }
+        
+        .academic-intro h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .academic-intro p {
+            color: #6c757d;
+            line-height: 1.8;
+        }
+        
+        .curriculum-section, .faculty-section, .timetable-section, .syllabus-section {
+            padding: 60px 0;
+        }
+        
+        .curriculum-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .tab-btn {
+            padding: 12px 25px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #6c757d;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-btn.active, .tab-btn:hover {
+            color: var(--primary-color);
+            border-bottom-color: var(--accent-color);
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .class-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .class-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .class-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .class-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .class-header h3 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        
+        .class-body {
+            padding: 25px;
+        }
+        
+        .class-subjects {
+            margin-bottom: 20px;
+        }
+        
+        .class-subjects h4 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .class-subjects ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+        }
+        
+        .class-subjects li {
+            background-color: #f8f9fa;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
+        .class-features {
+            margin-top: 20px;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            color: #6c757d;
+        }
+        
+        .feature-item i {
+            color: var(--accent-color);
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .faculty-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .faculty-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .faculty-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .faculty-img {
+            height: 250px;
+            overflow: hidden;
+        }
+        
+        .faculty-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .faculty-card:hover .faculty-img img {
+            transform: scale(1.05);
+        }
+        
+        .faculty-info {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .faculty-info h3 {
+            color: var(--primary-color);
+            margin: 0 0 5px;
+            font-size: 1.3rem;
+        }
+        
+        .faculty-title {
+            color: var(--accent-color);
+            font-weight: 500;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+        
+        .faculty-bio {
+            color: #6c757d;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+        
+        .faculty-qualification {
+            display: flex;
+            align-items: center;
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .faculty-qualification i {
+            margin-right: 8px;
+            color: var(--accent-color);
+        }
+        
+        .faculty-social {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .faculty-social a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            background-color: #f8f9fa;
+            border-radius: 50%;
+            color: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+        
+        .faculty-social a:hover {
+            background-color: var(--accent-color);
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        .timetable-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            overflow-x: auto;
+            margin-top: 30px;
+        }
+        
+        .timetable {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+        
+        .timetable th, .timetable td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+        }
+        
+        .timetable th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .timetable tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .time-slot {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .syllabus-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+        
+        .syllabus-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .syllabus-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .syllabus-icon {
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 2.5rem;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .syllabus-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .syllabus-content h3 {
+            color: var(--primary-color);
+            margin: 0 0 15px;
+            font-size: 1.3rem;
+        }
+        
+        .syllabus-content p {
+            color: #6c757d;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+        
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            margin-top: auto;
+        }
+        
+        .download-btn i {
+            margin-right: 8px;
+        }
+        
+        .download-btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            color: white;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 768px) {
+            .academic-hero {
+                height: 300px;
+                margin-top: 80px;
+            }
+            
+            .academic-hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .class-subjects ul {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .faculty-grid, .syllabus-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .academic-hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .tab-btn {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .class-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .timetable th, .timetable td {
+                padding: 10px 5px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container">
+            <div class="logo-container">
+                <img src="images/logo.png" alt="School Logo" class="logo">
+                <div class="school-info">
+                    <h1>Khatamari Shishu Bikash Academy</h1>
+                    <p class="tagline">Nurturing Young Minds, Building Bright Futures</p>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="admission.html">Admission</a></li>
+                    <li><a href="academic.html" class="active">Academic</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="login.html" class="login-btn">Login</a></li>
+                </ul>
+                <div class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="academic-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Academic Excellence</h1>
+                <p>Nurturing young minds through quality education and holistic development</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="academic.html">Academic</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Academic Intro -->
+    <section class="academic-intro">
+        <div class="container">
+            <h2>Our Academic Programs</h2>
+            <p>At Khatamari Shishu Bikash Academy, we offer a comprehensive and balanced curriculum designed to foster intellectual curiosity, critical thinking, and a lifelong love for learning. Our academic programs are tailored to meet the diverse needs of our students while maintaining the highest educational standards.</p>
+        </div>
+    </section>
+
+    <!-- Curriculum Section -->
+    <section class="curriculum-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Curriculum Overview</h2>
+                <p>Explore our comprehensive curriculum designed for holistic development</p>
+            </div>
+            
+            <div class="curriculum-tabs">
+                <button class="tab-btn active" data-tab="pre-primary">Pre-Primary</button>
+                <button class="tab-btn" data-tab="primary">Primary</button>
+                <button class="tab-btn" data-tab="middle">Middle School</button>
+            </div>
+            
+            <div id="pre-primary" class="tab-content active">
+                <div class="class-grid">
+                    <div class="class-card">
+                        <div class="class-header">
+                            <h3>Play Group</h3>
+                            <p>Age 2.5 - 3.5 years</p>
+                        </div>
+                        <div class="class-body">
+                            <div class="class-subjects">
+                                <h4>Learning Areas</h4>
+                                <ul>
+                                    <li>Language</li>
+                                    <li>Numeracy</li>
+                                    <li>Arts & Crafts</li>
+                                    <li>Music & Movement</li>
+                                    <li>Story Time</n>
+                                </ul>
+                            </div>
+                            <div class="class-features">
+                                <div class="feature-item">
+                                    <i class="fas fa-user-graduate"></i>
+                                    <span>Max 15 students per class</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="far fa-clock"></i>
+                                    <span>3 hours daily (8:30 AM - 11:30 AM)</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-chalkboard-teacher"></i>
+                                    <span>2 teachers per class</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="class-card">
+                        <div class="class-header">
+                            <h3>Nursery</h3>
+                            <p>Age 3.5 - 4.5 years</p>
+                        </div>
+                        <div class="class-body">
+                            <div class="class-subjects">
+                                <h4>Learning Areas</h4>
+                                <ul>
+                                    <li>English</li>
+                                    <li>Bangla</li>
+                                    <li>Mathematics</n>
+                                    <li>General Knowledge</li>
+                                    <li>Arts & Music</li>
+                                </ul>
+                            </div>
+                            <div class="class-features">
+                                <div class="feature-item">
+                                    <i class="fas fa-user-graduate"></i>
+                                    <span>Max 20 students per class</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="far fa-clock"></i>
+                                    <span>3.5 hours daily (8:30 AM - 12:00 PM)</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-chalkboard-teacher"></i>
+                                    <span>2 teachers per class</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="class-card">
+                        <div class="class-header">
+                            <h3>Kindergarten</h3>
+                            <p>Age 4.5 - 5.5 years</p>
+                        </div>
+                        <div class="class-body">
+                            <div class="class-subjects">
+                                <h4>Learning Areas</h4>
+                                <ul>
+                                    <li>English</li>
+                                    <li>Bangla</li>
+                                    <li>Mathematics</li>
+                                    <li>Science</li>
+                                    <li>Social Studies</li>
+                                    <li>Arts & Music</li>
+                                </ul>
+                            </div>
+                            <div class="class-features">
+                                <div class="feature-item">
+                                    <i class="fas fa-user-graduate"></i>
+                                    <span>Max 22 students per class</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="far fa-clock"></i>
+                                    <span>4 hours daily (8:30 AM - 12:30 PM)</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-chalkboard-teacher"></i>
+                                    <span>2 teachers per class</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="primary" class="tab-content">
+                <div class="class-grid">
+                    <div class="class-card">
+                        <div class="class-header">
+                            <h3>Class 1</h3>
+                            <p>Age 5.5 - 6.5 years</p>
+                        </div>
+                        <div class="class-body">
+                            <div class="class-subjects">
+                                <h4>Core Subjects</h4>
+                                <ul>
+                                    <li>English</li>
+                                    <li>Bangla</li>
+                                    <li>Mathematics</li>
+                                    <li>Science</li>
+                                    <li>Social Studies</li>
+                                    <li>Religious Studies</li>
+                                    <li>ICT</li>
+                                    <li>Arts & Music</li>
+                                </ul>
+                            </div>
+                            <div class="class-features">
+                                <div class="feature-item">
+                                    <i class="fas fa-user-graduate"></i>
+                                    <span>Max 25 students per class</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="far fa-clock"></i>
+                                    <span>5 hours daily (8:30 AM - 1:30 PM)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="class-card">
+                        <div class="class-header">
+                            <h3>Class 2</h3>
+                            <p>Age 6.5 - 7.5 years</p>
+                        </div>
+                        <div class="class-body">
+                            <div class="class-subjects">
+                                <h4>Core Subjects</h4>
+                                <ul>
+                                    <li>English</li>
+                                    <li>Bangla</li>
+                                    <li>Mathematics</li>
+                                    <li>Science</li>
+                                    <li>Social Studies</li>
+                                    <li>Religious Studies</li>
+                                    <li>ICT</li>
+                                    <li>Arts & Music</li>
+                                </ul>
+                            </div>
+                            <div class="class-features">
+                                <div class="feature-item">
+                                    <i class="fas fa-user-graduate"></i>
+                                    <span>Max 25 students per class</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="far fa-clock"></i>
+                                    <span>5 hours daily (8:30 AM - 1:30 PM)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="class-card">
+                        <div class="class-header">
+                            <h3>Class 3</h3>
+                            <p>Age 7.5 - 8.5 years</p>
+                        </div>
+                        <div class="class-body">
+                            <div class="class-subjects">
+                                <h4>Core Subjects</h4>
+                                <ul>
+                                    <li>English</li>
+                                    <li>Bangla</li>
+                                    <li>Mathematics</li>
+                                    <li>Science</li>
+                                    <li>Social Studies</li>
+                                    <li>Religious Studies</li>
+                                    <li>ICT</li>
+                                    <li>Arts & Music</li>
+                                    <li>Physical Education</li>
+                                </ul>
+                            </div>
+                            <div class="class-features">
+                                <div class="feature-item">
+                                    <i class="fas fa-user-graduate"></i>
+                                    <span>Max 25 students per class</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="far fa-clock"></i>
+                                    <span>5.5 hours daily (8:30 AM - 2:00 PM)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="middle" class="tab-content">
+                <div class="class-grid">
+                    <div class="class-card">
+                        <div class="class-header">
+                            <h3>Class 4</h3>
+                            <p>Age 8.5 - 9.5 years</p>
+                        </div>
+                        <div class="class-body">
+                            <div class="class-subjects">
+                                <h4>Core Subjects</h4>
+                                <ul>
+                                    <li>English</li>
+                                    <li>Bangla</li>
+                                    <li>Mathematics</li>
+                                    <li>Science</li>
+                                    <li>Social Studies</li>
+                                    <li>Religious Studies</li>
+                                    <li>ICT</li>
+                                    <li>Arts & Music</li>
+                                    <li>Physical Education</li>
+                                    <li>General Knowledge</li>
+                                </ul>
+                            </div>
+                            <div class="class-features">
+                                <div class="feature-item">
+                                    <i class="fas fa-user-graduate"></i>
+                                    <span>Max 30 students per class</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="far fa-clock"></i>
+                                    <span>6 hours daily (8:30 AM - 2:30 PM)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="class-card">
+                        <div class="class-header">
+                            <h3>Class 5</h3>
+                            <p>Age 9.5 - 10.5 years</p>
+                        </div>
+                        <div class="class-body">
+                            <div class="class-subjects">
+                                <h4>Core Subjects</h4>
+                                <ul>
+                                    <li>English</li>
+                                    <li>Bangla</li>
+                                    <li>Mathematics</li>
+                                    <li>Science</li>
+                                    <li>Social Studies</li>
+                                    <li>Religious Studies</li>
+                                    <li>ICT</li>
+                                    <li>Arts & Music</li>
+                                    <li>Physical Education</li>
+                                    <li>General Knowledge</li>
+                                </ul>
+                            </div>
+                            <div class="class-features">
+                                <div class="feature-item">
+                                    <i class="fas fa-user-graduate"></i>
+                                    <span>Max 30 students per class</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="far fa-clock"></i>
+                                    <span>6 hours daily (8:30 AM - 2:30 PM)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Faculty Section -->
+    <section class="faculty-section" style="background-color: #f8f9fa;">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Dedicated Faculty</h2>
+                <p>Meet our team of experienced and passionate educators</p>
+            </div>
+            
+            <div class="faculty-grid">
+                <div class="faculty-card">
+                    <div class="faculty-img">
+                        <img src="images/teacher1.jpg" alt="Ms. Fatema Akter">
+                    </div>
+                    <div class="faculty-info">
+                        <h3>Ms. Fatema Akter</h3>
+                        <div class="faculty-title">Head of Primary Department</div>
+                        <div class="faculty-qualification">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>M.A. in Education, University of Dhaka</span>
+                        </div>
+                        <p class="faculty-bio">With over 15 years of experience in primary education, Ms. Fatema specializes in child-centered learning approaches and curriculum development.</p>
+                        <div class="faculty-social">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fas fa-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faculty-card">
+                    <div class="faculty-img">
+                        <img src="images/teacher2.jpg" alt="Mr. Rahman Khan">
+                    </div>
+                    <div class="faculty-info">
+                        <h3>Mr. Rahman Khan</h3>
+                        <div class="faculty-title">Mathematics Coordinator</div>
+                        <div class="faculty-qualification">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>M.Sc. in Mathematics, BUET</span>
+                        </div>
+                        <p class="faculty-bio">Mr. Rahman brings innovative teaching methods to make mathematics engaging and accessible for all students, with 12 years of teaching experience.</p>
+                        <div class="faculty-social">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fas fa-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faculty-card">
+                    <div class="faculty-img">
+                        <img src="images/teacher3.jpg" alt="Ms. Nusrat Jahan">
+                    </div>
+                    <div class="faculty-info">
+                        <h3>Ms. Nusrat Jahan</h3>
+                        <div class="faculty-title">English Language Specialist</div>
+                        <div class="faculty-qualification">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>M.A. in English, University of Dhaka</span>
+                        </div>
+                        <p class="faculty-bio">With a passion for language acquisition, Ms. Nusrat has been helping students develop strong communication skills for over 10 years.</p>
+                        <div class="faculty-social">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fas fa-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faculty-card">
+                    <div class="faculty-img">
+                        <img src="images/teacher4.jpg" alt="Mr. Kamal Hossain">
+                    </div>
+                    <div class="faculty-info">
+                        <h3>Mr. Kamal Hossain</h3>
+                        <div class="faculty-title">Science Teacher</div>
+                        <div class="faculty-qualification">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>M.Sc. in Physics, Jahangirnagar University</span>
+                        </div>
+                        <p class="faculty-bio">Mr. Kamal specializes in hands-on science education, making complex concepts accessible through practical experiments and demonstrations.</p>
+                        <div class="faculty-social">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fas fa-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="#" class="btn" style="display: inline-flex; align-items: center;">
+                    <i class="fas fa-users" style="margin-right: 8px;"></i> View All Faculty Members
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timetable Section -->
+    <section class="timetable-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Weekly Timetable</h2>
+                <p>Structured learning schedule for Class 3</p>
+            </div>
+            
+            <div class="timetable-container">
+                <table class="timetable">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Monday</th>
+                            <th>Tuesday</th>
+                            <th>Wednesday</th>
+                            <th>Thursday</th>
+                            <th>Friday</th>
+                            <th>Saturday</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="time-slot">8:30 - 9:00</td>
+                            <td colspan="6" style="text-align: center; font-weight: 500; background-color: #f8f9fa;">Morning Assembly & Prayer</td>
+                        </tr>
+                        <tr>
+                            <td class="time-slot">9:00 - 9:45</td>
+                            <td>English</td>
+                            <td>Mathematics</td>
+                            <td>Bangla</td>
+                            <td>Science</td>
+                            <td>Mathematics</td>
+                            <td>English</td>
+                        </tr>
+                        <tr>
+                            <td class="time-slot">9:45 - 10:30</td>
+                            <td>Mathematics</td>
+                            <td>English</td>
+                            <td>Science</td>
+                            <td>Bangla</td>
+                            <td>English</td>
+                            <td>Mathematics</td>
+                        </tr>
+                        <tr>
+                            <td class="time-slot">10:30 - 10:45</td>
+                            <td colspan="6" style="text-align: center; font-weight: 500; background-color: #f8f9fa;">Short Break</td>
+                        </tr>
+                        <tr>
+                            <td class="time-slot">10:45 - 11:30</td>
+                            <td>Bangla</td>
+                            <td>Science</td>
+                            <td>Mathematics</td>
+                            <td>English</td>
+                            <td>Social Studies</td>
+                            <td>Science</td>
+                        </tr>
+                        <tr>
+                            <td class="time-slot">11:30 - 12:15</td>
+                            <td>Religious Studies</td>
+                            <td>Arts & Crafts</td>
+                            <td>Physical Education</td>
+                            <td>Mathematics</td>
+                            <td>Bangla</td>
+                            <td>Music</td>
+                        </tr>
+                        <tr>
+                            <td class="time-slot">12:15 - 1:00</td>
+                            <td>Lunch Break</td>
+                            <td>Lunch Break</td>
+                            <td>Lunch Break</td>
+                            <td>Lunch Break</td>
+                            <td>Lunch Break</td>
+                            <td>Lunch Break</td>
+                        </tr>
+                        <tr>
+                            <td class="time-slot">1:00 - 1:45</td>
+                            <td>Science</td>
+                            <td>Social Studies</td>
+                            <td>English</td>
+                            <td>ICT</td>
+                            <td>Science</td>
+                            <td>Library</td>
+                        </tr>
+                        <tr>
+                            <td class="time-slot">1:45 - 2:00</td>
+                            <td colspan="6" style="text-align: center; font-weight: 500; background-color: #f8f9fa;">Dispersal & Home Time</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div style="margin-top: 30px; text-align: center;">
+                <p><em>Note: Timetable is subject to change. Please check with the school office for the most current schedule.</em></p>
+                <a href="#" class="btn" style="margin-top: 20px; display: inline-flex; align-items: center;">
+                    <i class="fas fa-download" style="margin-right: 8px;"></i> Download Full Timetable (PDF)
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Syllabus Section -->
+    <section class="syllabus-section" style="background-color: #f8f9fa;">
+        <div class="container">
+            <div class="section-header">
+                <h2>Download Syllabus</h2>
+                <p>Access curriculum details and learning objectives for each class</p>
+            </div>
+            
+            <div class="syllabus-grid">
+                <div class="syllabus-card">
+                    <div class="syllabus-icon">
+                        <i class="fas fa-baby"></i>
+                    </div>
+                    <div class="syllabus-content">
+                        <h3>Pre-Primary</h3>
+                        <p>Comprehensive syllabus for Play Group, Nursery, and Kindergarten, focusing on foundational skills in language, numeracy, and social development.</p>
+                        <a href="#" class="download-btn">
+                            <i class="fas fa-download"></i> Download
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="syllabus-card">
+                    <div class="syllabus-icon">
+                        <i class="fas fa-child"></i>
+                    </div>
+                    <div class="syllabus-content">
+                        <h3>Primary (Class 1-2)</h3>
+                        <p>Detailed curriculum for Class 1 and 2, covering core subjects with an emphasis on building strong academic foundations and learning habits.</p>
+                        <a href="#" class="download-btn">
+                            <i class="fas fa-download"></i> Download
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="syllabus-card">
+                    <div class="syllabus-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="syllabus-content">
+                        <h3>Upper Primary (Class 3-5)</h3>
+                        <p>Comprehensive syllabus for Class 3 to 5, designed to prepare students for higher education with a balanced approach to academics and co-curricular activities.</p>
+                        <a href="#" class="download-btn">
+                            <i class="fas fa-download"></i> Download
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="syllabus-card">
+                    <div class="syllabus-icon">
+                        <i class="fas fa-book-reader"></i>
+                    </div>
+                    <div class="syllabus-content">
+                        <h3>Co-Curricular Activities</h3>
+                        <p>Detailed guide to our co-curricular programs including sports, arts, music, and other activities that complement academic learning.</p>
+                        <a href="#" class="download-btn">
+                            <i class="fas fa-download"></i> Download
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px;">
+                <p>For more information about our academic programs, please contact our academic office.</p>
+                <a href="contact.html" class="btn" style="margin-top: 20px;">
+                    <i class="fas fa-envelope" style="margin-right: 8px;"></i> Contact Academic Office
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="admission.html">Admission</a></li>
+                        <li><a href="academic.html">Academic</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 School Road, Khatamari, dinhata, coochbihar, 736168</p>
+                    <p><i class="fas fa-phone"></i> +91 98000 47149</p>
+                    <p><i class="fas fa-envelope"></i> ksba@gmail.com</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Khatamari Shishu Bikash Academy. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script>
+        // Tab functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove active class from all buttons and contents
+                    tabBtns.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Show corresponding content
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // Initialize first tab as active
+            if (tabBtns.length > 0) {
+                tabBtns[0].classList.add('active');
+                const firstTabId = tabBtns[0].getAttribute('data-tab');
+                document.getElementById(firstTabId).classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>

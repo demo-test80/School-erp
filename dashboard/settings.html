@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Admin Dashboard</title>
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .settings-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .settings-tabs {
+            display: flex;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .tab-button {
+            flex: 1;
+            padding: 15px 20px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #666;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .tab-button.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .tab-button:hover:not(.active) {
+            background: #f8f9fa;
+            color: #333;
+        }
+        
+        .settings-content {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .tab-panel {
+            display: none;
+            padding: 30px;
+        }
+        
+        .tab-panel.active {
+            display: block;
+        }
+        
+        .settings-section {
+            margin-bottom: 30px;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .section-header h3 {
+            margin: 0;
+            color: #333;
+            font-size: 18px;
+        }
+        
+        .section-header i {
+            color: #667eea;
+            font-size: 20px;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .btn-save {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 30px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #667eea;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>School ERP</span>
+                </div>
+                <button class="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="students.html"><i class="fas fa-user-graduate"></i> Students</a></li>
+                    <li><a href="teachers.html"><i class="fas fa-chalkboard-teacher"></i> Teachers</a></li>
+                    <li><a href="classes.html"><i class="fas fa-school"></i> Classes</a></li>
+                    <li><a href="admissions.html"><i class="fas fa-user-plus"></i> Admissions</a></li>
+                    <li><a href="attendance.html"><i class="fas fa-calendar-check"></i> Attendance</a></li>
+                    <li><a href="fees.html"><i class="fas fa-dollar-sign"></i> Fees</a></li>
+                    <li><a href="results.html"><i class="fas fa-chart-bar"></i> Results</a></li>
+                    <li><a href="announcements.html"><i class="fas fa-bullhorn"></i> Announcements</a></li>
+                    <li class="active"><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Enhanced Header -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <button class="mobile-sidebar-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="page-title">Settings</h1>
+                    <nav class="breadcrumb">
+                        <span class="breadcrumb-item">
+                            <a href="index.html" class="breadcrumb-link">Dashboard</a>
+                        </span>
+                        <span class="breadcrumb-item">Settings</span>
+                    </nav>
+                </div>
+                <div class="header-right">
+                    <div class="header-search">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search settings..." id="headerSearch">
+                    </div>
+                    <div class="header-notifications">
+                        <button class="notification-btn">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge">3</span>
+                        </button>
+                    </div>
+                    <div class="user-profile">
+                        <button class="profile-toggle">
+                            <div class="profile-avatar">A</div>
+                            <div class="profile-info">
+                                <div class="profile-name">Admin User</div>
+                                <div class="profile-role">Administrator</div>
+                            </div>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="profile-dropdown">
+                            <a href="#" class="dropdown-item">
+                                <i class="fas fa-user"></i>
+                                Profile
+                            </a>
+                            <a href="settings.html" class="dropdown-item">
+                                <i class="fas fa-cog"></i>
+                                Settings
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item" onclick="logout(); return false;">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Logout
+                        </a>    </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <div class="content">
+                <div class="settings-container">
+                    <!-- Settings Tabs -->
+                    <div class="settings-tabs">
+                        <button class="tab-button active" onclick="showTab('school-info')">
+                            <i class="fas fa-school"></i> School Info
+                        </button>
+                        <button class="tab-button" onclick="showTab('academic')">
+                            <i class="fas fa-graduation-cap"></i> Academic
+                        </button>
+                        <button class="tab-button" onclick="showTab('system')">
+                            <i class="fas fa-cogs"></i> System
+                        </button>
+                        <button class="tab-button" onclick="showTab('backup')">
+                            <i class="fas fa-database"></i> Backup
+                        </button>
+                    </div>
+
+                    <!-- Settings Content -->
+                    <div class="settings-content">
+                        <!-- School Information Tab -->
+                        <div id="school-info" class="tab-panel active">
+                            <div class="settings-section">
+                                <div class="section-header">
+                                    <i class="fas fa-info-circle"></i>
+                                    <h3>Basic Information</h3>
+                                </div>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="schoolName">School Name</label>
+                                        <input type="text" id="schoolName" class="form-control" value="Khatamari Shishu Bikash Academy">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="schoolCode">School Code</label>
+                                        <input type="text" id="schoolCode" class="form-control" value="KSBA001">
+                                    </div>
+                                </div>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="address">Address</label>
+                                        <textarea id="address" class="form-control" rows="3">123 Education Street, Academic District, City - 123456</textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="phone">Phone Number</label>
+                                        <input type="tel" id="phone" class="form-control" value="+1 234 567 8900">
+                                    </div>
+                                </div>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input type="email" id="email" class="form-control" value="info@ksba.edu">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="website">Website</label>
+                                        <input type="url" id="website" class="form-control" value="https://www.ksba.edu">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Academic Settings Tab -->
+                        <div id="academic" class="tab-panel">
+                            <div class="settings-section">
+                                <div class="section-header">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <h3>Academic Configuration</h3>
+                                </div>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="academicYear">Current Academic Year</label>
+                                        <select id="academicYear" class="form-control">
+                                            <option value="2024-2025" selected>2024-2025</option>
+                                            <option value="2023-2024">2023-2024</option>
+                                            <option value="2022-2023">2022-2023</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="gradingSystem">Grading System</label>
+                                        <select id="gradingSystem" class="form-control">
+                                            <option value="percentage" selected>Percentage (0-100)</option>
+                                            <option value="gpa">GPA (0-4.0)</option>
+                                            <option value="letter">Letter Grades (A-F)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="passingMarks">Passing Marks (%)</label>
+                                        <input type="number" id="passingMarks" class="form-control" value="40" min="0" max="100">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="maxMarks">Maximum Marks</label>
+                                        <input type="number" id="maxMarks" class="form-control" value="100" min="1">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- System Settings Tab -->
+                        <div id="system" class="tab-panel">
+                            <div class="settings-section">
+                                <div class="section-header">
+                                    <i class="fas fa-sliders-h"></i>
+                                    <h3>System Preferences</h3>
+                                </div>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="timezone">Timezone</label>
+                                        <select id="timezone" class="form-control">
+                                            <option value="Asia/Kolkata" selected>Asia/Kolkata (IST)</option>
+                                            <option value="UTC">UTC</option>
+                                            <option value="America/New_York">America/New_York (EST)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="language">Default Language</label>
+                                        <select id="language" class="form-control">
+                                            <option value="en" selected>English</option>
+                                            <option value="bn">Bengali</option>
+                                            <option value="hi">Hindi</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>Email Notifications</label>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>SMS Notifications</label>
+                                        <label class="toggle-switch">
+                                            <input type="checkbox">
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Backup Settings Tab -->
+                        <div id="backup" class="tab-panel">
+                            <div class="settings-section">
+                                <div class="section-header">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <h3>Backup & Security</h3>
+                                </div>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="backupFrequency">Backup Frequency</label>
+                                        <select id="backupFrequency" class="form-control">
+                                            <option value="daily" selected>Daily</option>
+                                            <option value="weekly">Weekly</option>
+                                            <option value="monthly">Monthly</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="retentionDays">Retention Period (Days)</label>
+                                        <input type="number" id="retentionDays" class="form-control" value="30" min="1">
+                                    </div>
+                                </div>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <button class="btn-save" onclick="createBackup()">
+                                            <i class="fas fa-download"></i> Create Backup Now
+                                        </button>
+                                    </div>
+                                    <div class="form-group">
+                                        <button class="btn-save" onclick="exportData()">
+                                            <i class="fas fa-file-export"></i> Export All Data
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Save Button -->
+                        <div style="text-align: center; padding: 20px 0; border-top: 1px solid #e9ecef;">
+                            <button class="btn-save" onclick="saveSettings()">
+                                <i class="fas fa-save"></i> Save All Settings
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="assets/js/dashboard.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        function showTab(tabName) {
+            // Hide all tab panels
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // Show selected tab panel
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        function saveSettings() {
+            // Collect all form data
+            const settings = {
+                schoolInfo: {
+                    name: document.getElementById('schoolName').value,
+                    code: document.getElementById('schoolCode').value,
+                    address: document.getElementById('address').value,
+                    phone: document.getElementById('phone').value,
+                    email: document.getElementById('email').value,
+                    website: document.getElementById('website').value
+                },
+                academic: {
+                    year: document.getElementById('academicYear').value,
+                    gradingSystem: document.getElementById('gradingSystem').value,
+                    passingMarks: document.getElementById('passingMarks').value,
+                    maxMarks: document.getElementById('maxMarks').value
+                },
+                system: {
+                    timezone: document.getElementById('timezone').value,
+                    language: document.getElementById('language').value
+                }
+            };
+
+            // Save to localStorage (in real app, send to server)
+            localStorage.setItem('schoolSettings', JSON.stringify(settings));
+            
+            showNotification('Settings saved successfully!', 'success');
+        }
+
+        function createBackup() {
+            showNotification('Backup created successfully!', 'success');
+        }
+
+        function exportData() {
+            showNotification('Data export initiated!', 'success');
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Load saved settings on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedSettings = localStorage.getItem('schoolSettings');
+            if (savedSettings) {
+                const settings = JSON.parse(savedSettings);
+                
+                // Load school info
+                if (settings.schoolInfo) {
+                    document.getElementById('schoolName').value = settings.schoolInfo.name || '';
+                    document.getElementById('schoolCode').value = settings.schoolInfo.code || '';
+                    document.getElementById('address').value = settings.schoolInfo.address || '';
+                    document.getElementById('phone').value = settings.schoolInfo.phone || '';
+                    document.getElementById('email').value = settings.schoolInfo.email || '';
+                    document.getElementById('website').value = settings.schoolInfo.website || '';
+                }
+                
+                // Load academic settings
+                if (settings.academic) {
+                    document.getElementById('academicYear').value = settings.academic.year || '';
+                    document.getElementById('gradingSystem').value = settings.academic.gradingSystem || '';
+                    document.getElementById('passingMarks').value = settings.academic.passingMarks || '';
+                    document.getElementById('maxMarks').value = settings.academic.maxMarks || '';
+                }
+                
+                // Load system settings
+                if (settings.system) {
+                    document.getElementById('timezone').value = settings.system.timezone || '';
+                    document.getElementById('language').value = settings.system.language || '';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Schedule - Khatamari Shishu Bikash Academy</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        /* Dashboard Specific Styles */
+        .dashboard-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('images/schedule-bg.jpg') no-repeat center center/cover;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            color: white;
+            margin-top: 90px;
+            position: relative;
+            padding: 0;
+        }
+        
+        .dashboard-container {
+            display: flex;
+            min-height: calc(100vh - 340px);
+        }
+        
+        .dashboard-sidebar {
+            width: 280px;
+            background: #f8f9fa;
+            border-right: 1px solid #e9ecef;
+            padding: 30px 0;
+        }
+        
+        .dashboard-content {
+            flex: 1;
+            padding: 30px;
+            background-color: #f1f5f9;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .page-title {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            border-radius: 5px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid #dee2e6;
+            color: #495057;
+        }
+        
+        .btn-outline:hover {
+            background-color: #f8f9fa;
+            border-color: #ced4da;
+        }
+        
+        .schedule-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        
+        .schedule-header {
+            padding: 20px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .schedule-title {
+            margin: 0;
+            font-size: 1.2rem;
+            color: #2c3e50;
+        }
+        
+        .schedule-nav {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .schedule-type {
+            display: flex;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .schedule-type-btn {
+            padding: 8px 16px;
+            background: white;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+        
+        .schedule-type-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .schedule-type-btn:first-child {
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .schedule-type-btn:last-child {
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .schedule-content {
+            padding: 20px;
+            overflow-x: auto;
+        }
+        
+        /* Timetable Styles */
+        .timetable {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+        
+        .timetable th,
+        .timetable td {
+            padding: 12px 15px;
+            text-align: center;
+            border: 1px solid #f1f5f9;
+        }
+        
+        .timetable th {
+            background-color: #f8f9fa;
+            color: #6c757d;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        
+        .timetable tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .period {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 2px 0;
+            font-size: 0.85rem;
+            position: relative;
+        }
+        
+        .period.lecture {
+            background-color: #e3f2fd;
+            border-left: 3px solid #1976d2;
+        }
+        
+        .period.lab {
+            background-color: #e8f5e9;
+            border-left: 3px solid #388e3c;
+        }
+        
+        .period.break {
+            background-color: #fff8e1;
+            border-left: 3px solid #ffa000;
+            font-style: italic;
+        }
+        
+        .period .subject {
+            font-weight: 500;
+            display: block;
+        }
+        
+        .period .teacher {
+            font-size: 0.75rem;
+            color: #6c757d;
+            display: block;
+            margin-top: 2px;
+        }
+        
+        .period .time {
+            font-size: 0.7rem;
+            color: #6c757d;
+            position: absolute;
+            top: 3px;
+            right: 5px;
+        }
+        
+        .period .room {
+            font-size: 0.7rem;
+            color: #6c757d;
+            position: absolute;
+            bottom: 3px;
+            right: 5px;
+        }
+        
+        /* Exam Schedule Styles */
+        .exam-schedule {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+        
+        .exam-schedule th,
+        .exam-schedule td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .exam-schedule th {
+            background-color: #f8f9fa;
+            color: #6c757d;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .exam-schedule tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .exam-subject {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        .exam-date {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .exam-time {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .exam-venue {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .exam-status {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .status-upcoming {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .status-completed {
+            background-color: #e8f5e9;
+            color: #388e3c;
+        }
+        
+        .status-ongoing {
+            background-color: #fff8e1;
+            color: #ffa000;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+        
+        /* Calendar View */
+        .calendar-view {
+            display: none;
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .calendar-nav {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .calendar-title {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            margin: 0;
+            min-width: 200px;
+            text-align: center;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+        
+        .calendar-day-header {
+            text-align: center;
+            font-weight: 600;
+            color: #6c757d;
+            font-size: 0.85rem;
+            padding: 10px 0;
+            text-transform: uppercase;
+        }
+        
+        .calendar-day {
+            min-height: 100px;
+            border: 1px solid #f1f5f9;
+            padding: 8px;
+            border-radius: 5px;
+            background-color: white;
+        }
+        
+        .day-number {
+            font-weight: 600;
+            margin-bottom: 5px;
+            text-align: right;
+        }
+        
+        .event {
+            font-size: 0.75rem;
+            padding: 2px 5px;
+            margin: 2px 0;
+            border-radius: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: pointer;
+        }
+        
+        .event.lecture {
+            background-color: #e3f2fd;
+            border-left: 2px solid #1976d2;
+        }
+        
+        .event.exam {
+            background-color: #ffebee;
+            border-left: 2px solid #d32f2f;
+        }
+        
+        .event.holiday {
+            background-color: #f5f5f5;
+            border-left: 2px solid #9e9e9e;
+            font-style: italic;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 991px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            
+            .dashboard-sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #e9ecef;
+            }
+            
+            .dashboard-content {
+                padding: 20px 15px;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .schedule-nav {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .schedule-type {
+                width: 100%;
+            }
+            
+            .schedule-type-btn {
+                flex: 1;
+                text-align: center;
+                padding: 8px 5px;
+                font-size: 0.8rem;
+            }
+        }
+        
+        @media (max-width: 575px) {
+            .period {
+                font-size: 0.75rem;
+                padding: 5px 3px;
+            }
+            
+            .period .teacher,
+            .period .time,
+            .period .room {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container">
+            <div class="logo-container">
+                <img src="images/logo.png" alt="School Logo" class="logo">
+                <div class="school-info">
+                    <h1>Khatamari Shishu Bikash Academy</h1>
+                    <p class="tagline">Nurturing Young Minds, Building Bright Futures</p>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="admission.html">Admission</a></li>
+                    <li><a href="academic.html">Academic</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="login-btn">
+                            <i class="fas fa-user"></i>
+                            <span>Login / Register</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a>
+                            <a href="register.html"><i class="fas fa-user-plus"></i> Register</a>
+                        </div>
+                    </li>
+                </ul>
+                <div class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Dashboard Hero -->
+    <section class="dashboard-hero">
+        <div class="container">
+            <h1>Class Schedule</h1>
+        </div>
+    </section>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            
+            <ul class="sidebar-menu">
+                <li class="menu-heading">Main</li>
+                <li class="menu-item">
+                    <a href="profile.html" class="menu-link">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="profile.html#profile" class="menu-link">
+                        <i class="fas fa-user"></i>
+                        <span>My Profile</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="schedule.html" class="menu-link" class="menu-link">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Class Schedule</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="subjects.html" class="menu-link">
+                        <i class="fas fa-book"></i>
+                        <span>Subjects</span>
+                    </a>
+                </li>
+                <li class="menu-divider"></li>
+                <li class="menu-heading">Academic</li>
+                <li class="menu-item">
+                    <a href="assignments.html" class="menu-link">
+                        <i class="fas fa-tasks"></i>
+                        <span>Assignments</span>
+                        <span class="menu-badge">3 New</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="results.html" class="menu-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Results</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="attendance.html" class="menu-link">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Attendance</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="exam-schedule.html" class="menu-link">
+                        <i class="fas fa-file-invoice"></i>
+                        <span>Exam Schedule</span>
+                    </a>
+                </li>
+                <li class="menu-divider"></li>
+                <li class="menu-heading">Other</li>
+                <li class="menu-item">
+                    <a href="fees.html" class="menu-link">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span>Fee Details</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="library.html" class="menu-link">
+                        <i class="fas fa-book-reader"></i>
+                        <span>Library</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="notifications.html" class="menu-link">
+                        <i class="fas fa-bell"></i>
+                        <span>Notifications</span>
+                        <span class="menu-badge">5</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="settings.html" class="menu-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-content">
+            <div class="page-header">
+                <h2 class="page-title">My Schedule</h2>
+                <div class="page-actions">
+                    <a href="#" class="btn btn-outline">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                    <a href="#" class="btn btn-primary">
+                        <i class="fas fa-print"></i> Print
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Schedule Navigation -->
+            <div class="schedule-container">
+                <div class="schedule-header">
+                    <h3 class="schedule-title">Weekly Timetable</h3>
+                    <div class="schedule-nav">
+                        <div class="schedule-type">
+                            <button class="schedule-type-btn active" data-view="timetable">Timetable</button>
+                            <button class="schedule-type-btn" data-view="exams">Exams</button>
+                            <button class="schedule-type-btn" data-view="calendar">Calendar</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Timetable View -->
+                <div class="schedule-content" id="timetable-view">
+                    <table class="timetable">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Monday</th>
+                                <th>Tuesday</th>
+                                <th>Wednesday</th>
+                                <th>Thursday</th>
+                                <th>Friday</th>
+                                <th>Saturday</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>8:00 - 8:45</td>
+                                <td>
+                                    <div class="period lecture">
+                                        <span class="subject">Mathematics</span>
+                                        <span class="teacher">Mr. Sharma</span>
+                                        <span class="time">8:00-8:45</span>
+                                        <span class="room">Room 101</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period lecture">
+                                        <span class="subject">Science</span>
+                                        <span class="teacher">Mr. Banerjee</span>
+                                        <span class="time">8:00-8:45</span>
+                                        <span class="room">Lab 2</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period lecture">
+                                        <span class="subject">English</span>
+                                        <span class="teacher">Mrs. Das</span>
+                                        <span class="time">8:00-8:45</span>
+                                        <span class="room">Room 102</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period lecture">
+                                        <span class="subject">Mathematics</span>
+                                        <span class="teacher">Mr. Sharma</span>
+                                        <span class="time">8:00-8:45</span>
+                                        <span class="room">Room 101</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period lecture">
+                                        <span class="subject">Social Studies</span>
+                                        <span class="teacher">Mrs. Ghosh</span>
+                                        <span class="time">8:00-8:45</span>
+                                        <span class="room">Room 103</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period lecture">
+                                        <span class="subject">Hindi</span>
+                                        <span class="teacher">Mr. Patel</span>
+                                        <span class="time">8:00-8:45</span>
+                                        <span class="room">Room 104</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>8:45 - 9:30</td>
+                                <td>
+                                    <div class="period lecture">
+                                        <span class="subject">Science</span>
+                                        <span class="teacher">Mr. Banerjee</span>
+                                        <span class="time">8:45-9:30</span>
+                                        <span class="room">Lab 2</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period lecture">
+                                        <span class="subject">Mathematics</span>
+                                        <span class="teacher">Mr. Sharma</span>
+                                        <span class="time">8:45-9:30</span>
+                                        <span class="room">Room 101</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period lecture">
+                                        <span class="subject">Social Studies</span>
+                                        <span class="teacher">Mrs. Ghosh</span>
+                                        <span class="time">8:45-9:30</span>
+                                        <span class="room">Room 103</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period lecture">
+                                        <span class="subject">English</span>
+                                        <span class="teacher">Mrs. Das</span>
+                                        <span class="time">8:45-9:30</span>
+                                        <span class="room">Room 102</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period lecture">
+                                        <span class="subject">Science</span>
+                                        <span class="teacher">Mr. Banerjee</span>
+                                        <span class="time">8:45-9:30</span>
+                                        <span class="room">Lab 2</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period lecture">
+                                        <span class="subject">Mathematics</span>
+                                        <span class="teacher">Mr. Sharma</span>
+                                        <span class="time">8:45-9:30</span>
+                                        <span class="room">Room 101</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>9:30 - 10:15</td>
+                                <td>
+                                    <div class="period break">
+                                        <span class="subject">Short Break</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period break">
+                                        <span class="subject">Short Break</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period break">
+                                        <span class="subject">Short Break</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period break">
+                                        <span class="subject">Short Break</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period break">
+                                        <span class="subject">Short Break</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period break">
+                                        <span class="subject">Short Break</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>10:15 - 11:00</td>
+                                <td>
+                                    <div class="period lecture">
+                                        <span class="subject">English</span>
+                                        <span class="teacher">Mrs. Das</span>
+                                        <span class="time">10:15-11:00</span>
+                                        <span class="room">Room 102</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period lab">
+                                        <span class="subject">Computer Lab</span>
+                                        <span class="teacher">Mr. Kumar</span>
+                                        <span class="time">10:15-11:00</span>
+                                        <span class="room">Lab 1</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period lecture">
+                                        <span class="subject">Mathematics</span>
+                                        <span class="teacher">Mr. Sharma</span>
+                                        <span class="time">10:15-11:00</span>
+                                        <span class="room">Room 101</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period lab">
+                                        <span class="subject">Science Lab</span>
+                                        <span class="teacher">Mr. Banerjee</span>
+                                        <span class="time">10:15-11:00</span>
+                                        <span class="room">Lab 2</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period lecture">
+                                        <span class="subject">Hindi</span>
+                                        <span class="teacher">Mr. Patel</span>
+                                        <span class="time">10:15-11:00</span>
+                                        <span class="room">Room 104</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period lab">
+                                        <span class="subject">Computer Lab</span>
+                                        <span class="teacher">Mr. Kumar</span>
+                                        <span class="time">10:15-11:00</span>
+                                        <span class="room">Lab 1</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>11:00 - 11:45</td>
+                                <td>
+                                    <div class="period lecture">
+                                        <span class="subject">Social Studies</span>
+                                        <span class="teacher">Mrs. Ghosh</span>
+                                        <span class="time">11:00-11:45</span>
+                                        <span class="room">Room 103</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period lecture">
+                                        <span class="subject">Hindi</span>
+                                        <span class="teacher">Mr. Patel</span>
+                                        <span class="time">11:00-11:45</span>
+                                        <span class="room">Room 104</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period lecture">
+                                        <span class="subject">Science</span>
+                                        <span class="teacher">Mr. Banerjee</span>
+                                        <span class="time">11:00-11:45</span>
+                                        <span class="room">Lab 2</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period lecture">
+                                        <span class="subject">Mathematics</span>
+                                        <span class="teacher">Mr. Sharma</span>
+                                        <span class="time">11:00-11:45</span>
+                                        <span class="room">Room 101</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period lecture">
+                                        <span class="subject">English</span>
+                                        <span class="teacher">Mrs. Das</span>
+                                        <span class="time">11:00-11:45</span>
+                                        <span class="room">Room 102</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period lecture">
+                                        <span class="subject">Social Studies</span>
+                                        <span class="teacher">Mrs. Ghosh</span>
+                                        <span class="time">11:00-11:45</span>
+                                        <span class="room">Room 103</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>11:45 - 12:30</td>
+                                <td>
+                                    <div class="period break">
+                                        <span class="subject">Lunch Break</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period break">
+                                        <span class="subject">Lunch Break</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period break">
+                                        <span class="subject">Lunch Break</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period break">
+                                        <span class="subject">Lunch Break</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period break">
+                                        <span class="subject">Lunch Break</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period break">
+                                        <span class="subject">School Over</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>12:30 - 1:15</td>
+                                <td>
+                                    <div class="period lab">
+                                        <span class="subject">Science Lab</span>
+                                        <span class="teacher">Mr. Banerjee</span>
+                                        <span class="time">12:30-1:15</span>
+                                        <span class="room">Lab 2</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period lecture">
+                                        <span class="subject">Social Studies</span>
+                                        <span class="teacher">Mrs. Ghosh</span>
+                                        <span class="time">12:30-1:15</span>
+                                        <span class="room">Room 103</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period lab">
+                                        <span class="subject">Computer Lab</span>
+                                        <span class="teacher">Mr. Kumar</span>
+                                        <span class="time">12:30-1:15</span>
+                                        <span class="room">Lab 1</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period lecture">
+                                        <span class="subject">Hindi</span>
+                                        <span class="teacher">Mr. Patel</span>
+                                        <span class="time">12:30-1:15</span>
+                                        <span class="room">Room 104</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period lecture">
+                                        <span class="subject">English</span>
+                                        <span class="teacher">Mrs. Das</span>
+                                        <span class="time">12:30-1:15</span>
+                                        <span class="room">Room 102</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period">
+                                        <!-- Empty cell -->
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1:15 - 2:00</td>
+                                <td>
+                                    <div class="period lecture">
+                                        <span class="subject">Physical Education</span>
+                                        <span class="teacher">Mr. Singh</span>
+                                        <span class="time">1:15-2:00</span>
+                                        <span class="room">Ground</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period lecture">
+                                        <span class="subject">Arts & Crafts</span>
+                                        <span class="teacher">Ms. Roy</span>
+                                        <span class="time">1:15-2:00</span>
+                                        <span class="room">Art Room</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period lecture">
+                                        <span class="subject">Music</span>
+                                        <span class="teacher">Ms. Dutta</span>
+                                        <span class="time">1:15-2:00</span>
+                                        <span class="room">Music Room</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period lecture">
+                                        <span class="subject">Physical Education</span>
+                                        <span class="teacher">Mr. Singh</span>
+                                        <span class="time">1:15-2:00</span>
+                                        <span class="room">Ground</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period lecture">
+                                        <span class="subject">Library</span>
+                                        <span class="teacher">Ms. Chatterjee</span>
+                                        <span class="time">1:15-2:00</span>
+                                        <span class="room">Library</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="period">
+                                        <!-- Empty cell -->
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Exam Schedule View -->
+                <div class="schedule-content" id="exam-view" style="display: none;">
+                    <table class="exam-schedule">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Subject</th>
+                                <th>Time</th>
+                                <th>Duration</th>
+                                <th>Venue</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Oct 15, 2025</td>
+                                <td class="exam-subject">Mathematics</td>
+                                <td class="exam-time">9:00 AM - 12:00 PM</td>
+                                <td>3 hours</td>
+                                <td class="exam-venue">Main Hall</td>
+                                <td><span class="exam-status status-upcoming">Upcoming</span></td>
+                            </tr>
+                            <tr>
+                                <td>Oct 17, 2025</td>
+                                <td class="exam-subject">Science</td>
+                                <td class="exam-time">9:00 AM - 11:30 AM</td>
+                                <td>2.5 hours</td>
+                                <td class="exam-venue">Lab 1 & 2</td>
+                                <td><span class="exam-status status-upcoming">Upcoming</span></td>
+                            </tr>
+                            <tr>
+                                <td>Oct 19, 2025</td>
+                                <td class="exam-subject">English</td>
+                                <td class="exam-time">9:00 AM - 11:00 AM</td>
+                                <td>2 hours</td>
+                                <td class="exam-venue">Room 101-103</td>
+                                <td><span class="exam-status status-upcoming">Upcoming</span></td>
+                            </tr>
+                            <tr>
+                                <td>Oct 22, 2025</td>
+                                <td class="exam-subject">Social Studies</td>
+                                <td class="exam-time">9:00 AM - 11:30 AM</td>
+                                <td>2.5 hours</td>
+                                <td class="exam-venue">Room 104-106</td>
+                                <td><span class="exam-status status-upcoming">Upcoming</span></td>
+                            </tr>
+                            <tr>
+                                <td>Oct 24, 2025</td>
+                                <td class="exam-subject">Hindi</td>
+                                <td class="exam-time">9:00 AM - 11:00 AM</td>
+                                <td>2 hours</td>
+                                <td class="exam-venue">Room 101-103</td>
+                                <td><span class="exam-status status-upcoming">Upcoming</span></td>
+                            </tr>
+                            <tr>
+                                <td>Oct 26, 2025</td>
+                                <td class="exam-subject">Computer Science</td>
+                                <td class="exam-time">9:00 AM - 11:30 AM</td>
+                                <td>2.5 hours</td>
+                                <td class="exam-venue">Computer Lab</td>
+                                <td><span class="exam-status status-upcoming">Upcoming</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Calendar View -->
+                <div class="schedule-content" id="calendar-view" style="display: none;">
+                    <div class="calendar-header">
+                        <div class="calendar-nav">
+                            <button class="btn btn-outline btn-sm" id="prev-week">
+                                <i class="fas fa-chevron-left"></i> Previous Week
+                            </button>
+                            <button class="btn btn-outline btn-sm" id="today-btn">
+                                Today
+                            </button>
+                            <button class="btn btn-outline btn-sm" id="next-week">
+                                Next Week <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                        <h3 class="calendar-title" id="calendar-week-title">September 9 - 15, 2025</h3>
+                    </div>
+                    <div class="calendar-grid" id="weekly-calendar">
+                        <!-- Calendar will be generated by JavaScript -->
+                    </div>
+                    <div class="calendar-legend">
+                        <div class="legend-item">
+                            <span class="legend-color" style="background-color: #e3f2fd; border-left: 3px solid #1976d2;"></span>
+                            <span>Regular Class</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color" style="background-color: #e8f5e9; border-left: 3px solid #388e3c;"></span>
+                            <span>Lab Session</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color" style="background-color: #ffebee; border-left: 3px solid #d32f2f;"></span>
+                            <span>Exam</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-color" style="background-color: #f5f5f5; border-left: 3px solid #9e9e9e;"></span>
+                            <span>Holiday</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="admission.html">Admission</a></li>
+                        <li><a href="academic.html">Academic</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 School Road, Khatamari, Dinhata, Coochbehar, 736168</p>
+                    <p><i class="fas fa-phone"></i> +91 98000 47149</p>
+                    <p><i class="fas fa-envelope"></i> ksba@gmail.com</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Khatamari Shishu Bikash Academy. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle between timetable, exams, and calendar views
+            const viewButtons = document.querySelectorAll('.schedule-type-btn');
+            const views = {
+                'timetable': document.getElementById('timetable-view'),
+                'exams': document.getElementById('exam-view'),
+                'calendar': document.getElementById('calendar-view')
+            };
+            
+            viewButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const view = this.dataset.view;
+                    
+                    // Update active button
+                    viewButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show selected view
+                    Object.values(views).forEach(v => v.style.display = 'none');
+                    if (views[view]) {
+                        views[view].style.display = 'block';
+                        
+                        // Initialize calendar if it's the first time viewing
+                        if (view === 'calendar' && !window.calendarInitialized) {
+                            initializeWeeklyCalendar();
+                            window.calendarInitialized = true;
+                        }
+                    }
+                });
+            });
+            
+            // Weekly Calendar Functionality
+            function initializeWeeklyCalendar() {
+                const calendarGrid = document.getElementById('weekly-calendar');
+                const weekTitle = document.getElementById('calendar-week-title');
+                let currentDate = new Date();
+                
+                // Set to the nearest Monday
+                const day = currentDate.getDay();
+                const diff = currentDate.getDate() - day + (day === 0 ? -6 : 1); // Adjust when day is Sunday
+                currentDate.setDate(diff);
+                
+                // Generate calendar for the current week
+                function generateWeeklyCalendar() {
+                    calendarGrid.innerHTML = '';
+                    
+                    // Add day headers
+                    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                    days.forEach(day => {
+                        const header = document.createElement('div');
+                        header.className = 'calendar-day-header';
+                        header.textContent = day.substring(0, 3);
+                        calendarGrid.appendChild(header);
+                    });
+                    
+                    // Add days
+                    const weekStart = new Date(currentDate);
+                    const weekEnd = new Date(currentDate);
+                    weekEnd.setDate(weekStart.getDate() + 6);
+                    
+                    // Update week title
+                    weekTitle.textContent = `${formatDate(weekStart)} - ${formatDate(weekEnd, true)}`;
+                    
+                    // Generate days of the week
+                    for (let i = 0; i < 7; i++) {
+                        const dayDate = new Date(currentDate);
+                        dayDate.setDate(currentDate.getDate() + i);
+                        
+                        const dayElement = document.createElement('div');
+                        dayElement.className = 'calendar-day';
+                        
+                        const dayNumber = document.createElement('div');
+                        dayNumber.className = 'day-number';
+                        dayNumber.textContent = dayDate.getDate();
+                        
+                        // Add today class if it's today
+                        const today = new Date();
+                        if (dayDate.toDateString() === today.toDateString()) {
+                            dayElement.classList.add('today');
+                        }
+                        
+                        // Add events (sample data)
+                        const events = generateSampleEvents(dayDate);
+                        
+                        dayElement.appendChild(dayNumber);
+                        
+                        events.forEach(event => {
+                            const eventElement = document.createElement('div');
+                            eventElement.className = `event ${event.type}`;
+                            eventElement.textContent = event.title;
+                            eventElement.title = `${event.title}\n${event.time}\n${event.location}`;
+                            dayElement.appendChild(eventElement);
+                        });
+                        
+                        calendarGrid.appendChild(dayElement);
+                    }
+                }
+                
+                // Format date as "Month Day" or "Month Day, Year"
+                function formatDate(date, showYear = false) {
+                    const options = { month: 'long', day: 'numeric' };
+                    if (showYear) {
+                        options.year = 'numeric';
+                    }
+                    return date.toLocaleDateString('en-US', options);
+                }
+                
+                // Generate sample events for the calendar
+                function generateSampleEvents(date) {
+                    const day = date.getDay();
+                    const events = [];
+                    
+                    // Sample regular classes (Monday to Saturday)
+                    if (day >= 1 && day <= 6) {
+                        // Morning classes
+                        if (day === 1 || day === 3 || day === 5) {
+                            events.push({
+                                title: 'Mathematics',
+                                time: '8:00 AM - 8:45 AM',
+                                location: 'Room 101',
+                                type: 'lecture'
+                            });
+                        } else {
+                            events.push({
+                                title: 'English',
+                                time: '8:00 AM - 8:45 AM',
+                                location: 'Room 102',
+                                type: 'lecture'
+                            });
+                        }
+                        
+                        // Lab sessions on Tuesday and Thursday
+                        if (day === 2 || day === 4) {
+                            events.push({
+                                title: 'Science Lab',
+                                time: '10:15 AM - 11:00 AM',
+                                location: 'Lab 2',
+                                type: 'lab'
+                            });
+                        }
+                        
+                        // Afternoon activities
+                        if (day === 1 || day === 4) {
+                            events.push({
+                                title: 'Physical Education',
+                                time: '1:15 PM - 2:00 PM',
+                                location: 'Ground',
+                                type: 'lecture'
+                            });
+                        } else if (day === 2) {
+                            events.push({
+                                title: 'Arts & Crafts',
+                                time: '1:15 PM - 2:00 PM',
+                                location: 'Art Room',
+                                type: 'lecture'
+                            });
+                        } else if (day === 3) {
+                            events.push({
+                                title: 'Music',
+                                time: '1:15 PM - 2:00 PM',
+                                location: 'Music Room',
+                                type: 'lecture'
+                            });
+                        } else if (day === 5) {
+                            events.push({
+                                title: 'Library',
+                                time: '1:15 PM - 2:00 PM',
+                                location: 'Library',
+                                type: 'lecture'
+                            });
+                        }
+                    }
+                    
+                    // Sample exams (on specific dates)
+                    const examDates = {
+                        '10/15/2025': 'Mathematics Exam',
+                        '10/17/2025': 'Science Exam',
+                        '10/19/2025': 'English Exam',
+                        '10/22/2025': 'Social Studies Exam',
+                        '10/24/2025': 'Hindi Exam',
+                        '10/26/2025': 'Computer Science Exam'
+                    };
+                    
+                    const dateStr = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+                    if (examDates[dateStr]) {
+                        events.unshift({
+                            title: examDates[dateStr],
+                            time: '9:00 AM - 12:00 PM',
+                            location: 'Main Hall',
+                            type: 'exam'
+                        });
+                    }
+                    
+                    // Sample holidays
+                    const holidays = {
+                        '10/2/2025': 'Gandhi Jayanti',
+                        '10/12/2025': 'Dussehra',
+                        '11/4/2025': 'Diwali',
+                        '12/25/2025': 'Christmas'
+                    };
+                    
+                    if (holidays[dateStr]) {
+                        events.push({
+                            title: holidays[dateStr],
+                            time: 'All Day',
+                            location: 'Holiday',
+                            type: 'holiday'
+                        });
+                    }
+                    
+                    return events;
+                }
+                
+                // Navigation
+                document.getElementById('prev-week').addEventListener('click', function() {
+                    currentDate.setDate(currentDate.getDate() - 7);
+                    generateWeeklyCalendar();
+                });
+                
+                document.getElementById('next-week').addEventListener('click', function() {
+                    currentDate.setDate(currentDate.getDate() + 7);
+                    generateWeeklyCalendar();
+                });
+                
+                document.getElementById('today-btn').addEventListener('click', function() {
+                    currentDate = new Date();
+                    // Set to the nearest Monday
+                    const day = currentDate.getDay();
+                    const diff = currentDate.getDate() - day + (day === 0 ? -6 : 1);
+                    currentDate.setDate(diff);
+                    generateWeeklyCalendar();
+                });
+                
+                // Initial generation
+                generateWeeklyCalendar();
+            }
+            
+            // Update active menu item
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            document.querySelectorAll('.menu-link').forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+            
+            // Mobile menu toggle
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const mainNav = document.querySelector('.main-nav ul');
+            
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    mainNav.classList.toggle('show');
+                });
+            }
+            
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.main-nav') && !e.target.closest('.mobile-menu-btn')) {
+                    mainNav.classList.remove('show');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

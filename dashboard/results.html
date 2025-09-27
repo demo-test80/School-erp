@@ -1,0 +1,2013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results Management - Admin Dashboard</title>
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Enhanced Modern Styling for Results */
+        .results-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+            color: white;
+        }
+        
+        .results-header h2 {
+            margin: 0 0 10px 0;
+            font-weight: 700;
+            font-size: 28px;
+        }
+        
+        .results-header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 16px;
+        }
+        
+        .action-bar {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+            border: 1px solid #f0f0f0;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+        }
+        
+        .btn-warning {
+            background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+            color: white;
+        }
+        
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
+        }
+        
+        .filters-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+            border: 1px solid #f0f0f0;
+        }
+        
+        .filter-group select, .filter-group input {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 12px 15px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-group select:focus, .filter-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: white;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #f0f0f0;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+        
+        .stat-card.pass::before {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+        
+        .stat-card.fail::before {
+            background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 24px;
+            color: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .stat-card.pass .stat-icon {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+        
+        .stat-card.fail .stat-icon {
+            background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
+        }
+        
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 10px 0 5px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 12px;
+        }
+        
+        .results-table {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            border: 1px solid #f0f0f0;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+        }
+        
+        .data-table thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .data-table thead th {
+            color: white;
+            padding: 20px 15px;
+            font-weight: 600;
+            text-align: left;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            border: none;
+        }
+        
+        .data-table tbody tr {
+            transition: all 0.3s ease;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .data-table tbody tr:hover {
+            background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+            transform: scale(1.01);
+        }
+        
+        .data-table tbody td {
+            padding: 18px 15px;
+            font-size: 14px;
+            color: #333;
+            border: none;
+        }
+        
+        .grade-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            min-width: 40px;
+            text-align: center;
+        }
+        
+        .grade-a {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+        
+        .grade-b {
+            background: linear-gradient(135deg, #17a2b8 0%, #20c997 100%);
+            color: white;
+        }
+        
+        .grade-c {
+            background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+            color: white;
+        }
+        
+        .grade-d {
+            background: linear-gradient(135deg, #fd7e14 0%, #dc3545 100%);
+            color: white;
+        }
+        
+        .grade-f {
+            background: linear-gradient(135deg, #dc3545 0%, #6f42c1 100%);
+            color: white;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        .status-pass {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+        
+        .status-fail {
+            background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
+            color: white;
+        }
+        
+        .btn-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 3px;
+        }
+        
+        .btn-icon:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-icon.btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-icon.btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+        
+        .btn-icon.btn-danger {
+            background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
+            color: white;
+        }
+        
+        .btn-icon.btn-warning {
+            background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+            color: white;
+        }
+        
+        .modal {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: none;
+            overflow: hidden;
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px 30px;
+            border-bottom: none;
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        .form-group label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 12px 15px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            background: #f8f9fa;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: white;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+        
+        .search-box {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .search-box input {
+            padding: 12px 15px 12px 45px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            width: 300px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: white;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+        
+        .notification {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            display: none;
+        }
+        
+        .notification.success {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .notification.error {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .percentage-display {
+            font-weight: 700;
+            font-size: 16px;
+        }
+        
+        .percentage-high {
+            color: #28a745;
+        }
+        
+        .percentage-medium {
+            color: #ffc107;
+        }
+        
+        .percentage-low {
+            color: #dc3545;
+        }
+    </style>
+    <!-- jsPDF for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <script src="../js/auth.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Admin Panel</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="students.html"><i class="fas fa-user-graduate"></i> Students</a></li>
+                    <li><a href="teachers.html"><i class="fas fa-chalkboard-teacher"></i> Teachers</a></li>
+                    <li><a href="classes.html"><i class="fas fa-door-open"></i> Classes</a></li>
+                    <li><a href="admissions.html"><i class="fas fa-user-plus"></i> Admissions</a></li>
+                    <li><a href="attendance.html"><i class="fas fa-calendar-check"></i> Attendance</a></li>
+                    <li><a href="fees.html"><i class="fas fa-money-bill-wave"></i> Fees</a></li>
+                    <li><a href="results.html" class="active"><i class="fas fa-chart-line"></i> Results</a></li>
+                    <li><a href="announcements.html"><i class="fas fa-bullhorn"></i> Announcements</a></li>
+                    <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Enhanced Header -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <h1 class="page-title">Results Management</h1>
+                    <nav class="breadcrumb">
+                        <span class="breadcrumb-item">
+                            <a href="index.html" class="breadcrumb-link">Dashboard</a>
+                        </span>
+                        <span class="breadcrumb-item">Results</span>
+                    </nav>
+                </div>
+                <div class="header-right">
+                    <div class="header-search">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search results..." id="headerSearch">
+                    </div>
+                    <div class="header-notifications">
+                        <button class="notification-btn">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge">3</span>
+                        </button>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-outline btn-sm" onclick="exportResults()">
+                            <i class="fas fa-download"></i>
+                            Export
+                        </button>
+                        <button class="btn btn-primary btn-sm" onclick="showAddResultModal()">
+                            <i class="fas fa-plus"></i>
+                            Add Result
+                        </button>
+                    </div>
+                    <div class="user-profile">
+                        <button class="profile-toggle">
+                            <div class="profile-avatar">A</div>
+                            <div class="profile-info">
+                                <div class="profile-name">Admin User</div>
+                                <div class="profile-role">Administrator</div>
+                            </div>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="profile-dropdown">
+                            <a href="#" class="dropdown-item">
+                                <i class="fas fa-user"></i>
+                                Profile
+                            </a>
+                            <a href="settings.html" class="dropdown-item">
+                                <i class="fas fa-cog"></i>
+                                Settings
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item" onclick="logout(); return false;">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Statistics Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="totalResults">0</h3>
+                        <p>Total Results</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="passedStudents">0</h3>
+                        <p>Passed Students</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="failedStudents">0</h3>
+                        <p>Failed Students</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="passRate">0%</h3>
+                        <p>Pass Rate</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters-section">
+                <div class="filters-row">
+                    <div class="filter-group">
+                        <label>Academic Year:</label>
+                        <select id="academicYearFilter">
+                            <option value="">All Years</option>
+                            <option value="2024-2025">2024-2025</option>
+                            <option value="2023-2024">2023-2024</option>
+                            <option value="2022-2023">2022-2023</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Class:</label>
+                        <select id="classFilter">
+                            <option value="">All Classes</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Subject:</label>
+                        <select id="subjectFilter">
+                            <option value="">All Subjects</option>
+                            <option value="English">English</option>
+                            <option value="Bengali">Bengali</option>
+                            <option value="Mathematics">Mathematics</option>
+                            <option value="Geography">Geography</option>
+                            <option value="Science">Science</option>
+                            <option value="Hindi">Hindi</option>
+                            <option value="Art">Art</option>
+                            <option value="History">History</option>
+                            <option value="Physical Education">Physical Education</option>
+                            <option value="Computer Science">Computer Science</option>
+                            <option value="Social Studies">Social Studies</option>
+                            <option value="Music">Music</option>
+                            <option value="Economics">Economics</option>
+                            <option value="Political Science">Political Science</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Exam Type:</label>
+                        <select id="examTypeFilter">
+                            <option value="">All Exams</option>
+                            <option value="Unit Test">Unit Test</option>
+                            <option value="Mid Term">Mid Term</option>
+                            <option value="Final Exam">Final Exam</option>
+                            <option value="Annual Exam">Annual Exam</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Search:</label>
+                        <input type="text" id="searchInput" placeholder="Search by student name or ID">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Table -->
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>Student Results</h3>
+                    <div class="table-actions">
+                        <button class="btn btn-sm btn-outline" onclick="refreshResults()">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+                <div class="table-content">
+                    <table class="data-table" id="resultsTable">
+                        <thead>
+                            <tr>
+                                <th>Student ID</th>
+                                <th>Student Name</th>
+                                <th>Class</th>
+                                <th>Subject</th>
+                                <th>Exam Type</th>
+                                <th>Marks Obtained</th>
+                                <th>Total Marks</th>
+                                <th>Percentage</th>
+                                <th>Grade</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultsTableBody">
+                            <!-- Results will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Result Modal -->
+    <div id="addResultModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Student Result</h3>
+                <span class="close" onclick="closeModal('addResultModal')">&times;</span>
+            </div>
+            <form id="addResultForm" class="modal-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="studentSelect">Student:</label>
+                        <select id="studentSelect" required>
+                            <option value="">Select Student</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="subjectSelect">Subject:</label>
+                        <select id="subjectSelect" required>
+                            <option value="">Select Subject</option>
+                            <option value="English">English</option>
+                            <option value="Bengali">Bengali</option>
+                            <option value="Mathematics">Mathematics</option>
+                            <option value="Geography">Geography</option>
+                            <option value="Science">Science</option>
+                            <option value="Hindi">Hindi</option>
+                            <option value="Art">Art</option>
+                            <option value="History">History</option>
+                            <option value="Physical Education">Physical Education</option>
+                            <option value="Computer Science">Computer Science</option>
+                            <option value="Social Studies">Social Studies</option>
+                            <option value="Music">Music</option>
+                            <option value="Economics">Economics</option>
+                            <option value="Political Science">Political Science</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="examType">Exam Type:</label>
+                        <select id="examType" required>
+                            <option value="">Select Exam Type</option>
+                            <option value="Unit Test">Unit Test</option>
+                            <option value="Mid Term">Mid Term</option>
+                            <option value="Final Exam">Final Exam</option>
+                            <option value="Annual Exam">Annual Exam</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="examDate">Exam Date:</label>
+                        <input type="date" id="examDate" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="marksObtained">Marks Obtained:</label>
+                        <input type="number" id="marksObtained" min="0" max="100" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="totalMarks">Total Marks:</label>
+                        <input type="number" id="totalMarks" min="1" max="100" value="100" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="academicYear">Academic Year:</label>
+                        <select id="academicYear" required>
+                            <option value="2024-2025">2024-2025</option>
+                            <option value="2023-2024">2023-2024</option>
+                            <option value="2022-2023">2022-2023</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="remarks">Remarks:</label>
+                        <input type="text" id="remarks" placeholder="Optional remarks">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('addResultModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Result</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- View Result Modal -->
+    <div id="viewResultModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Result Details</h3>
+                <span class="close" onclick="closeModal('viewResultModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="result-details">
+                    <div class="student-info">
+                        <h4>Student Information</h4>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label>Student ID:</label>
+                                <span id="viewStudentId"></span>
+                            </div>
+                            <div class="info-item">
+                                <label>Name:</label>
+                                <span id="viewStudentName"></span>
+                            </div>
+                            <div class="info-item">
+                                <label>Class:</label>
+                                <span id="viewStudentClass"></span>
+                            </div>
+                            <div class="info-item">
+                                <label>Email:</label>
+                                <span id="viewStudentEmail"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="exam-info">
+                        <h4>Exam Information</h4>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label>Subject:</label>
+                                <span id="viewSubject"></span>
+                            </div>
+                            <div class="info-item">
+                                <label>Exam Type:</label>
+                                <span id="viewExamType"></span>
+                            </div>
+                            <div class="info-item">
+                                <label>Exam Date:</label>
+                                <span id="viewExamDate"></span>
+                            </div>
+                            <div class="info-item">
+                                <label>Academic Year:</label>
+                                <span id="viewAcademicYear"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="marks-info">
+                        <h4>Marks & Performance</h4>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label>Marks Obtained:</label>
+                                <span id="viewMarksObtained"></span>
+                            </div>
+                            <div class="info-item">
+                                <label>Total Marks:</label>
+                                <span id="viewTotalMarks"></span>
+                            </div>
+                            <div class="info-item">
+                                <label>Percentage:</label>
+                                <span id="viewPercentage"></span>
+                            </div>
+                            <div class="info-item">
+                                <label>Grade:</label>
+                                <span id="viewGrade"></span>
+                            </div>
+                            <div class="info-item">
+                                <label>Status:</label>
+                                <span id="viewStatus"></span>
+                            </div>
+                            <div class="info-item">
+                                <label>Remarks:</label>
+                                <span id="viewRemarks"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-success" onclick="downloadStudentProfilePDF(currentResultId)">
+                    <i class="fas fa-user-graduate"></i> Student Profile PDF
+                </button>
+                <button class="btn btn-primary" onclick="downloadResultPDF()">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-secondary" onclick="closeModal('viewResultModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Result Modal -->
+    <div id="editResultModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Result</h3>
+                <span class="close" onclick="closeModal('editResultModal')">&times;</span>
+            </div>
+            <form id="editResultForm" class="modal-form">
+                <input type="hidden" id="editResultId">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editStudentSelect">Student:</label>
+                        <select id="editStudentSelect" required>
+                            <option value="">Select Student</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editSubjectSelect">Subject:</label>
+                        <select id="editSubjectSelect" required>
+                            <option value="">Select Subject</option>
+                            <option value="English">English</option>
+                            <option value="Bengali">Bengali</option>
+                            <option value="Mathematics">Mathematics</option>
+                            <option value="Geography">Geography</option>
+                            <option value="Science">Science</option>
+                            <option value="Hindi">Hindi</option>
+                            <option value="Art">Art</option>
+                            <option value="History">History</option>
+                            <option value="Physical Education">Physical Education</option>
+                            <option value="Computer Science">Computer Science</option>
+                            <option value="Social Studies">Social Studies</option>
+                            <option value="Music">Music</option>
+                            <option value="Economics">Economics</option>
+                            <option value="Political Science">Political Science</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editExamType">Exam Type:</label>
+                        <select id="editExamType" required>
+                            <option value="">Select Exam Type</option>
+                            <option value="Unit Test">Unit Test</option>
+                            <option value="Mid Term">Mid Term</option>
+                            <option value="Final Exam">Final Exam</option>
+                            <option value="Annual Exam">Annual Exam</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editExamDate">Exam Date:</label>
+                        <input type="date" id="editExamDate" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editMarksObtained">Marks Obtained:</label>
+                        <input type="number" id="editMarksObtained" min="0" max="100" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editTotalMarks">Total Marks:</label>
+                        <input type="number" id="editTotalMarks" min="1" max="100" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editAcademicYear">Academic Year:</label>
+                        <select id="editAcademicYear" required>
+                            <option value="2024-2025">2024-2025</option>
+                            <option value="2023-2024">2023-2024</option>
+                            <option value="2022-2023">2022-2023</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editRemarks">Remarks:</label>
+                        <input type="text" id="editRemarks" placeholder="Optional remarks">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('editResultModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Result</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <script src="assets/js/dashboard.js"></script>
+    <script>
+        // Sample data - In real application, this would come from a database
+        let resultsData = [
+            {
+                id: 1,
+                studentId: 'STU001',
+                studentName: 'John Doe',
+                class: 'Grade 10',
+                email: 'john.doe@email.com',
+                subject: 'Mathematics',
+                examType: 'Mid Term',
+                examDate: '2024-08-15',
+                marksObtained: 85,
+                totalMarks: 100,
+                percentage: 85,
+                grade: 'A',
+                status: 'Pass',
+                academicYear: '2024-2025',
+                remarks: 'Good performance'
+            },
+            {
+                id: 2,
+                studentId: 'STU002',
+                studentName: 'Sarah Wilson',
+                class: 'Grade 9',
+                email: 'sarah.wilson@email.com',
+                subject: 'English',
+                examType: 'Final Exam',
+                examDate: '2024-08-20',
+                marksObtained: 78,
+                totalMarks: 100,
+                percentage: 78,
+                grade: 'B+',
+                status: 'Pass',
+                academicYear: '2024-2025',
+                remarks: 'Satisfactory'
+            },
+            {
+                id: 3,
+                studentId: 'STU004',
+                studentName: 'Emily Brown',
+                class: 'Grade 10',
+                email: 'emily.brown@email.com',
+                subject: 'Science',
+                examType: 'Unit Test',
+                examDate: '2024-08-22',
+                marksObtained: 92,
+                totalMarks: 100,
+                percentage: 92,
+                grade: 'A+',
+                status: 'Pass',
+                academicYear: '2024-2025',
+                remarks: 'Excellent work'
+            }
+        ];
+
+        // Students data - synchronized with students.html
+        let studentsData = [
+            {
+                id: 'STU001',
+                firstName: 'John',
+                lastName: 'Doe',
+                name: 'John Doe',
+                email: 'john.doe@email.com',
+                phone: '+1 234 567 8901',
+                class: 'Grade 10',
+                status: 'active',
+                dateOfBirth: '2005-03-15',
+                gender: 'male',
+                address: '123 Main St, City, State'
+            },
+            {
+                id: 'STU002',
+                firstName: 'Sarah',
+                lastName: 'Wilson',
+                name: 'Sarah Wilson',
+                email: 'sarah.wilson@email.com',
+                phone: '+1 234 567 8902',
+                class: 'Grade 9',
+                status: 'active',
+                dateOfBirth: '2006-07-22',
+                gender: 'female',
+                address: '456 Oak Ave, City, State'
+            },
+            {
+                id: 'STU003',
+                firstName: 'Michael',
+                lastName: 'Johnson',
+                name: 'Michael Johnson',
+                email: 'michael.johnson@email.com',
+                phone: '+1 234 567 8903',
+                class: 'Grade 11',
+                status: 'inactive',
+                dateOfBirth: '2004-11-08',
+                gender: 'male',
+                address: '789 Pine St, City, State'
+            },
+            {
+                id: 'STU004',
+                firstName: 'Emily',
+                lastName: 'Brown',
+                name: 'Emily Brown',
+                email: 'emily.brown@email.com',
+                phone: '+1 234 567 8904',
+                class: 'Grade 10',
+                status: 'active',
+                dateOfBirth: '2005-09-12',
+                gender: 'female',
+                address: '321 Elm St, City, State'
+            },
+            {
+                id: 'STU005',
+                firstName: 'David',
+                lastName: 'Miller',
+                name: 'David Miller',
+                email: 'david.miller@email.com',
+                phone: '+1 234 567 8905',
+                class: 'Grade 9',
+                status: 'active',
+                dateOfBirth: '2006-01-30',
+                gender: 'male',
+                address: '654 Maple Ave, City, State'
+            }
+        ];
+
+        // Attendance data - synchronized with attendance.html
+        let attendanceData = [
+            {
+                studentId: 'STU001',
+                studentName: 'John Doe',
+                class: 'Grade 10',
+                date: '2024-08-15',
+                status: 'Present',
+                totalDays: 200,
+                presentDays: 185,
+                attendancePercentage: 92.5
+            },
+            {
+                studentId: 'STU002',
+                studentName: 'Sarah Wilson',
+                class: 'Grade 9',
+                date: '2024-08-20',
+                status: 'Present',
+                totalDays: 200,
+                presentDays: 190,
+                attendancePercentage: 95.0
+            },
+            {
+                studentId: 'STU004',
+                studentName: 'Emily Brown',
+                class: 'Grade 10',
+                date: '2024-08-22',
+                status: 'Present',
+                totalDays: 200,
+                presentDays: 188,
+                attendancePercentage: 94.0
+            },
+            {
+                studentId: 'STU005',
+                studentName: 'David Miller',
+                class: 'Grade 9',
+                date: '2024-08-25',
+                status: 'Present',
+                totalDays: 200,
+                presentDays: 182,
+                attendancePercentage: 91.0
+            }
+        ];
+
+        let currentResultId = null;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadResults();
+            loadStudentOptions();
+            loadClassOptions();
+            updateStatistics();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Form submissions
+            document.getElementById('addResultForm').addEventListener('submit', addResult);
+            document.getElementById('editResultForm').addEventListener('submit', editResult);
+            
+            // Filter changes
+            document.getElementById('academicYearFilter').addEventListener('change', filterResults);
+            document.getElementById('classFilter').addEventListener('change', filterResults);
+            document.getElementById('subjectFilter').addEventListener('change', filterResults);
+            document.getElementById('examTypeFilter').addEventListener('change', filterResults);
+            document.getElementById('searchInput').addEventListener('input', filterResults);
+
+            // Modal close buttons
+            document.querySelectorAll('.close').forEach(closeBtn => {
+                closeBtn.addEventListener('click', function() {
+                    const modal = this.closest('.modal');
+                    if (modal) {
+                        modal.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+            });
+
+            // Close modal when clicking outside
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+            });
+
+            // Event delegation for action buttons
+            document.addEventListener('click', function(e) {
+                // Handle button clicks or icon clicks within buttons
+                let target = e.target;
+                let button = target.closest('[data-action]');
+                
+                if (button) {
+                    const action = button.getAttribute('data-action');
+                    const resultId = parseInt(button.getAttribute('data-result-id'));
+                    
+                    switch(action) {
+                        case 'view':
+                            viewResult(resultId);
+                            break;
+                        case 'edit':
+                            editResultModal(resultId);
+                            break;
+                        case 'delete':
+                            deleteResult(resultId);
+                            break;
+                        case 'download-pdf':
+                            downloadIndividualResultPDF(resultId);
+                            break;
+                    }
+                }
+            });
+        }
+
+        function loadResults() {
+            const tbody = document.getElementById('resultsTableBody');
+            tbody.innerHTML = '';
+
+            resultsData.forEach(result => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${result.studentId}</td>
+                    <td>${result.studentName}</td>
+                    <td>${result.class}</td>
+                    <td>${result.subject}</td>
+                    <td>${result.examType}</td>
+                    <td>${result.marksObtained}</td>
+                    <td>${result.totalMarks}</td>
+                    <td>${result.percentage}%</td>
+                    <td><span class="grade-badge grade-${result.grade.toLowerCase().replace('+', 'plus')}">${result.grade}</span></td>
+                    <td><span class="status-badge status-${result.status.toLowerCase()}">${result.status}</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-action btn-view" data-action="view" data-result-id="${result.id}" title="View Details">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn-action btn-edit" data-action="edit" data-result-id="${result.id}" title="Edit Result">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-action btn-download" data-action="download-pdf" data-result-id="${result.id}" title="Download PDF">
+                                <i class="fas fa-download"></i>
+                            </button>
+                            <button class="btn-action btn-delete" data-action="delete" data-result-id="${result.id}" title="Delete Result">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function loadStudentOptions() {
+            const studentSelects = ['studentSelect', 'editStudentSelect'];
+            
+            studentSelects.forEach(selectId => {
+                const select = document.getElementById(selectId);
+                select.innerHTML = '<option value="">Select Student</option>';
+                
+                studentsData.filter(student => student.status === 'active').forEach(student => {
+                    const option = document.createElement('option');
+                    option.value = student.id;
+                    option.textContent = `${student.name} (${student.id})`;
+                    option.dataset.class = student.class;
+                    option.dataset.email = student.email;
+                    select.appendChild(option);
+                });
+            });
+        }
+
+        function loadClassOptions() {
+            const classFilter = document.getElementById('classFilter');
+            const classes = [...new Set(studentsData.map(student => student.class))];
+            
+            classFilter.innerHTML = '<option value="">All Classes</option>';
+            classes.forEach(className => {
+                const option = document.createElement('option');
+                option.value = className;
+                option.textContent = className;
+                classFilter.appendChild(option);
+            });
+        }
+
+        function updateStatistics() {
+            const totalResults = resultsData.length;
+            const passedStudents = resultsData.filter(result => result.status === 'Pass').length;
+            const failedStudents = totalResults - passedStudents;
+            const passRate = totalResults > 0 ? Math.round((passedStudents / totalResults) * 100) : 0;
+
+            document.getElementById('totalResults').textContent = totalResults;
+            document.getElementById('passedStudents').textContent = passedStudents;
+            document.getElementById('failedStudents').textContent = failedStudents;
+            document.getElementById('passRate').textContent = passRate + '%';
+        }
+
+        function calculateGrade(percentage) {
+            if (percentage >= 90) return 'A+';
+            if (percentage >= 80) return 'A';
+            if (percentage >= 70) return 'B+';
+            if (percentage >= 60) return 'B';
+            if (percentage >= 50) return 'C';
+            if (percentage >= 40) return 'D';
+            return 'F';
+        }
+
+        function showAddResultModal() {
+            const modal = document.getElementById('addResultModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Show notification
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            // Hide notification after 3 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        function addResult(event) {
+            event.preventDefault();
+            
+            try {
+                // Validate form inputs
+                const studentSelect = document.getElementById('studentSelect');
+                const subjectSelect = document.getElementById('subjectSelect');
+                const examType = document.getElementById('examType');
+                const examDate = document.getElementById('examDate');
+                const marksObtained = document.getElementById('marksObtained');
+                const totalMarks = document.getElementById('totalMarks');
+                const academicYear = document.getElementById('academicYear');
+
+                // Check if all required fields are filled
+                if (!studentSelect.value) {
+                    showNotification('Please select a student!', 'error');
+                    return;
+                }
+                if (!subjectSelect.value) {
+                    showNotification('Please select a subject!', 'error');
+                    return;
+                }
+                if (!examType.value) {
+                    showNotification('Please select an exam type!', 'error');
+                    return;
+                }
+                if (!examDate.value) {
+                    showNotification('Please select an exam date!', 'error');
+                    return;
+                }
+                if (!marksObtained.value) {
+                    showNotification('Please enter marks obtained!', 'error');
+                    return;
+                }
+                if (!totalMarks.value) {
+                    showNotification('Please enter total marks!', 'error');
+                    return;
+                }
+
+                const selectedOption = studentSelect.options[studentSelect.selectedIndex];
+                const marksObt = parseInt(marksObtained.value);
+                const totalMks = parseInt(totalMarks.value);
+
+                // Validate marks
+                if (marksObt < 0 || marksObt > totalMks) {
+                    showNotification('Marks obtained cannot be negative or greater than total marks!', 'error');
+                    return;
+                }
+
+                const percentage = Math.round((marksObt / totalMks) * 100);
+                const grade = calculateGrade(percentage);
+                const status = percentage >= 40 ? 'Pass' : 'Fail';
+
+                const newResult = {
+                    id: resultsData.length + 1,
+                    studentId: selectedOption.value,
+                    studentName: selectedOption.textContent.split(' (')[0],
+                    class: selectedOption.dataset.class,
+                    email: selectedOption.dataset.email,
+                    subject: subjectSelect.value,
+                    examType: examType.value,
+                    examDate: examDate.value,
+                    marksObtained: marksObt,
+                    totalMarks: totalMks,
+                    percentage: percentage,
+                    grade: grade,
+                    status: status,
+                    academicYear: academicYear.value,
+                    remarks: document.getElementById('remarks').value || 'N/A'
+                };
+
+                resultsData.push(newResult);
+                loadResults();
+                updateStatistics();
+                closeModal('addResultModal');
+                showNotification('Result added successfully!', 'success');
+                
+                // Reset form
+                document.getElementById('addResultForm').reset();
+                
+            } catch (error) {
+                console.error('Error adding result:', error);
+                showNotification('Error adding result. Please try again.', 'error');
+            }
+        }
+
+        function viewResult(resultId) {
+            const result = resultsData.find(r => r.id === resultId);
+            if (!result) return;
+
+            // Get attendance data for this student
+            const attendance = attendanceData.find(a => a.studentId === result.studentId);
+
+            document.getElementById('viewStudentId').textContent = result.studentId;
+            document.getElementById('viewStudentName').textContent = result.studentName;
+            document.getElementById('viewStudentClass').textContent = result.class;
+            document.getElementById('viewStudentEmail').textContent = result.email;
+            document.getElementById('viewSubject').textContent = result.subject;
+            document.getElementById('viewExamType').textContent = result.examType;
+            document.getElementById('viewExamDate').textContent = new Date(result.examDate).toLocaleDateString();
+            document.getElementById('viewAcademicYear').textContent = result.academicYear;
+            document.getElementById('viewMarksObtained').textContent = result.marksObtained;
+            document.getElementById('viewTotalMarks').textContent = result.totalMarks;
+            document.getElementById('viewPercentage').textContent = result.percentage + '%';
+            document.getElementById('viewGrade').innerHTML = `<span class="grade-badge grade-${result.grade.toLowerCase().replace('+', 'plus')}">${result.grade}</span>`;
+            document.getElementById('viewStatus').innerHTML = `<span class="status-badge status-${result.status.toLowerCase()}">${result.status}</span>`;
+            document.getElementById('viewRemarks').textContent = result.remarks;
+
+            currentResultId = resultId;
+            document.getElementById('viewResultModal').style.display = 'block';
+        }
+
+        function editResultModal(resultId) {
+            const result = resultsData.find(r => r.id === resultId);
+            if (!result) return;
+
+            document.getElementById('editResultId').value = result.id;
+            document.getElementById('editStudentSelect').value = result.studentId;
+            document.getElementById('editSubjectSelect').value = result.subject;
+            document.getElementById('editExamType').value = result.examType;
+            document.getElementById('editExamDate').value = result.examDate;
+            document.getElementById('editMarksObtained').value = result.marksObtained;
+            document.getElementById('editTotalMarks').value = result.totalMarks;
+            document.getElementById('editAcademicYear').value = result.academicYear;
+            document.getElementById('editRemarks').value = result.remarks;
+
+            document.getElementById('editResultModal').style.display = 'block';
+        }
+
+        function editResult(event) {
+            event.preventDefault();
+            
+            const resultId = parseInt(document.getElementById('editResultId').value);
+            const resultIndex = resultsData.findIndex(r => r.id === resultId);
+            
+            if (resultIndex === -1) return;
+
+            const studentSelect = document.getElementById('editStudentSelect');
+            const selectedOption = studentSelect.options[studentSelect.selectedIndex];
+            
+            const marksObtained = parseInt(document.getElementById('editMarksObtained').value);
+            const totalMarks = parseInt(document.getElementById('editTotalMarks').value);
+            const percentage = Math.round((marksObtained / totalMarks) * 100);
+            const grade = calculateGrade(percentage);
+            const status = percentage >= 40 ? 'Pass' : 'Fail';
+
+            resultsData[resultIndex] = {
+                ...resultsData[resultIndex],
+                studentId: selectedOption.value,
+                studentName: selectedOption.textContent.split(' (')[0],
+                class: selectedOption.dataset.class,
+                email: selectedOption.dataset.email,
+                subject: document.getElementById('editSubjectSelect').value,
+                examType: document.getElementById('editExamType').value,
+                examDate: document.getElementById('editExamDate').value,
+                marksObtained: marksObtained,
+                totalMarks: totalMarks,
+                percentage: percentage,
+                grade: grade,
+                status: status,
+                academicYear: document.getElementById('editAcademicYear').value,
+                remarks: document.getElementById('editRemarks').value || 'N/A'
+            };
+
+            loadResults();
+            updateStatistics();
+            closeModal('editResultModal');
+            showNotification('Result updated successfully!', 'success');
+        }
+
+        function deleteResult(resultId) {
+            if (confirm('Are you sure you want to delete this result?')) {
+                resultsData = resultsData.filter(r => r.id !== resultId);
+                loadResults();
+                updateStatistics();
+                showNotification('Result deleted successfully!', 'success');
+            }
+        }
+
+        function filterResults() {
+            const academicYear = document.getElementById('academicYearFilter').value;
+            const classFilter = document.getElementById('classFilter').value;
+            const subject = document.getElementById('subjectFilter').value;
+            const examType = document.getElementById('examTypeFilter').value;
+            const search = document.getElementById('searchInput').value.toLowerCase();
+
+            const tbody = document.getElementById('resultsTableBody');
+            const rows = tbody.querySelectorAll('tr');
+
+            rows.forEach(row => {
+                const result = resultsData.find(r => r.id === parseInt(row.querySelector('[data-result-id]').getAttribute('data-result-id')));
+                
+                let show = true;
+
+                if (academicYear && result.academicYear !== academicYear) show = false;
+                if (classFilter && result.class !== classFilter) show = false;
+                if (subject && result.subject !== subject) show = false;
+                if (examType && result.examType !== examType) show = false;
+                if (search && !result.studentName.toLowerCase().includes(search) && !result.studentId.toLowerCase().includes(search)) show = false;
+
+                row.style.display = show ? '' : 'none';
+            });
+        }
+
+        function refreshResults() {
+            loadResults();
+            updateStatistics();
+            showNotification('Results refreshed!', 'info');
+        }
+
+        function exportResults() {
+            const csv = convertToCSV(resultsData);
+            downloadCSV(csv, 'student_results.csv');
+            showNotification('Results exported successfully!', 'success');
+        }
+
+        function convertToCSV(data) {
+            const headers = ['Student ID', 'Student Name', 'Class', 'Subject', 'Exam Type', 'Exam Date', 'Marks Obtained', 'Total Marks', 'Percentage', 'Grade', 'Status', 'Academic Year', 'Remarks'];
+            const csvContent = [
+                headers.join(','),
+                ...data.map(result => [
+                    result.studentId,
+                    result.studentName,
+                    result.class,
+                    result.subject,
+                    result.examType,
+                    result.examDate,
+                    result.marksObtained,
+                    result.totalMarks,
+                    result.percentage,
+                    result.grade,
+                    result.status,
+                    result.academicYear,
+                    result.remarks
+                ].join(','))
+            ].join('\n');
+
+            return csvContent;
+        }
+
+        function downloadCSV(csv, filename) {
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('hidden', '');
+            a.setAttribute('href', url);
+            a.setAttribute('download', filename);
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        // PDF Generation Functions
+        function downloadResultPDF() {
+            if (currentResultId) {
+                downloadIndividualResultPDF(currentResultId);
+            }
+        }
+
+        function downloadIndividualResultPDF(resultId) {
+            const result = resultsData.find(r => r.id === resultId);
+            if (!result) return;
+
+            // Get attendance data for this student
+            const attendance = attendanceData.find(a => a.studentId === result.studentId) || {
+                totalDays: 0,
+                presentDays: 0,
+                attendancePercentage: 0
+            };
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // School Header
+            doc.setFontSize(20);
+            doc.setFont(undefined, 'bold');
+            doc.text('Khatamari Shishu Bikash Academy', 105, 20, { align: 'center' });
+            
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'normal');
+            doc.text('Student Result Report', 105, 30, { align: 'center' });
+            
+            // Add line separator
+            doc.line(20, 35, 190, 35);
+
+            // Student Information Section
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'bold');
+            doc.text('Student Information', 20, 50);
+            
+            doc.setFontSize(11);
+            doc.setFont(undefined, 'normal');
+            doc.text(`Student ID: ${result.studentId}`, 20, 60);
+            doc.text(`Name: ${result.studentName}`, 20, 70);
+            doc.text(`Class: ${result.class}`, 20, 80);
+            doc.text(`Email: ${result.email}`, 20, 90);
+
+            // Exam Information Section
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'bold');
+            doc.text('Exam Information', 20, 110);
+            
+            doc.setFontSize(11);
+            doc.setFont(undefined, 'normal');
+            doc.text(`Subject: ${result.subject}`, 20, 120);
+            doc.text(`Exam Type: ${result.examType}`, 20, 130);
+            doc.text(`Exam Date: ${new Date(result.examDate).toLocaleDateString()}`, 20, 140);
+            doc.text(`Academic Year: ${result.academicYear}`, 20, 150);
+
+            // Performance Section
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'bold');
+            doc.text('Performance Details', 20, 170);
+            
+            doc.setFontSize(11);
+            doc.setFont(undefined, 'normal');
+            doc.text(`Marks Obtained: ${result.marksObtained}`, 20, 180);
+            doc.text(`Total Marks: ${result.totalMarks}`, 20, 190);
+            doc.text(`Percentage: ${result.percentage}%`, 20, 200);
+            doc.text(`Grade: ${result.grade}`, 20, 210);
+            doc.text(`Status: ${result.status}`, 20, 220);
+            doc.text(`Remarks: ${result.remarks}`, 20, 230);
+
+            // Attendance Integration Section
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'bold');
+            doc.text('Attendance Summary', 110, 120);
+            
+            doc.setFontSize(11);
+            doc.setFont(undefined, 'normal');
+            doc.text(`Total Days: ${attendance.totalDays}`, 110, 130);
+            doc.text(`Present Days: ${attendance.presentDays}`, 110, 140);
+            doc.text(`Attendance Rate: ${attendance.attendancePercentage}%`, 110, 150);
+
+            // Performance Analysis
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'bold');
+            doc.text('Performance Analysis', 110, 170);
+            
+            doc.setFontSize(11);
+            doc.setFont(undefined, 'normal');
+            
+            let analysis = '';
+            if (result.percentage >= 90) {
+                analysis = 'Excellent performance! Keep up the great work.';
+            } else if (result.percentage >= 80) {
+                analysis = 'Very good performance. Continue your efforts.';
+            } else if (result.percentage >= 70) {
+                analysis = 'Good performance. Room for improvement.';
+            } else if (result.percentage >= 60) {
+                analysis = 'Satisfactory performance. Need more focus.';
+            } else if (result.percentage >= 40) {
+                analysis = 'Below average. Requires significant improvement.';
+            } else {
+                analysis = 'Poor performance. Immediate attention required.';
+            }
+            
+            doc.text(analysis, 110, 180, { maxWidth: 70 });
+
+            // Attendance Analysis
+            let attendanceAnalysis = '';
+            if (attendance.attendancePercentage >= 95) {
+                attendanceAnalysis = 'Excellent attendance record.';
+            } else if (attendance.attendancePercentage >= 85) {
+                attendanceAnalysis = 'Good attendance record.';
+            } else if (attendance.attendancePercentage >= 75) {
+                attendanceAnalysis = 'Average attendance. Needs improvement.';
+            } else {
+                attendanceAnalysis = 'Poor attendance. Immediate attention required.';
+            }
+            
+            doc.text(attendanceAnalysis, 110, 200, { maxWidth: 70 });
+
+            // Footer
+            doc.line(20, 250, 190, 250);
+            doc.setFontSize(10);
+            doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 20, 260);
+            doc.text('This is a computer-generated document.', 105, 260, { align: 'center' });
+
+            // Save the PDF
+            doc.save(`${result.studentName}_${result.subject}_Result.pdf`);
+            showNotification('PDF downloaded successfully!', 'success');
+        }
+
+        // Comprehensive Student Profile PDF with all subjects
+        function downloadStudentProfilePDF(resultId) {
+            const result = resultsData.find(r => r.id === resultId);
+            if (!result) return;
+
+            // Get all results for this student
+            const studentResults = resultsData.filter(r => r.studentId === result.studentId);
+            const attendance = attendanceData.find(a => a.studentId === result.studentId);
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // School Header
+            doc.setFontSize(20);
+            doc.setFont(undefined, 'bold');
+            doc.text('Khatamari Shishu Bikash Academy', 105, 20, { align: 'center' });
+            
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'normal');
+            doc.text('Student Academic Profile Report', 105, 30, { align: 'center' });
+            
+            // Add line separator
+            doc.line(20, 35, 190, 35);
+
+            // Student Information
+            doc.setFontSize(16);
+            doc.setFont(undefined, 'bold');
+            doc.text('Student Information', 20, 50);
+            
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'normal');
+            doc.text(`Student ID: ${result.studentId}`, 20, 60);
+            doc.text(`Name: ${result.studentName}`, 20, 70);
+            doc.text(`Class: ${result.class}`, 20, 80);
+            doc.text(`Email: ${result.email}`, 20, 90);
+            doc.text(`Academic Year: ${result.academicYear}`, 20, 100);
+
+            // Attendance Summary
+            if (attendance) {
+                doc.setFontSize(16);
+                doc.setFont(undefined, 'bold');
+                doc.text('Attendance Summary', 20, 120);
+                
+                doc.setFontSize(12);
+                doc.setFont(undefined, 'normal');
+                doc.text(`Total Days: ${attendance.totalDays}`, 20, 130);
+                doc.text(`Present Days: ${attendance.presentDays}`, 20, 140);
+                doc.text(`Absent Days: ${attendance.absentDays}`, 20, 150);
+                doc.text(`Attendance Rate: ${attendance.attendanceRate}%`, 20, 160);
+            }
+
+            // Academic Performance
+            doc.setFontSize(16);
+            doc.setFont(undefined, 'bold');
+            doc.text('Academic Performance', 20, 180);
+
+            // Subjects Performance Table
+            const tableColumns = ['Subject', 'Exam Type', 'Marks', 'Total', '%', 'Grade', 'Status'];
+            const tableData = [];
+
+            // All available subjects
+            const allSubjects = ['English', 'Bengali', 'Mathematics', 'Geography', 'Science', 
+                               'Hindi', 'Art', 'History', 'Physical Education', 'Computer Science', 
+                               'Social Studies', 'Music', 'Economics', 'Political Science'];
+
+            // Group results by subject
+            const subjectResults = {};
+            studentResults.forEach(res => {
+                if (!subjectResults[res.subject]) {
+                    subjectResults[res.subject] = [];
+                }
+                subjectResults[res.subject].push(res);
+            });
+
+            // Add existing results
+            Object.keys(subjectResults).forEach(subject => {
+                subjectResults[subject].forEach(res => {
+                    tableData.push([
+                        res.subject,
+                        res.examType,
+                        res.marksObtained,
+                        res.totalMarks,
+                        res.percentage + '%',
+                        res.grade,
+                        res.status
+                    ]);
+                });
+            });
+
+            // Add missing subjects as "Not Attempted"
+            allSubjects.forEach(subject => {
+                if (!subjectResults[subject]) {
+                    tableData.push([
+                        subject,
+                        'N/A',
+                        'N/A',
+                        'N/A',
+                        'N/A',
+                        'N/A',
+                        'Not Attempted'
+                    ]);
+                }
+            });
+
+            // Create table using autoTable
+            doc.autoTable({
+                head: [tableColumns],
+                body: tableData,
+                startY: 190,
+                theme: 'grid',
+                headStyles: { fillColor: [41, 128, 185], textColor: 255, fontStyle: 'bold' },
+                bodyStyles: { fontSize: 10 },
+                alternateRowStyles: { fillColor: [245, 245, 245] },
+                columnStyles: {
+                    0: { cellWidth: 30 },
+                    1: { cellWidth: 25 },
+                    2: { cellWidth: 20 },
+                    3: { cellWidth: 20 },
+                    4: { cellWidth: 20 },
+                    5: { cellWidth: 20 },
+                    6: { cellWidth: 25 }
+                }
+            });
+
+            // Overall Performance Analysis
+            const finalY = doc.lastAutoTable.finalY + 10;
+            
+            if (finalY < 250) {
+                doc.setFontSize(14);
+                doc.setFont(undefined, 'bold');
+                doc.text('Performance Analysis', 20, finalY);
+                
+                doc.setFontSize(11);
+                doc.setFont(undefined, 'normal');
+                
+                const totalSubjects = studentResults.length;
+                const passedSubjects = studentResults.filter(r => r.status === 'Pass').length;
+                const failedSubjects = totalSubjects - passedSubjects;
+                const overallPassRate = totalSubjects > 0 ? Math.round((passedSubjects / totalSubjects) * 100) : 0;
+                const averagePercentage = totalSubjects > 0 ? 
+                    Math.round(studentResults.reduce((sum, r) => sum + r.percentage, 0) / totalSubjects) : 0;
+
+                doc.text(`Total Subjects Attempted: ${totalSubjects}`, 20, finalY + 15);
+                doc.text(`Subjects Passed: ${passedSubjects}`, 20, finalY + 25);
+                doc.text(`Subjects Failed: ${failedSubjects}`, 20, finalY + 35);
+                doc.text(`Overall Pass Rate: ${overallPassRate}%`, 20, finalY + 45);
+                doc.text(`Average Percentage: ${averagePercentage}%`, 20, finalY + 55);
+
+                // Performance Grade
+                let overallGrade = 'F';
+                if (averagePercentage >= 90) overallGrade = 'A+';
+                else if (averagePercentage >= 80) overallGrade = 'A';
+                else if (averagePercentage >= 70) overallGrade = 'B+';
+                else if (averagePercentage >= 60) overallGrade = 'B';
+                else if (averagePercentage >= 50) overallGrade = 'C';
+                else if (averagePercentage >= 40) overallGrade = 'D';
+
+                doc.text(`Overall Grade: ${overallGrade}`, 20, finalY + 65);
+            }
+
+            // Footer
+            doc.line(20, 270, 190, 270);
+            doc.setFontSize(10);
+            doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 20, 280);
+            doc.text('This is a computer-generated comprehensive academic report.', 105, 280, { align: 'center' });
+
+            // Save the PDF
+            doc.save(`${result.studentName}_Academic_Profile.pdf`);
+            showNotification('Student Profile PDF downloaded successfully!', 'success');
+        }
+
+        // Bulk PDF Generation for all results
+        function generateBulkResultsPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // School Header
+            doc.setFontSize(20);
+            doc.setFont(undefined, 'bold');
+            doc.text('Khatamari Shishu Bikash Academy', 105, 20, { align: 'center' });
+            
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'normal');
+            doc.text('Consolidated Results Report', 105, 30, { align: 'center' });
+            
+            // Add line separator
+            doc.line(20, 35, 190, 35);
+
+            // Statistics
+            const totalResults = resultsData.length;
+            const passedStudents = resultsData.filter(result => result.status === 'Pass').length;
+            const failedStudents = totalResults - passedStudents;
+            const passRate = totalResults > 0 ? Math.round((passedStudents / totalResults) * 100) : 0;
+
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'bold');
+            doc.text('Summary Statistics', 20, 50);
+            
+            doc.setFontSize(11);
+            doc.setFont(undefined, 'normal');
+            doc.text(`Total Results: ${totalResults}`, 20, 60);
+            doc.text(`Passed Students: ${passedStudents}`, 20, 70);
+            doc.text(`Failed Students: ${failedStudents}`, 20, 80);
+            doc.text(`Pass Rate: ${passRate}%`, 20, 90);
+
+            // Results Table
+            const tableData = resultsData.map(result => [
+                result.studentId,
+                result.studentName,
+                result.class,
+                result.subject,
+                result.examType,
+                result.marksObtained,
+                result.totalMarks,
+                result.percentage + '%',
+                result.grade,
+                result.status
+            ]);
+
+            doc.autoTable({
+                head: [['Student ID', 'Name', 'Class', 'Subject', 'Exam', 'Obtained', 'Total', 'Percentage', 'Grade', 'Status']],
+                body: tableData,
+                startY: 100,
+                styles: { fontSize: 8 },
+                headStyles: { fillColor: [41, 128, 185] },
+                alternateRowStyles: { fillColor: [245, 245, 245] }
+            });
+
+            // Save the PDF
+            doc.save('All_Students_Results.pdf');
+            showNotification('Bulk PDF generated successfully!', 'success');
+        }
+
+        // Class-wise PDF Generation
+        function generateClassResultsPDF(className) {
+            const classResults = resultsData.filter(result => result.class === className);
+            if (classResults.length === 0) {
+                showNotification('No results found for this class!', 'warning');
+                return;
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // School Header
+            doc.setFontSize(20);
+            doc.setFont(undefined, 'bold');
+            doc.text('Khatamari Shishu Bikash Academy', 105, 20, { align: 'center' });
+            
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'normal');
+            doc.text(`${className} - Results Report`, 105, 30, { align: 'center' });
+            
+            // Add line separator
+            doc.line(20, 35, 190, 35);
+
+            // Class Statistics
+            const totalResults = classResults.length;
+            const passedStudents = classResults.filter(result => result.status === 'Pass').length;
+            const failedStudents = totalResults - passedStudents;
+            const passRate = totalResults > 0 ? Math.round((passedStudents / totalResults) * 100) : 0;
+            const avgPercentage = totalResults > 0 ? Math.round(classResults.reduce((sum, result) => sum + result.percentage, 0) / totalResults) : 0;
+
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'bold');
+            doc.text(`${className} Statistics`, 20, 50);
+            
+            doc.setFontSize(11);
+            doc.setFont(undefined, 'normal');
+            doc.text(`Total Results: ${totalResults}`, 20, 60);
+            doc.text(`Passed Students: ${passedStudents}`, 20, 70);
+            doc.text(`Failed Students: ${failedStudents}`, 20, 80);
+            doc.text(`Pass Rate: ${passRate}%`, 20, 90);
+            doc.text(`Average Percentage: ${avgPercentage}%`, 20, 100);
+
+            // Results Table
+            const tableData = classResults.map(result => [
+                result.studentId,
+                result.studentName,
+                result.subject,
+                result.examType,
+                result.marksObtained,
+                result.totalMarks,
+                result.percentage + '%',
+                result.grade,
+                result.status
+            ]);
+
+            doc.autoTable({
+                head: [['Student ID', 'Name', 'Subject', 'Exam', 'Obtained', 'Total', 'Percentage', 'Grade', 'Status']],
+                body: tableData,
+                startY: 110,
+                styles: { fontSize: 8 },
+                headStyles: { fillColor: [41, 128, 185] },
+                alternateRowStyles: { fillColor: [245, 245, 245] }
+            });
+
+            // Save the PDF
+            doc.save(`${className}_Results.pdf`);
+            showNotification(`${className} results PDF generated successfully!`, 'success');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Schedule - Khatamari Shishu Bikash Academy</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Dashboard Specific Styles */
+        .dashboard-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('images/exam-bg.jpg') no-repeat center center/cover;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            color: white;
+            margin-top: 90px;
+            position: relative;
+            padding: 0;
+        }
+        
+        .dashboard-container {
+            display: flex;
+            min-height: calc(100vh - 340px);
+        }
+        
+        .dashboard-sidebar {
+            width: 280px;
+            background: #f8f9fa;
+            border-right: 1px solid #e9ecef;
+            padding: 30px 0;
+        }
+        
+        .dashboard-content {
+            flex: 1;
+            padding: 30px;
+            background-color: #f1f5f9;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .page-title {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            border-radius: 5px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid #dee2e6;
+            color: #495057;
+        }
+        
+        .btn-outline:hover {
+            background-color: #f8f9fa;
+            border-color: #ced4da;
+        }
+        
+        /* Exam Schedule Styles */
+        .schedule-filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 200px;
+            flex: 1;
+        }
+        
+        .filter-label {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            font-size: 0.95rem;
+        }
+        
+        .exam-schedule-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        
+        .exam-tabs {
+            display: flex;
+            border-bottom: 1px solid #e9ecef;
+            background-color: #f8f9fa;
+        }
+        
+        .exam-tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            font-weight: 500;
+            color: #6c757d;
+            transition: all 0.2s ease;
+        }
+        
+        .exam-tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+            background-color: white;
+        }
+        
+        .exam-content {
+            padding: 20px;
+        }
+        
+        .exam-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .exam-table th,
+        .exam-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .exam-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .exam-table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .exam-date {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .exam-subject {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        .exam-time {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .exam-venue {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .exam-status {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: capitalize;
+        }
+        
+        .status-upcoming {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .status-ongoing {
+            background-color: #e8f5e9;
+            color: #388e3c;
+        }
+        
+        .status-completed {
+            background-color: #f5f5f5;
+            color: #616161;
+        }
+        
+        .exam-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn-sm {
+            padding: 4px 10px;
+            font-size: 0.8rem;
+        }
+        
+        .exam-notes {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            border-left: 3px solid var(--primary-color);
+        }
+        
+        .exam-notes h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .exam-notes p {
+            margin: 0;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        .no-exams {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6c757d;
+        }
+        
+        @media (max-width: 768px) {
+            .exam-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            
+            .schedule-filters {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .filter-group {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container">
+            <div class="logo-container">
+                <img src="images/logo.png" alt="School Logo" class="logo">
+                <div class="school-info">
+                    <h1>Khatamari Shishu Bikash Academy</h1>
+                    <p class="tagline">Nurturing Young Minds, Building Bright Futures</p>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="admission.html">Admission</a></li>
+                    <li><a href="academic.html">Academic</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="login-btn">
+                            <i class="fas fa-user"></i>
+                            <span>Login / Register</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a>
+                            <a href="register.html"><i class="fas fa-user-plus"></i> Register</a>
+                        </div>
+                    </li>
+                </ul>
+                <div class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Dashboard Hero -->
+    <section class="dashboard-hero">
+        <div class="container">
+            <h1>Exam Schedule</h1>
+        </div>
+    </section>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <ul class="sidebar-menu">
+                <li class="menu-heading">Main</li>
+                <li class="menu-item">
+                    <a href="profile.html" class="menu-link">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="profile.html#profile" class="menu-link">
+                        <i class="fas fa-user"></i>
+                        <span>My Profile</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="schedule.html" class="menu-link">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Class Schedule</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="subjects.html" class="menu-link">
+                        <i class="fas fa-book"></i>
+                        <span>Subjects</span>
+                    </a>
+                </li>
+                <li class="menu-divider"></li>
+                <li class="menu-heading">Academic</li>
+                <li class="menu-item">
+                    <a href="assignments.html" class="menu-link">
+                        <i class="fas fa-tasks"></i>
+                        <span>Assignments</span>
+                        <span class="menu-badge">3 New</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="results.html" class="menu-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Results</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="attendance.html" class="menu-link">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Attendance</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="exam-schedule.html" class="menu-link active">
+                        <i class="fas fa-file-invoice"></i>
+                        <span>Exam Schedule</span>
+                    </a>
+                </li>
+                <li class="menu-divider"></li>
+                <li class="menu-heading">Other</li>
+                <li class="menu-item">
+                    <a href="fees.html" class="menu-link">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span>Fee Details</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="library.html" class="menu-link">
+                        <i class="fas fa-book-reader"></i>
+                        <span>Library</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="notifications.html" class="menu-link">
+                        <i class="fas fa-bell"></i>
+                        <span>Notifications</span>
+                        <span class="menu-badge">5</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="settings.html" class="menu-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-content">
+            <div class="page-header">
+                <h2 class="page-title">Upcoming Exams</h2>
+                <div class="page-actions">
+                    <button class="btn btn-outline">
+                        <i class="fas fa-download"></i> Download Schedule
+                    </button>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-print"></i> Print
+                    </button>
+                </div>
+            </div>
+            
+            <div class="schedule-filters">
+                <div class="filter-group">
+                    <label class="filter-label">Exam Type</label>
+                    <select class="form-control">
+                        <option>All Exams</option>
+                        <option>Unit Tests</option>
+                        <option>Mid-Term</option>
+                        <option>Final Exams</option>
+                        <option>Practical Exams</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Class</label>
+                    <select class="form-control">
+                        <option>Class 10 - Section A</option>
+                        <option>Class 10 - Section B</option>
+                        <option>Class 9 - Section A</option>
+                        <option>Class 9 - Section B</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Subject</label>
+                    <select class="form-control">
+                        <option>All Subjects</option>
+                        <option>Mathematics</option>
+                        <option>Science</option>
+                        <option>English</option>
+                        <option>Social Studies</option>
+                        <option>Bengali</option>
+                        <option>Computer Science</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Status</label>
+                    <select class="form-control">
+                        <option>All</option>
+                        <option>Upcoming</option>
+                        <option>Ongoing</option>
+                        <option>Completed</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="exam-schedule-container">
+                <div class="exam-tabs">
+                    <div class="exam-tab active">Upcoming Exams</div>
+                    <div class="exam-tab">Completed Exams</div>
+                    <div class="exam-tab">Exam Results</div>
+                </div>
+                
+                <div class="exam-content">
+                    <table class="exam-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Subject</th>
+                                <th>Exam Type</th>
+                                <th>Time</th>
+                                <th>Venue</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="exam-date">15 Sep 2024</td>
+                                <td class="exam-subject">Mathematics</td>
+                                <td>Unit Test 1</td>
+                                <td class="exam-time">10:00 AM - 12:30 PM</td>
+                                <td class="exam-venue">Room 101</td>
+                                <td><span class="exam-status status-upcoming">Upcoming</span></td>
+                                <td>
+                                    <div class="exam-actions">
+                                        <button class="btn btn-sm btn-outline">
+                                            <i class="fas fa-info-circle"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline">
+                                            <i class="fas fa-calendar-plus"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="exam-date">17 Sep 2024</td>
+                                <td class="exam-subject">Science</td>
+                                <td>Unit Test 1</td>
+                                <td class="exam-time">10:00 AM - 12:30 PM</td>
+                                <td class="exam-venue">Lab 2</td>
+                                <td><span class="exam-status status-upcoming">Upcoming</span></td>
+                                <td>
+                                    <div class="exam-actions">
+                                        <button class="btn btn-sm btn-outline">
+                                            <i class="fas fa-info-circle"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline">
+                                            <i class="fas fa-calendar-plus"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="exam-date">20 Sep 2024</td>
+                                <td class="exam-subject">English</td>
+                                <td>Mid-Term</td>
+                                <td class="exam-time">9:00 AM - 12:00 PM</td>
+                                <td class="exam-venue">Room 102</td>
+                                <td><span class="exam-status status-upcoming">Upcoming</span></td>
+                                <td>
+                                    <div class="exam-actions">
+                                        <button class="btn btn-sm btn-outline">
+                                            <i class="fas fa-info-circle"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline">
+                                            <i class="fas fa-calendar-plus"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="exam-date">22 Sep 2024</td>
+                                <td class="exam-subject">Social Studies</td>
+                                <td>Mid-Term</td>
+                                <td class="exam-time">9:00 AM - 12:00 PM</td>
+                                <td class="exam-venue">Room 103</td>
+                                <td><span class="exam-status status-upcoming">Upcoming</span></td>
+                                <td>
+                                    <div class="exam-actions">
+                                        <button class="btn btn-sm btn-outline">
+                                            <i class="fas fa-info-circle"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline">
+                                            <i class="fas fa-calendar-plus"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="exam-date">25 Sep 2024</td>
+                                <td class="exam-subject">Bengali</td>
+                                <td>Mid-Term</td>
+                                <td class="exam-time">9:00 AM - 12:00 PM</td>
+                                <td class="exam-venue">Room 104</td>
+                                <td><span class="exam-status status-upcoming">Upcoming</span></td>
+                                <td>
+                                    <div class="exam-actions">
+                                        <button class="btn btn-sm btn-outline">
+                                            <i class="fas fa-info-circle"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline">
+                                            <i class="fas fa-calendar-plus"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="exam-notes">
+                        <h4><i class="fas fa-info-circle"></i> Important Notes</h4>
+                        <p>• Please arrive at least 15 minutes before the exam starts. Latecomers will not be allowed to enter after 30 minutes.</p>
+                        <p>• Bring your school ID card and necessary stationery. Electronic devices are strictly prohibited in the exam hall.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="admission.html">Admission</a></li>
+                        <li><a href="academic.html">Academic</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 School Road, Khatamari, Dinhata, Coochbehar, 736168</p>
+                    <p><i class="fas fa-phone"></i> +91 98000 47149</p>
+                    <p><i class="fas fa-envelope"></i> ksba@gmail.com</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Khatamari Shishu Bikash Academy. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update active menu item
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            document.querySelectorAll('.menu-link').forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+            
+            // Mobile menu toggle
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const mainNav = document.querySelector('.main-nav ul');
+            
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    mainNav.classList.toggle('show');
+                });
+            }
+            
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.main-nav') && !e.target.closest('.mobile-menu-btn')) {
+                    mainNav.classList.remove('show');
+                }
+            });
+            
+            // Exam tabs functionality
+            const examTabs = document.querySelectorAll('.exam-tab');
+            
+            examTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    examTabs.forEach(t => t.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Here you would typically load the relevant content via AJAX
+                    // For this example, we're just showing a simple message
+                    console.log(`Switched to ${this.textContent} tab`);
+                });
+            });
+            
+            // Print functionality
+            const printBtn = document.querySelector('.btn-primary');
+            if (printBtn) {
+                printBtn.addEventListener('click', function() {
+                    window.print();
+                });
+            }
+        });
+    </script>
+</body>
+</html>

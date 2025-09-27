@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Khatamari Shishu Bikash Academy</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* About Page Specific Styles */
+        .about-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('images/about-bg.jpg') no-repeat center center/cover;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: white;
+            margin-top: 90px;
+        }
+        
+        .about-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .breadcrumb {
+            padding: 15px 0;
+            background-color: #f8f9fa;
+            margin-bottom: 50px;
+        }
+        
+        .breadcrumb ul {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .breadcrumb ul li {
+            margin-right: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .breadcrumb ul li:after {
+            content: '/';
+            margin-left: 10px;
+            color: #6c757d;
+        }
+        
+        .breadcrumb ul li:last-child:after {
+            content: '';
+        }
+        
+        .breadcrumb ul li a {
+            color: #6c757d;
+        }
+        
+        .breadcrumb ul li:last-child a {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        .about-section {
+            padding: 80px 0;
+        }
+        
+        .about-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+        
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .about-text h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        
+        .about-text p {
+            margin-bottom: 20px;
+            line-height: 1.8;
+            color: #555;
+        }
+        
+        .about-image {
+            flex: 1;
+            min-width: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+        
+        .principal-section {
+            background-color: #f8f9fa;
+            padding: 60px 0;
+            margin: 60px 0;
+        }
+        
+        .principal-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            align-items: center;
+        }
+        
+        .principal-image {
+            flex: 1;
+            min-width: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .principal-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .principal-info {
+            flex: 2;
+            min-width: 300px;
+        }
+        
+        .principal-info h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        
+        .principal-info h3 {
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .principal-info p {
+            margin-bottom: 20px;
+            line-height: 1.8;
+            color: #555;
+        }
+        
+        .achievements-section {
+            padding: 60px 0;
+        }
+        
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .achievement-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .achievement-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .achievement-icon {
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+        
+        .achievement-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .achievement-card p {
+            color: #6c757d;
+            line-height: 1.6;
+        }
+        
+        .stats-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('images/stats-bg.jpg') no-repeat center center/cover;
+            padding: 80px 0;
+            color: white;
+            text-align: center;
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .stat-item {
+            padding: 30px 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-10px);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--accent-color);
+        }
+        
+        .stat-label {
+            font-size: 1.2rem;
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .about-hero {
+                height: 300px;
+                margin-top: 80px;
+            }
+            
+            .about-hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .principal-container, .about-content {
+                flex-direction: column;
+            }
+            
+            .principal-image, .about-image {
+                order: -1;
+            }
+            
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .about-hero h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container">
+            <div class="logo-container">
+                <img src="images/logo.png" alt="School Logo" class="logo">
+                <div class="school-info">
+                    <h1>Khatamari Shishu Bikash Academy</h1>
+                    <p class="tagline">Nurturing Young Minds, Building Bright Futures</p>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html" class="active">About Us</a></li>
+                    <li><a href="admission.html">Admission</a></li>
+                    <li><a href="academic.html">Academic</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="login.html" class="login-btn">Login</a></li>
+                </ul>
+                <div class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="about-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>About Our School</h1>
+                <p>Discover the story behind Khatamari Shishu Bikash Academy</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <section class="about-section">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>Welcome to Khatamari Shishu Bikash Academy</h2>
+                    <p>Established in 2005, Khatamari Shishu Bikash Academy has been a beacon of quality education in the region, nurturing young minds and shaping futures for over 18 years. Our commitment to academic excellence, character development, and holistic education has made us one of the most trusted educational institutions in the area.</p>
+                    <p>Our school is built on the foundation of providing a nurturing environment where every child can discover their unique potential. We believe in fostering a love for learning that goes beyond textbooks, encouraging curiosity, creativity, and critical thinking in our students.</p>
+                    <p>With a team of dedicated educators, state-of-the-art facilities, and a curriculum that balances academic rigor with co-curricular activities, we prepare our students to face the challenges of the 21st century with confidence and competence.</p>
+                </div>
+                <div class="about-image">
+                    <img src="images/school-building.jpg" alt="School Building">
+                </div>
+            </div>
+            
+            <div class="about-content flex-reverse">
+                <div class="about-text">
+                    <h2>Our History</h2>
+                    <p>The journey of Khatamari Shishu Bikash Academy began with a vision to provide quality education to the children of our community. What started as a small initiative with just a handful of students has now grown into a premier educational institution with a reputation for excellence.</p>
+                    <p>Over the years, we have consistently evolved our teaching methodologies, upgraded our infrastructure, and expanded our academic programs to meet the changing needs of education. Our alumni, who are now successful professionals across various fields, stand as a testament to the strong foundation we provide.</p>
+                    <p>As we look to the future, we remain committed to our core values while embracing innovation in education to prepare our students for a rapidly changing world.</p>
+                </div>
+                <div class="about-image">
+                    <img src="images/history.jpg" alt="School History">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vision & Mission Section -->
+    <section class="vision-mission-section" style="background-color: #f8f9fa; padding: 80px 0;">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Vision & Mission</h2>
+                <p>Guiding principles that shape our educational approach</p>
+            </div>
+            <div class="vision-mission">
+                <div class="vision" style="background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 30px;">
+                    <h3 style="color: var(--primary-color); margin-bottom: 20px; font-size: 1.8rem;">Our Vision</h3>
+                    <p style="line-height: 1.8; color: #555;">To be a leading educational institution that nurtures responsible, compassionate, and globally competitive individuals who contribute positively to society. We envision a learning community where every student discovers their potential and develops the skills and values necessary to thrive in an ever-changing world.</p>
+                </div>
+                <div class="mission" style="background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+                    <h3 style="color: var(--primary-color); margin-bottom: 20px; font-size: 1.8rem;">Our Mission</h3>
+                    <p style="line-height: 1.8; color: #555; margin-bottom: 15px;">Our mission is to provide a stimulating learning environment that encourages students to achieve their full potential academically, socially, and emotionally. We are committed to:</p>
+                    <ul style="list-style-type: none; padding-left: 0; line-height: 1.8; color: #555;">
+                        <li><i class="fas fa-check" style="color: var(--accent-color); margin-right: 10px;"></i> Delivering a comprehensive and balanced curriculum that meets international standards</li>
+                        <li><i class="fas fa-check" style="color: var(--accent-color); margin-right: 10px;"></i> Fostering a culture of innovation, creativity, and critical thinking</li>
+                        <li><i class="fas fa-check" style="color: var(--accent-color); margin-right: 10px;"></i> Nurturing values of integrity, respect, and social responsibility</li>
+                        <li><i class="fas fa-check" style="color: var(--accent-color); margin-right: 10px;"></i> Providing opportunities for holistic development through sports, arts, and community service</li>
+                        <li><i class="fas fa-check" style="color: var(--accent-color); margin-right: 10px;"></i> Building strong partnerships with parents and the community to support student success</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Principal's Message -->
+    <section class="principal-section">
+        <div class="container">
+            <div class="principal-container">
+                <div class="principal-image">
+                    <img src="images/principal.jpg" alt="Principal">
+                </div>
+                <div class="principal-info">
+                    <h2>Message from the Principal</h2>
+                    <h3>Dr. Ayesha Rahman</h3>
+                    <p>Dear Students, Parents, and Well-wishers,</p>
+                    <p>It is with great pleasure and pride that I welcome you to Khatamari Shishu Bikash Academy. As the Principal, I am honored to lead an institution that has been at the forefront of educational excellence for nearly two decades.</p>
+                    <p>At KSBA, we believe that education is not just about academic achievement but about shaping character, building resilience, and nurturing a lifelong love for learning. Our dedicated team of educators is committed to providing a supportive and challenging environment where every student can thrive.</p>
+                    <p>We understand that each child is unique, with their own talents, interests, and learning styles. Our approach to education reflects this understanding, as we strive to provide personalized attention and a wide range of opportunities for students to explore their potential.</p>
+                    <p>As we continue our journey of educational excellence, we remain committed to our core values of integrity, respect, and perseverance. We invite you to be a part of our vibrant learning community and witness the transformative power of quality education.</p>
+                    <p>Warm regards,<br>Dr. Ayesha Rahman<br><em>Principal</em></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievements Section -->
+    <section class="achievements-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Achievements</h2>
+                <p>Celebrating excellence in education and beyond</p>
+            </div>
+            <div class="achievements-grid">
+                <div class="achievement-card">
+                    <div class="achievement-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3>Academic Excellence</h3>
+                    <p>Consistently achieving 100% pass rate in board examinations with over 85% of students securing first division.</p>
+                </div>
+                <div class="achievement-card">
+                    <div class="achievement-icon">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <h3>Sports Achievements</h3>
+                    <p>Multiple district and state level championships in athletics, football, and cricket over the past decade.</p>
+                </div>
+                <div class="achievement-card">
+                    <div class="achievement-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <h3>Innovation in Education</h3>
+                    <p>Recipient of the 'Innovative School Award' for implementing technology-integrated learning solutions.</p>
+                </div>
+                <div class="achievement-card">
+                    <div class="achievement-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Alumni Success</h3>
+                    <p>Our alumni have gained admission to prestigious universities worldwide and are making significant contributions in various fields.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 style="color: white;">By The Numbers</h2>
+                <p style="color: rgba(255,255,255,0.8);">Our journey in numbers</p>
+            </div>
+            <div class="stats-container">
+                <div class="stat-item">
+                    <div class="stat-number">18+</div>
+                    <div class="stat-label">Years of Excellence</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Qualified Teachers</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">1000+</div>
+                    <div class="stat-label">Students Enrolled</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">95%</div>
+                    <div class="stat-label">Parent Satisfaction</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="admission.html">Admission</a></li>
+                        <li><a href="academic.html">Academic</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 School Road, Khatamari, dinhata, coochbihar, 736168</p>
+                    <p><i class="fas fa-phone"></i> +91 98000 47149</p>
+                    <p><i class="fas fa-envelope"></i> ksba@gmail.com</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Khatamari Shishu Bikash Academy. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students Management - School ERP</title>
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <img src="assets/img/logo.png" alt="School Logo" class="logo-img">
+                <span class="logo-text">School ERP</span>
+            </div>
+            <button class="sidebar-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="students.html" class="nav-link active">
+                        <i class="fas fa-user-graduate"></i>
+                        <span>Students</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="teachers.html" class="nav-link">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <span>Teachers</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="classes.html" class="nav-link">
+                        <i class="fas fa-school"></i>
+                        <span>Classes</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="admissions.html" class="nav-link">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Admissions</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="attendance.html" class="nav-link">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Attendance</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="fees.html" class="nav-link">
+                        <i class="fas fa-dollar-sign"></i>
+                        <span>Fees</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="results.html" class="nav-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Results</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="announcements.html" class="nav-link">
+                        <i class="fas fa-bullhorn"></i>
+                        <span>Announcements</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="google-sheets-config.html" class="nav-link">
+                        <i class="fab fa-google"></i>
+                        <span>Google Sheets</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <a href="../login.html" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Enhanced Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <button class="mobile-sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="page-title">Students Management</h1>
+                <nav class="breadcrumb">
+                    <span class="breadcrumb-item">
+                        <a href="index.html" class="breadcrumb-link">Dashboard</a>
+                    </span>
+                    <span class="breadcrumb-item">Students</span>
+                </nav>
+            </div>
+            
+            <div class="header-right">
+                <div class="header-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search students..." id="headerSearch">
+                </div>
+                <div class="header-notifications">
+                    <button class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </button>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-outline btn-sm">
+                        <i class="fas fa-download"></i>
+                        Export
+                    </button>
+                    <button class="btn btn-primary btn-sm" data-modal="addStudentModal">
+                        <i class="fas fa-plus"></i>
+                        Add Student
+                    </button>
+                </div>
+                <div class="user-profile">
+                    <button class="profile-toggle">
+                        <div class="profile-avatar">A</div>
+                        <div class="profile-info">
+                            <div class="profile-name">Admin User</div>
+                            <div class="profile-role">Administrator</div>
+                        </div>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="profile-dropdown">
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-user"></i>
+                            Profile
+                        </a>
+                        <a href="settings.html" class="dropdown-item">
+                            <i class="fas fa-cog"></i>
+                            Settings
+                        </a>
+                        <hr class="dropdown-divider">
+                        <a href="#" class="dropdown-item" onclick="logout(); return false;">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Students Content -->
+        <div class="content">
+            <!-- Students Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon primary">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 class="stat-value">1,245</h3>
+                        <p class="stat-label">Total Students</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon success">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 class="stat-value">1,189</h3>
+                        <p class="stat-label">Active Students</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon warning">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 class="stat-value">23</h3>
+                        <p class="stat-label">New This Month</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon danger">
+                        <i class="fas fa-user-times"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 class="stat-value">56</h3>
+                        <p class="stat-label">Inactive Students</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Students Table -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h3 class="card-title">All Students</h3>
+                    <div class="card-actions">
+                        <button class="btn btn-success" onclick="syncStudentsToGoogleSheets()">
+                            <i class="fab fa-google-drive"></i>
+                            Sync to Sheets
+                        </button>
+                        <button class="btn btn-primary" data-modal="addStudentModal">
+                            <i class="fas fa-plus"></i>
+                            Add Student
+                        </button>
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-download"></i>
+                            Export
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-filters">
+                        <div class="filter-group">
+                            <select class="form-control" id="classFilter" onchange="filterStudents()">
+                                <option value="">All Classes</option>
+                                <option value="Grade 1">Grade 1</option>
+                                <option value="Grade 2">Grade 2</option>
+                                <option value="Grade 3">Grade 3</option>
+                                <option value="Grade 4">Grade 4</option>
+                                <option value="Grade 5">Grade 5</option>
+                                <option value="Grade 6">Grade 6</option>
+                                <option value="Grade 7">Grade 7</option>
+                                <option value="Grade 8">Grade 8</option>
+                                <option value="Grade 9">Grade 9</option>
+                                <option value="Grade 10">Grade 10</option>
+                                <option value="Grade 11">Grade 11</option>
+                                <option value="Grade 12">Grade 12</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <select class="form-control" id="statusFilter" onchange="filterStudents()">
+                                <option value="">All Status</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <input type="checkbox" class="select-all">
+                                    </th>
+                                    <th>Student ID</th>
+                                    <th>Name</th>
+                                    <th>Class</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" class="row-select">
+                                    </td>
+                                    <td class="searchable">STU001</td>
+                                    <td class="searchable">
+                                        <div class="user-info">
+                                            <img src="assets/img/student-avatar.jpg" alt="Student" class="user-avatar">
+                                            <span>John Doe</span>
+                                        </div>
+                                    </td>
+                                    <td class="searchable">Grade 10</td>
+                                    <td class="searchable">john.doe@email.com</td>
+                                    <td class="searchable">+1 234 567 8901</td>
+                                    <td>
+                                        <span class="badge badge-success">Active</span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-icon btn-primary" data-tooltip="View">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn-icon btn-warning" data-tooltip="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn-icon btn-danger" data-tooltip="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" class="row-select">
+                                    </td>
+                                    <td class="searchable">STU002</td>
+                                    <td class="searchable">
+                                        <div class="user-info">
+                                            <img src="assets/img/student-avatar.jpg" alt="Student" class="user-avatar">
+                                            <span>Sarah Wilson</span>
+                                        </div>
+                                    </td>
+                                    <td class="searchable">Grade 9</td>
+                                    <td class="searchable">sarah.wilson@email.com</td>
+                                    <td class="searchable">+1 234 567 8902</td>
+                                    <td>
+                                        <span class="badge badge-success">Active</span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-icon btn-primary" data-tooltip="View">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn-icon btn-warning" data-tooltip="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn-icon btn-danger" data-tooltip="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" class="row-select">
+                                    </td>
+                                    <td class="searchable">STU003</td>
+                                    <td class="searchable">
+                                        <div class="user-info">
+                                            <img src="assets/img/student-avatar.jpg" alt="Student" class="user-avatar">
+                                            <span>Michael Johnson</span>
+                                        </div>
+                                    </td>
+                                    <td class="searchable">Grade 11</td>
+                                    <td class="searchable">michael.johnson@email.com</td>
+                                    <td class="searchable">+1 234 567 8903</td>
+                                    <td>
+                                        <span class="badge badge-warning">Inactive</span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-icon btn-primary" data-tooltip="View">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn-icon btn-warning" data-tooltip="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn-icon btn-danger" data-tooltip="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" class="row-select">
+                                    </td>
+                                    <td class="searchable">STU004</td>
+                                    <td class="searchable">
+                                        <div class="user-info">
+                                            <img src="assets/img/student-avatar.jpg" alt="Student" class="user-avatar">
+                                            <span>Emily Davis</span>
+                                        </div>
+                                    </td>
+                                    <td class="searchable">Grade 8</td>
+                                    <td class="searchable">emily.davis@email.com</td>
+                                    <td class="searchable">+1 234 567 8904</td>
+                                    <td>
+                                        <span class="badge badge-success">Active</span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-icon btn-primary" data-tooltip="View">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn-icon btn-warning" data-tooltip="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn-icon btn-danger" data-tooltip="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="table-pagination">
+                        <div class="pagination-info">
+                            Showing 1 to 4 of 1,245 entries
+                        </div>
+                        <div class="pagination-controls">
+                            <button class="btn btn-sm btn-secondary" disabled>Previous</button>
+                            <button class="btn btn-sm btn-primary">1</button>
+                            <button class="btn btn-sm btn-secondary">2</button>
+                            <button class="btn btn-sm btn-secondary">3</button>
+                            <span>...</span>
+                            <button class="btn btn-sm btn-secondary">312</button>
+                            <button class="btn btn-sm btn-secondary">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add Student Modal -->
+    <div id="addStudentModal" class="modal">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h3 class="modal-title">Add New Student</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form data-ajax>
+                    <div class="form-section">
+                        <h4 class="form-section-title">Personal Information</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input type="text" id="firstName" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" id="lastName" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="dateOfBirth">Date of Birth</label>
+                                <input type="date" id="dateOfBirth" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="gender">Gender</label>
+                                <select id="gender" class="form-control" required>
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h4 class="form-section-title">Contact Information</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="studentEmail">Email</label>
+                                <input type="email" id="studentEmail" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="studentPhone">Phone</label>
+                                <input type="tel" id="studentPhone" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="studentAddress">Address</label>
+                            <textarea id="studentAddress" class="form-control" rows="3" required></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h4 class="form-section-title">Academic Information</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="studentClass">Class</label>
+                                <select id="studentClass" class="form-control" required>
+                                    <option value="">Select Class</option>
+                                    <option value="1">Grade 1</option>
+                                    <option value="2">Grade 2</option>
+                                    <option value="3">Grade 3</option>
+                                    <option value="4">Grade 4</option>
+                                    <option value="5">Grade 5</option>
+                                    <option value="6">Grade 6</option>
+                                    <option value="7">Grade 7</option>
+                                    <option value="8">Grade 8</option>
+                                    <option value="9">Grade 9</option>
+                                    <option value="10">Grade 10</option>
+                                    <option value="11">Grade 11</option>
+                                    <option value="12">Grade 12</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="admissionDate">Admission Date</label>
+                                <input type="date" id="admissionDate" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h4 class="form-section-title">Parent/Guardian Information</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="parentName">Parent/Guardian Name</label>
+                                <input type="text" id="parentName" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="parentPhone">Parent/Guardian Phone</label>
+                                <input type="tel" id="parentPhone" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="parentEmail">Parent/Guardian Email</label>
+                            <input type="email" id="parentEmail" class="form-control">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-modal-close>Cancel</button>
+                <button type="submit" class="btn btn-primary" onclick="addStudent(event)">Add Student</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Student Modal -->
+    <div id="viewStudentModal" class="modal">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h3 class="modal-title">Student Details</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="student-details">
+                    <div class="detail-section">
+                        <h4>Personal Information</h4>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <label>Student ID:</label>
+                                <span id="viewStudentId"></span>
+                            </div>
+                            <div class="detail-item">
+                                <label>Full Name:</label>
+                                <span id="viewStudentName"></span>
+                            </div>
+                            <div class="detail-item">
+                                <label>Email:</label>
+                                <span id="viewStudentEmail"></span>
+                            </div>
+                            <div class="detail-item">
+                                <label>Phone:</label>
+                                <span id="viewStudentPhone"></span>
+                            </div>
+                            <div class="detail-item">
+                                <label>Class:</label>
+                                <span id="viewStudentClass"></span>
+                            </div>
+                            <div class="detail-item">
+                                <label>Status:</label>
+                                <span id="viewStudentStatus"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-modal-close>Close</button>
+                <button type="button" class="btn btn-primary" onclick="editStudentFromView()">Edit Student</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Student Modal -->
+    <div id="editStudentModal" class="modal">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Student</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="editStudentForm">
+                    <input type="hidden" id="editStudentId">
+                    <div class="form-section">
+                        <h4 class="form-section-title">Personal Information</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="editFirstName">First Name</label>
+                                <input type="text" id="editFirstName" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editLastName">Last Name</label>
+                                <input type="text" id="editLastName" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="editDateOfBirth">Date of Birth</label>
+                                <input type="date" id="editDateOfBirth" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editGender">Gender</label>
+                                <select id="editGender" class="form-control" required>
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h4 class="form-section-title">Contact Information</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="editStudentEmail">Email</label>
+                                <input type="email" id="editStudentEmail" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editStudentPhone">Phone</label>
+                                <input type="tel" id="editStudentPhone" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="editStudentAddress">Address</label>
+                            <textarea id="editStudentAddress" class="form-control" rows="3" required></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h4 class="form-section-title">Academic Information</h4>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="editStudentClass">Class</label>
+                                <select id="editStudentClass" class="form-control" required>
+                                    <option value="">Select Class</option>
+                                    <option value="1">Grade 1</option>
+                                    <option value="2">Grade 2</option>
+                                    <option value="3">Grade 3</option>
+                                    <option value="4">Grade 4</option>
+                                    <option value="5">Grade 5</option>
+                                    <option value="6">Grade 6</option>
+                                    <option value="7">Grade 7</option>
+                                    <option value="8">Grade 8</option>
+                                    <option value="9">Grade 9</option>
+                                    <option value="10">Grade 10</option>
+                                    <option value="11">Grade 11</option>
+                                    <option value="12">Grade 12</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="editStudentStatus">Status</label>
+                                <select id="editStudentStatus" class="form-control" required>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-modal-close>Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="updateStudent()">Update Student</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/dashboard.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/google-sheets.js"></script>
+</body>
+</html>
+
+<script>
+        // Student management functions
+        let students = [
+            {
+                id: 'STU001',
+                firstName: 'John',
+                lastName: 'Doe',
+                email: 'john.doe@email.com',
+                phone: '+1 234 567 8901',
+                class: 'Grade 10',
+                status: 'active',
+                dateOfBirth: '2005-03-15',
+                gender: 'male',
+                address: '123 Main St, City, State',
+                admissionDate: '2020-09-01',
+                parentName: 'Robert Doe',
+                parentPhone: '+1 234 567 8900',
+                parentEmail: 'robert.doe@email.com'
+            },
+            {
+                id: 'STU002',
+                firstName: 'Sarah',
+                lastName: 'Wilson',
+                email: 'sarah.wilson@email.com',
+                phone: '+1 234 567 8902',
+                class: 'Grade 9',
+                status: 'active',
+                dateOfBirth: '2006-07-22',
+                gender: 'female',
+                address: '456 Oak Ave, City, State',
+                admissionDate: '2021-09-01',
+                parentName: 'Jennifer Wilson',
+                parentPhone: '+1 234 567 8903',
+                parentEmail: 'jennifer.wilson@email.com'
+            },
+            {
+                id: 'STU003',
+                firstName: 'Michael',
+                lastName: 'Johnson',
+                email: 'michael.johnson@email.com',
+                phone: '+1 234 567 8903',
+                class: 'Grade 11',
+                status: 'inactive',
+                dateOfBirth: '2004-11-08',
+                gender: 'male',
+                address: '789 Pine St, City, State',
+                admissionDate: '2019-09-01',
+                parentName: 'David Johnson',
+                parentPhone: '+1 234 567 8904',
+                parentEmail: 'david.johnson@email.com'
+            },
+            {
+                id: 'STU004',
+                firstName: 'Emily',
+                lastName: 'Davis',
+                email: 'emily.davis@email.com',
+                phone: '+1 234 567 8904',
+                class: 'Grade 8',
+                status: 'active',
+                dateOfBirth: '2007-01-30',
+                gender: 'female',
+                address: '321 Elm St, City, State',
+                admissionDate: '2022-09-01',
+                parentName: 'Lisa Davis',
+                parentPhone: '+1 234 567 8905',
+                parentEmail: 'lisa.davis@email.com'
+            }
+        ];
+
+        let currentEditingStudent = null;
+
+        function generateStudentId() {
+            const lastId = students.length > 0 ? Math.max(...students.map(s => parseInt(s.id.replace('STU', '')))) : 0;
+            return 'STU' + String(lastId + 1).padStart(3, '0');
+        }
+
+        function addStudent(event) {
+            event.preventDefault();
+            
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('studentEmail').value;
+            const phone = document.getElementById('studentPhone').value;
+            const studentClass = document.getElementById('studentClass').value;
+            const dateOfBirth = document.getElementById('dateOfBirth').value;
+            const gender = document.getElementById('gender').value;
+            const address = document.getElementById('studentAddress').value;
+            const admissionDate = document.getElementById('admissionDate').value;
+            const parentName = document.getElementById('parentName').value;
+            const parentPhone = document.getElementById('parentPhone').value;
+            const parentEmail = document.getElementById('parentEmail').value;
+
+            const newStudent = {
+                id: generateStudentId(),
+                firstName,
+                lastName,
+                email,
+                phone,
+                class: `Grade ${studentClass}`,
+                status: 'active',
+                dateOfBirth,
+                gender,
+                address,
+                admissionDate,
+                parentName,
+                parentPhone,
+                parentEmail
+            };
+
+            students.push(newStudent);
+            refreshStudentTable();
+            updateStudentStats();
+            
+            // Reset form
+            document.querySelector('#addStudentModal form').reset();
+            
+            // Close modal
+            document.getElementById('addStudentModal').classList.remove('active');
+            document.body.style.overflow = '';
+            
+            // Show success notification
+            showNotification('Student added successfully!', 'success');
+        }
+
+        function viewStudent(studentId) {
+            const student = students.find(s => s.id === studentId);
+            if (!student) return;
+
+            document.getElementById('viewStudentId').textContent = student.id;
+            document.getElementById('viewStudentName').textContent = `${student.firstName} ${student.lastName}`;
+            document.getElementById('viewStudentEmail').textContent = student.email;
+            document.getElementById('viewStudentPhone').textContent = student.phone;
+            document.getElementById('viewStudentClass').textContent = student.class;
+            document.getElementById('viewStudentStatus').innerHTML = `<span class="badge badge-${student.status === 'active' ? 'success' : 'warning'}">${student.status.charAt(0).toUpperCase() + student.status.slice(1)}</span>`;
+
+            currentEditingStudent = studentId;
+            document.getElementById('viewStudentModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function editStudent(studentId) {
+            const student = students.find(s => s.id === studentId);
+            if (!student) return;
+
+            document.getElementById('editStudentId').value = student.id;
+            document.getElementById('editFirstName').value = student.firstName;
+            document.getElementById('editLastName').value = student.lastName;
+            document.getElementById('editStudentEmail').value = student.email;
+            document.getElementById('editStudentPhone').value = student.phone;
+            document.getElementById('editStudentClass').value = student.class.replace('Grade ', '');
+            document.getElementById('editStudentStatus').value = student.status;
+            document.getElementById('editDateOfBirth').value = student.dateOfBirth;
+            document.getElementById('editGender').value = student.gender;
+            document.getElementById('editStudentAddress').value = student.address;
+
+            currentEditingStudent = studentId;
+            document.getElementById('editStudentModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function editStudentFromView() {
+            document.getElementById('viewStudentModal').classList.remove('active');
+            editStudent(currentEditingStudent);
+        }
+
+        function updateStudent() {
+            const studentId = document.getElementById('editStudentId').value;
+            const studentIndex = students.findIndex(s => s.id === studentId);
+            
+            if (studentIndex === -1) return;
+
+            students[studentIndex] = {
+                ...students[studentIndex],
+                firstName: document.getElementById('editFirstName').value,
+                lastName: document.getElementById('editLastName').value,
+                email: document.getElementById('editStudentEmail').value,
+                phone: document.getElementById('editStudentPhone').value,
+                class: `Grade ${document.getElementById('editStudentClass').value}`,
+                status: document.getElementById('editStudentStatus').value,
+                dateOfBirth: document.getElementById('editDateOfBirth').value,
+                gender: document.getElementById('editGender').value,
+                address: document.getElementById('editStudentAddress').value
+            };
+
+            refreshStudentTable();
+            updateStudentStats();
+            
+            document.getElementById('editStudentModal').classList.remove('active');
+            document.body.style.overflow = '';
+            
+            showNotification('Student updated successfully!', 'success');
+        }
+
+        function toggleStudentStatus(studentId, currentStatus) {
+            const studentIndex = students.findIndex(s => s.id === studentId);
+            if (studentIndex === -1) return;
+
+            const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
+            students[studentIndex].status = newStatus;
+            
+            refreshStudentTable();
+            updateStudentStats();
+            
+            showNotification(`Student status changed to ${newStatus}!`, 'success');
+        }
+
+        function deleteStudent(studentId) {
+            const student = students.find(s => s.id === studentId);
+            if (!student) {
+                showNotification('Student not found!', 'error');
+                return;
+            }
+
+            if (confirm(`Are you sure you want to permanently delete ${student.firstName} ${student.lastName}? This action cannot be undone.`)) {
+                const studentIndex = students.findIndex(s => s.id === studentId);
+                if (studentIndex !== -1) {
+                    // Remove student from the database array
+                    const deletedStudent = students.splice(studentIndex, 1)[0];
+                    
+                    // Refresh the table to remove the row
+                    refreshStudentTable();
+                    
+                    // Update statistics to reflect accurate counts
+                    updateStudentStats();
+                    
+                    // Reset any active filters to show updated results
+                    filterStudents();
+                    
+                    showNotification(`Student ${deletedStudent.firstName} ${deletedStudent.lastName} has been permanently deleted from the database.`, 'success');
+                    
+                    // Log the deletion for debugging
+                    console.log(`Deleted student: ${deletedStudent.id} - ${deletedStudent.firstName} ${deletedStudent.lastName}`);
+                    console.log(`Remaining students: ${students.length}`);
+                }
+            }
+        }
+
+        function refreshStudentTable() {
+            const tbody = document.querySelector('.table tbody');
+            tbody.innerHTML = '';
+
+            students.forEach(student => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><input type="checkbox" class="row-select"></td>
+                    <td class="searchable">${student.id}</td>
+                    <td class="searchable">
+                        <div class="user-info">
+                            <img src="assets/img/student-avatar.jpg" alt="Student" class="user-avatar">
+                            <span>${student.firstName} ${student.lastName}</span>
+                        </div>
+                    </td>
+                    <td class="searchable">${student.class}</td>
+                    <td class="searchable">${student.email}</td>
+                    <td class="searchable">${student.phone}</td>
+                    <td>
+                        <span class="badge badge-${student.status === 'active' ? 'success' : 'warning'}">${student.status.charAt(0).toUpperCase() + student.status.slice(1)}</span>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-icon btn-primary" data-tooltip="View" onclick="viewStudent('${student.id}')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn-icon btn-warning" data-tooltip="Edit" onclick="editStudent('${student.id}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon btn-${student.status === 'active' ? 'success' : 'warning'}" data-tooltip="Toggle Status" onclick="toggleStudentStatus('${student.id}', '${student.status}')">
+                                <i class="fas fa-toggle-${student.status === 'active' ? 'on' : 'off'}"></i>
+                            </button>
+                            <button class="btn-icon btn-danger" data-tooltip="Delete" onclick="deleteStudent('${student.id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function updateStudentStats() {
+            // Calculate exact counts from the current students array
+            const totalStudents = students.length;
+            const activeStudents = students.filter(s => s.status === 'active').length;
+            const inactiveStudents = students.filter(s => s.status === 'inactive').length;
+            
+            // Calculate new students this month
+            const thisMonth = new Date();
+            const newThisMonth = students.filter(s => {
+                const admissionDate = new Date(s.admissionDate);
+                return admissionDate.getMonth() === thisMonth.getMonth() && 
+                       admissionDate.getFullYear() === thisMonth.getFullYear();
+            }).length;
+
+            // Update the stat cards with exact counts
+            const statCards = document.querySelectorAll('.stat-card .stat-value');
+            if (statCards.length >= 4) {
+                statCards[0].textContent = totalStudents.toLocaleString(); // Total Students
+                statCards[1].textContent = activeStudents.toLocaleString(); // Active Students
+                statCards[2].textContent = newThisMonth.toLocaleString(); // New This Month
+                statCards[3].textContent = inactiveStudents.toLocaleString(); // Inactive Students
+            }
+
+            // Verify the counts add up correctly
+            console.log(`Statistics Updated: Total: ${totalStudents}, Active: ${activeStudents}, Inactive: ${inactiveStudents}, New This Month: ${newThisMonth}`);
+            console.log(`Verification: Active + Inactive = ${activeStudents + inactiveStudents} (should equal Total: ${totalStudents})`);
+            
+            // Update pagination info if visible
+            const paginationInfo = document.querySelector('.pagination-info');
+            if (paginationInfo) {
+                const visibleRows = document.querySelectorAll('.table tbody tr:not([style*="display: none"])').length;
+                paginationInfo.textContent = `Showing ${visibleRows} of ${totalStudents} entries`;
+            }
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            
+            let iconClass = 'info-circle';
+            if (type === 'success') iconClass = 'check-circle';
+            else if (type === 'error') iconClass = 'exclamation-circle';
+            else if (type === 'warning') iconClass = 'exclamation-triangle';
+            
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <i class="fas fa-${iconClass}"></i>
+                    <span>${message}</span>
+                </div>
+                <button class="notification-close">&times;</button>
+            `;
+
+            document.body.appendChild(notification);
+            setTimeout(() => notification.classList.add('show'), 100);
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+
+            notification.querySelector('.notification-close').addEventListener('click', () => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            });
+        }
+
+        function filterStudents(searchQuery = '') {
+            const classFilter = document.getElementById('classFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+            const query = searchQuery || document.querySelector('.search-input').value.toLowerCase();
+            
+            const tbody = document.querySelector('.table tbody');
+            const rows = tbody.querySelectorAll('tr');
+            
+            let visibleCount = 0;
+            
+            rows.forEach(row => {
+                const studentId = row.querySelector('td:nth-child(2)').textContent;
+                const student = students.find(s => s.id === studentId);
+                
+                if (!student) {
+                    row.style.display = 'none';
+                    return;
+                }
+                
+                let shouldShow = true;
+                
+                // Filter by class
+                if (classFilter && student.class !== classFilter) {
+                    shouldShow = false;
+                }
+                
+                // Filter by status
+                if (statusFilter && student.status !== statusFilter) {
+                    shouldShow = false;
+                }
+                
+                // Filter by search query
+                if (query) {
+                    const searchableText = [
+                        student.id,
+                        student.firstName,
+                        student.lastName,
+                        student.email,
+                        student.phone,
+                        student.class
+                    ].join(' ').toLowerCase();
+                    
+                    if (!searchableText.includes(query)) {
+                        shouldShow = false;
+                    }
+                }
+                
+                if (shouldShow) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            // Update pagination info
+            const paginationInfo = document.querySelector('.pagination-info');
+            if (paginationInfo) {
+                paginationInfo.textContent = `Showing ${visibleCount} of ${students.length} entries`;
+            }
+        }
+
+        // Google Sheets Integration Functions
+        async function syncStudentsToGoogleSheets() {
+            try {
+                // Check if Google Sheets is configured
+                const config = localStorage.getItem('googleSheetsConfig');
+                if (!config) {
+                    showNotification('Google Sheets not configured. Please configure it first.', 'warning');
+                    window.location.href = 'google-sheets-config.html';
+                    return;
+                }
+
+                showNotification('Syncing students to Google Sheets...', 'info');
+                
+                // Save current students data to localStorage for sync
+                localStorage.setItem('studentsData', JSON.stringify(students));
+                
+                // Sync to Google Sheets
+                await googleSheetsManager.syncStudentsToSheet(students);
+                
+                showNotification('Students synced to Google Sheets successfully!', 'success');
+            } catch (error) {
+                console.error('Sync error:', error);
+                showNotification('Failed to sync students: ' + error.message, 'error');
+            }
+        }
+
+        function showNotification(message, type = 'info') {
+            // Create notification element if it doesn't exist
+            let notification = document.getElementById('notification');
+            if (!notification) {
+                notification = document.createElement('div');
+                notification.id = 'notification';
+                notification.className = 'notification';
+                notification.innerHTML = `
+                    <div class="notification-content">
+                        <i class="fas fa-info-circle"></i>
+                        <span id="notificationMessage"></span>
+                    </div>
+                `;
+                document.body.appendChild(notification);
+            }
+
+            const messageElement = document.getElementById('notificationMessage');
+            const iconElement = notification.querySelector('i');
+            
+            messageElement.textContent = message;
+            
+            // Update icon based on type
+            iconElement.className = `fas fa-${
+                type === 'success' ? 'check-circle' : 
+                type === 'error' ? 'exclamation-circle' : 
+                type === 'warning' ? 'exclamation-triangle' : 
+                'info-circle'
+            }`;
+            
+            notification.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStudentStats();
+            
+            // Add search functionality
+            const searchInput = document.querySelector('.search-input');
+            if (searchInput) {
+                searchInput.addEventListener('input', function(e) {
+                    filterStudents(e.target.value.toLowerCase());
+                });
+            }
+        });
+    </script>
+</body>
+</html>

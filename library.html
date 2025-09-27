@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Library - Khatamari Shishu Bikash Academy</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Dashboard Specific Styles */
+        .dashboard-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('images/library-bg.jpg') no-repeat center center/cover;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            color: white;
+            margin-top: 90px;
+            position: relative;
+            padding: 0;
+        }
+        
+        .dashboard-container {
+            display: flex;
+            min-height: calc(100vh - 340px);
+        }
+        
+        .dashboard-sidebar {
+            width: 280px;
+            background: #f8f9fa;
+            border-right: 1px solid #e9ecef;
+            padding: 30px 0;
+        }
+        
+        .dashboard-content {
+            flex: 1;
+            padding: 30px;
+            background-color: #f1f5f9;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .page-title {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            border-radius: 5px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid #dee2e6;
+            color: #495057;
+        }
+        
+        .btn-outline:hover {
+            background-color: #f8f9fa;
+            border-color: #ced4da;
+        }
+        
+        /* Library Search */
+        .library-search {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+        
+        .search-form {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .search-group {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .search-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: #495057;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .search-submit {
+            align-self: flex-end;
+        }
+        
+        /* Books Grid */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .book-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .book-cover {
+            height: 280px;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #adb5bd;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .book-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .book-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--primary-color);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            z-index: 1;
+        }
+        
+        .book-details {
+            padding: 15px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .book-title {
+            font-size: 1rem;
+            margin: 0 0 5px 0;
+            color: #2c3e50;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+        
+        .book-author {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-bottom: 10px;
+        }
+        
+        .book-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: auto;
+            padding-top: 10px;
+            border-top: 1px solid #f1f5f9;
+        }
+        
+        .book-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+        }
+        
+        .book-actions .btn {
+            flex: 1;
+            text-align: center;
+            justify-content: center;
+            padding: 6px 10px;
+            font-size: 0.8rem;
+        }
+        
+        /* Categories */
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .category-tag {
+            display: inline-block;
+            padding: 5px 12px;
+            background: #f1f5f9;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #495057;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .category-tag:hover,
+        .category-tag.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        /* Borrowed Books */
+        .borrowed-books {
+            margin-top: 40px;
+        }
+        
+        .section-title {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f1f5f9;
+        }
+        
+        .borrowed-list {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        
+        .borrowed-header {
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .borrowed-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .borrowed-item:last-child {
+            border-bottom: none;
+        }
+        
+        .borrowed-cover {
+            width: 50px;
+            height: 70px;
+            background: #f8f9fa;
+            margin-right: 15px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #adb5bd;
+            font-size: 0.8rem;
+        }
+        
+        .borrowed-details {
+            flex: 1;
+        }
+        
+        .borrowed-title {
+            font-weight: 600;
+            margin: 0 0 5px 0;
+            color: #2c3e50;
+        }
+        
+        .borrowed-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+        
+        .borrowed-due {
+            color: #dc3545;
+            font-weight: 600;
+        }
+        
+        .borrowed-actions {
+            margin-left: 15px;
+            flex-shrink: 0;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 1199px) {
+            .books-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 991px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            
+            .dashboard-sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #e9ecef;
+            }
+            
+            .dashboard-content {
+                padding: 20px 15px;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .search-form {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .search-group {
+                width: 100%;
+            }
+            
+            .search-submit {
+                width: 100%;
+            }
+            
+            .books-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            
+            .borrowed-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .borrowed-cover {
+                margin-bottom: 10px;
+            }
+            
+            .borrowed-meta {
+                margin-top: 10px;
+                width: 100%;
+            }
+            
+            .borrowed-actions {
+                margin: 15px 0 0 0;
+                width: 100%;
+            }
+            
+            .borrowed-actions .btn {
+                width: 100%;
+                margin-top: 5px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .books-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .book-card {
+                max-width: 280px;
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container">
+            <div class="logo-container">
+                <img src="images/logo.png" alt="School Logo" class="logo">
+                <div class="school-info">
+                    <h1>Khatamari Shishu Bikash Academy</h1>
+                    <p class="tagline">Nurturing Young Minds, Building Bright Futures</p>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="admission.html">Admission</a></li>
+                    <li><a href="academic.html">Academic</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="login-btn">
+                            <i class="fas fa-user"></i>
+                            <span>Login / Register</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a>
+                            <a href="register.html"><i class="fas fa-user-plus"></i> Register</a>
+                        </div>
+                    </li>
+                </ul>
+                <div class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Dashboard Hero -->
+    <section class="dashboard-hero">
+        <div class="container">
+            <h1>School Library</h1>
+        </div>
+    </section>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            
+            <ul class="sidebar-menu">
+                <li class="menu-heading">Main</li>
+                <li class="menu-item">
+                    <a href="profile.html" class="menu-link">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="profile.html#profile" class="menu-link">
+                        <i class="fas fa-user"></i>
+                        <span>My Profile</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="schedule.html" class="menu-link">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Class Schedule</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="subjects.html" class="menu-link">
+                        <i class="fas fa-book"></i>
+                        <span>Subjects</span>
+                    </a>
+                </li>
+                <li class="menu-divider"></li>
+                <li class="menu-heading">Academic</li>
+                <li class="menu-item">
+                    <a href="assignments.html" class="menu-link">
+                        <i class="fas fa-tasks"></i>
+                        <span>Assignments</span>
+                        <span class="menu-badge">3 New</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="results.html" class="menu-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Results</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="attendance.html" class="menu-link">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Attendance</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="exam-schedule.html" class="menu-link">
+                        <i class="fas fa-file-invoice"></i>
+                        <span>Exam Schedule</span>
+                    </a>
+                </li>
+                <li class="menu-divider"></li>
+                <li class="menu-heading">Other</li>
+                <li class="menu-item">
+                    <a href="fees.html" class="menu-link">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span>Fee Details</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="library.html" class="menu-link" class="menu-link">
+                        <i class="fas fa-book-reader"></i>
+                        <span>Library</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="notifications.html" class="menu-link">
+                        <i class="fas fa-bell"></i>
+                        <span>Notifications</span>
+                        <span class="menu-badge">5</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="settings.html" class="menu-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-content">
+            <div class="page-header">
+                <h2 class="page-title">Library Books</h2>
+                <div class="page-actions">
+                    <a href="#" class="btn btn-outline">
+                        <i class="fas fa-history"></i> My Reading History
+                    </a>
+                    <a href="#" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Request a Book
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Search Section -->
+            <div class="library-search">
+                <form class="search-form">
+                    <div class="search-group">
+                        <label for="search">Search Books</label>
+                        <input type="text" id="search" class="search-input" placeholder="Title, author, ISBN, or keyword">
+                    </div>
+                    <div class="search-group">
+                        <label for="category">Category</label>
+                        <select id="category" class="search-input">
+                            <option value="">All Categories</option>
+                            <option value="textbook">Textbooks</option>
+                            <option value="fiction">Fiction</option>
+                            <option value="non-fiction">Non-Fiction</option>
+                            <option value="reference">Reference</option>
+                            <option value="biography">Biography</option>
+                            <option value="science">Science & Technology</option>
+                            <option value="history">History</option>
+                            <option value="literature">Literature</option>
+                        </select>
+                    </div>
+                    <div class="search-group search-submit">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="categories" style="margin-top: 15px;">
+                    <span class="category-tag active">All Books</span>
+                    <span class="category-tag">New Arrivals</span>
+                    <span class="category-tag">Popular</span>
+                    <span class="category-tag">Recommended</span>
+                    <span class="category-tag">Award Winners</span>
+                </div>
+            </div>
+            
+            <!-- Books Grid -->
+            <div class="books-grid">
+                <!-- Book 1 -->
+                <div class="book-card">
+                    <div class="book-cover">
+                        <img src="images/books/book1.jpg" alt="Mathematics Textbook">
+                        <span class="book-badge">Textbook</span>
+                    </div>
+                    <div class="book-details">
+                        <h3 class="book-title">Advanced Mathematics for Class 10</h3>
+                        <p class="book-author">By R.D. Sharma</p>
+                        <div class="book-meta">
+                            <span>ISBN: 978-8177090000</span>
+                            <span>2023</span>
+                        </div>
+                        <div class="book-actions">
+                            <a href="#" class="btn btn-outline">
+                                <i class="far fa-eye"></i> View
+                            </a>
+                            <a href="#" class="btn btn-primary">
+                                <i class="fas fa-book"></i> Borrow
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Book 2 -->
+                <div class="book-card">
+                    <div class="book-cover">
+                        <img src="images/books/book2.jpg" alt="Physics Textbook">
+                        <span class="book-badge">Textbook</span>
+                    </div>
+                    <div class="book-details">
+                        <h3 class="book-title">Concepts of Physics - Vol. 1</h3>
+                        <p class="book-author">By H.C. Verma</p>
+                        <div class="book-meta">
+                            <span>ISBN: 978-8177090001</span>
+                            <span>2022</span>
+                        </div>
+                        <div class="book-actions">
+                            <a href="#" class="btn btn-outline">
+                                <i class="far fa-eye"></i> View
+                            </a>
+                            <a href="#" class="btn btn-primary">
+                                <i class="fas fa-book"></i> Borrow
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Book 3 -->
+                <div class="book-card">
+                    <div class="book-cover">
+                        <img src="images/books/book3.jpg" alt="Chemistry Textbook">
+                        <span class="book-badge">Textbook</span>
+                    </div>
+                    <div class="book-details">
+                        <h3 class="book-title">Modern's ABC of Chemistry</h3>
+                        <p class="book-author">By S.P. Jauhar</p>
+                        <div class="book-meta">
+                            <span>ISBN: 978-8177090002</span>
+                            <span>2023</span>
+                        </div>
+                        <div class="book-actions">
+                            <a href="#" class="btn btn-outline">
+                                <i class="far fa-eye"></i> View
+                            </a>
+                            <a href="#" class="btn btn-primary">
+                                <i class="fas fa-book"></i> Borrow
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Book 4 -->
+                <div class="book-card">
+                    <div class="book-cover">
+                        <img src="images/books/book4.jpg" alt="Biology Textbook">
+                        <span class="book-badge">Textbook</span>
+                    </div>
+                    <div class="book-details">
+                        <h3 class="book-title">Biology for Class 11</h3>
+                        <p class="book-author">By P.S. Dhami</p>
+                        <div class="book-meta">
+                            <span>ISBN: 978-8177090003</span>
+                            <span>2023</span>
+                        </div>
+                        <div class="book-actions">
+                            <a href="#" class="btn btn-outline">
+                                <i class="far fa-eye"></i> View
+                            </a>
+                            <a href="#" class="btn btn-primary">
+                                <i class="fas fa-book"></i> Borrow
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Book 5 -->
+                <div class="book-card">
+                    <div class="book-cover">
+                        <img src="images/books/book5.jpg" alt="Fiction Book">
+                        <span class="book-badge">Fiction</span>
+                    </div>
+                    <div class="book-details">
+                        <h3 class="book-title">The Alchemist</h3>
+                        <p class="book-author">By Paulo Coelho</p>
+                        <div class="book-meta">
+                            <span>ISBN: 978-0062315007</span>
+                            <span>2014</span>
+                        </div>
+                        <div class="book-actions">
+                            <a href="#" class="btn btn-outline">
+                                <i class="far fa-eye"></i> View
+                            </a>
+                            <a href="#" class="btn btn-primary">
+                                <i class="fas fa-book"></i> Borrow
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Book 6 -->
+                <div class="book-card">
+                    <div class="book-cover">
+                        <img src="images/books/book6.jpg" alt="Science Book">
+                        <span class="book-badge">Science</span>
+                    </div>
+                    <div class="book-details">
+                        <h3 class="book-title">A Brief History of Time</h3>
+                        <p class="book-author">By Stephen Hawking</p>
+                        <div class="book-meta">
+                            <span>ISBN: 978-0553380163</span>
+                            <span>1998</span>
+                        </div>
+                        <div class="book-actions">
+                            <a href="#" class="btn btn-outline">
+                                <i class="far fa-eye"></i> View
+                            </a>
+                            <a href="#" class="btn btn-primary">
+                                <i class="fas fa-book"></i> Borrow
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Book 7 -->
+                <div class="book-card">
+                    <div class="book-cover">
+                        <img src="images/books/book7.jpg" alt="Biography">
+                        <span class="book-badge">Biography</span>
+                    </div>
+                    <div class="book-details">
+                        <h3 class="book-title">Wings of Fire</h3>
+                        <p class="book-author">By A.P.J. Abdul Kalam</p>
+                        <div class="book-meta">
+                            <span>ISBN: 978-8173711466</span>
+                            <span>1999</span>
+                        </div>
+                        <div class="book-actions">
+                            <a href="#" class="btn btn-outline">
+                                <i class="far fa-eye"></i> View
+                            </a>
+                            <a href="#" class="btn btn-primary">
+                                <i class="fas fa-book"></i> Borrow
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Book 8 -->
+                <div class="book-card">
+                    <div class="book-cover">
+                        <img src="images/books/book8.jpg" alt="Literature">
+                        <span class="book-badge">Literature</span>
+                    </div>
+                    <div class="book-details">
+                        <h3 class="book-title">The God of Small Things</h3>
+                        <p class="book-author">By Arundhati Roy</p>
+                        <div class="book-meta">
+                            <span>ISBN: 978-0006550686</span>
+                            <span>1997</span>
+                        </div>
+                        <div class="book-actions">
+                            <a href="#" class="btn btn-outline">
+                                <i class="far fa-eye"></i> View
+                            </a>
+                            <a href="#" class="btn btn-primary">
+                                <i class="fas fa-book"></i> Borrow
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pagination -->
+            <div style="display: flex; justify-content: center; margin: 30px 0;">
+                <nav>
+                    <ul style="display: flex; list-style: none; padding: 0; margin: 0; gap: 5px;">
+                        <li><a href="#" style="display: flex; align-items: center; justify-content: center; width: 35px; height: 35px; border: 1px solid #dee2e6; border-radius: 5px; color: #495057; text-decoration: none;">&laquo;</a></li>
+                        <li><a href="#" style="display: flex; align-items: center; justify-content: center; width: 35px; height: 35px; border: 1px solid #dee2e6; border-radius: 5px; background-color: var(--primary-color); color: white; text-decoration: none;">1</a></li>
+                        <li><a href="#" style="display: flex; align-items: center; justify-content: center; width: 35px; height: 35px; border: 1px solid #dee2e6; border-radius: 5px; color: #495057; text-decoration: none;">2</a></li>
+                        <li><a href="#" style="display: flex; align-items: center; justify-content: center; width: 35px; height: 35px; border: 1px solid #dee2e6; border-radius: 5px; color: #495057; text-decoration: none;">3</a></li>
+                        <li><a href="#" style="display: flex; align-items: center; justify-content: center; width: 35px; height: 35px; border: 1px solid #dee2e6; border-radius: 5px; color: #495057; text-decoration: none;">4</a></li>
+                        <li><a href="#" style="display: flex; align-items: center; justify-content: center; width: 35px; height: 35px; border: 1px solid #dee2e6; border-radius: 5px; color: #495057; text-decoration: none;">&raquo;</a></li>
+                    </ul>
+                </nav>
+            </div>
+            
+            <!-- Borrowed Books Section -->
+            <div class="borrowed-books">
+                <h3 class="section-title">My Borrowed Books</h3>
+                <div class="borrowed-list">
+                    <div class="borrowed-header">Currently Borrowed (2)</div>
+                    
+                    <!-- Book 1 -->
+                    <div class="borrowed-item">
+                        <div class="borrowed-cover">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="borrowed-details">
+                            <h4 class="borrowed-title">The Alchemist</h4>
+                            <div class="borrowed-meta">
+                                <span>By Paulo Coelho</span>
+                                <span>Borrowed: Sep 1, 2024</span>
+                                <span class="borrowed-due">Due: Sep 15, 2024</span>
+                            </div>
+                        </div>
+                        <div class="borrowed-actions">
+                            <a href="#" class="btn btn-outline">
+                                <i class="fas fa-sync-alt"></i> Renew
+                            </a>
+                            <a href="#" class="btn btn-outline">
+                                <i class="fas fa-download"></i> Download
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Book 2 -->
+                    <div class="borrowed-item">
+                        <div class="borrowed-cover">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="borrowed-details">
+                            <h4 class="borrowed-title">Wings of Fire</h4>
+                            <div class="borrowed-meta">
+                                <span>By A.P.J. Abdul Kalam</span>
+                                <span>Borrowed: Aug 25, 2024</span>
+                                <span class="borrowed-due">Due: Sep 9, 2024</span>
+                            </div>
+                        </div>
+                        <div class="borrowed-actions">
+                            <a href="#" class="btn btn-outline">
+                                <i class="fas fa-sync-alt"></i> Renew
+                            </a>
+                            <a href="#" class="btn btn-outline">
+                                <i class="fas fa-download"></i> Download
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="borrowed-list" style="margin-top: 30px;">
+                    <div class="borrowed-header">Borrowing History</div>
+                    
+                    <!-- History Item 1 -->
+                    <div class="borrowed-item">
+                        <div class="borrowed-cover" style="opacity: 0.7;">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="borrowed-details">
+                            <h4 class="borrowed-title">The God of Small Things</h4>
+                            <div class="borrowed-meta">
+                                <span>By Arundhati Roy</span>
+                                <span>Borrowed: Jul 10, 2024 - Aug 10, 2024</span>
+                                <span style="color: #28a745;">Returned</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- History Item 2 -->
+                    <div class="borrowed-item">
+                        <div class="borrowed-cover" style="opacity: 0.7;">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="borrowed-details">
+                            <h4 class="borrowed-title">A Brief History of Time</h4>
+                            <div class="borrowed-meta">
+                                <span>By Stephen Hawking</span>
+                                <span>Borrowed: Jun 1, 2024 - Jul 1, 2024</span>
+                                <span style="color: #28a745;">Returned</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="admission.html">Admission</a></li>
+                        <li><a href="academic.html">Academic</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 School Road, Khatamari, Dinhata, Coochbehar, 736168</p>
+                    <p><i class="fas fa-phone"></i> +91 98000 47149</p>
+                    <p><i class="fas fa-envelope"></i> ksba@gmail.com</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Khatamari Shishu Bikash Academy. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update active menu item
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            document.querySelectorAll('.menu-link').forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+            
+            // Mobile menu toggle
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const mainNav = document.querySelector('.main-nav ul');
+            
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    mainNav.classList.toggle('show');
+                });
+            }
+            
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.main-nav') && !e.target.closest('.mobile-menu-btn')) {
+                    mainNav.classList.remove('show');
+                }
+            });
+            
+            // Category filter
+            const categoryTags = document.querySelectorAll('.category-tag');
+            categoryTags.forEach(tag => {
+                tag.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    categoryTags.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    // Here you would typically filter the books based on the selected category
+                });
+            });
+            
+            // Initialize tooltips
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
+</body>
+</html>

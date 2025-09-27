@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications - Khatamari Shishu Bikash Academy</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Dashboard Specific Styles */
+        .dashboard-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('images/notifications-bg.jpg') no-repeat center center/cover;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            color: white;
+            margin-top: 90px;
+            position: relative;
+            padding: 0;
+        }
+        
+        .dashboard-container {
+            display: flex;
+            min-height: calc(100vh - 340px);
+        }
+        
+        .dashboard-sidebar {
+            width: 280px;
+            background: #f8f9fa;
+            border-right: 1px solid #e9ecef;
+            padding: 30px 0;
+        }
+        
+        .dashboard-content {
+            flex: 1;
+            padding: 30px;
+            background-color: #f1f5f9;
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .page-title {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            border-radius: 5px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid #dee2e6;
+            color: #495057;
+        }
+        
+        .btn-outline:hover {
+            background-color: #f8f9fa;
+            border-color: #ced4da;
+        }
+        
+        /* Notifications Container */
+        .notifications-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        
+        .notifications-header {
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .notifications-title {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            margin: 0;
+        }
+        
+        .notifications-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .notifications-list {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        
+        .notification-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: flex-start;
+            transition: background-color 0.2s ease;
+            position: relative;
+        }
+        
+        .notification-item:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .notification-item.unread {
+            background-color: #f0f7ff;
+        }
+        
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+            color: #6c757d;
+            font-size: 1rem;
+        }
+        
+        .notification-icon.primary {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .notification-icon.success {
+            background-color: #e8f5e9;
+            color: #388e3c;
+        }
+        
+        .notification-icon.warning {
+            background-color: #fff8e1;
+            color: #ffa000;
+        }
+        
+        .notification-icon.danger {
+            background-color: #ffebee;
+            color: #d32f2f;
+        }
+        
+        .notification-content {
+            flex: 1;
+        }
+        
+        .notification-title {
+            font-weight: 600;
+            margin: 0 0 5px 0;
+            color: #2c3e50;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        
+        .notification-message {
+            color: #495057;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            line-height: 1.5;
+        }
+        
+        .notification-time {
+            font-size: 0.75rem;
+            color: #6c757d;
+            display: flex;
+            align-items: center;
+        }
+        
+        .notification-time i {
+            margin-right: 5px;
+            font-size: 0.7rem;
+        }
+        
+        .notification-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .notification-actions .btn {
+            font-size: 0.8rem;
+            padding: 4px 10px;
+        }
+        
+        .notification-badge {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #dc3545;
+            border-radius: 50%;
+            margin-left: 8px;
+        }
+        
+        /* Notification Types */
+        .notification-type {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-right: 8px;
+        }
+        
+        .type-academic {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .type-fee {
+            background-color: #e8f5e9;
+            color: #388e3c;
+        }
+        
+        .type-event {
+            background-color: #fff8e1;
+            color: #ffa000;
+        }
+        
+        .type-important {
+            background-color: #ffebee;
+            color: #d32f2f;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: #6c757d;
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            color: #dee2e6;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .empty-state h3 {
+            color: #6c757d;
+            margin-bottom: 10px;
+        }
+        
+        .empty-state p {
+            max-width: 400px;
+            margin: 0 auto 20px;
+            line-height: 1.5;
+        }
+        
+        /* Filter Tabs */
+        .filter-tabs {
+            display: flex;
+            border-bottom: 1px solid #e9ecef;
+            margin-bottom: 20px;
+        }
+        
+        .filter-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            font-weight: 500;
+            color: #6c757d;
+            transition: all 0.2s ease;
+        }
+        
+        .filter-tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+        
+        .filter-tab .badge {
+            background-color: #dee2e6;
+            color: #495057;
+            border-radius: 10px;
+            padding: 2px 8px;
+            font-size: 0.7rem;
+            margin-left: 5px;
+        }
+        
+        /* Notification Settings */
+        .notification-settings {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-top: 30px;
+        }
+        
+        .settings-title {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            margin: 0 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f8f9fa;
+        }
+        
+        .setting-info h4 {
+            margin: 0 0 5px 0;
+            color: #2c3e50;
+            font-size: 0.95rem;
+        }
+        
+        .setting-info p {
+            margin: 0;
+            color: #6c757d;
+            font-size: 0.85rem;
+        }
+        
+        .form-switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 22px;
+        }
+        
+        .form-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #dee2e6;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+        
+        input:focus + .slider {
+            box-shadow: 0 0 1px var(--primary-color);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(18px);
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 991px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            
+            .dashboard-sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #e9ecef;
+            }
+            
+            .dashboard-content {
+                padding: 20px 15px;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .notifications-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .notifications-actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+            
+            .notification-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .notification-icon {
+                margin-bottom: 10px;
+            }
+            
+            .notification-title {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .notification-time {
+                margin-top: 5px;
+                margin-left: 0;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .filter-tabs {
+                overflow-x: auto;
+                white-space: nowrap;
+                padding-bottom: 5px;
+            }
+            
+            .filter-tab {
+                padding: 10px 15px;
+                font-size: 0.85rem;
+            }
+            
+            .notification-actions {
+                flex-direction: column;
+            }
+            
+            .notification-actions .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container">
+            <div class="logo-container">
+                <img src="images/logo.png" alt="School Logo" class="logo">
+                <div class="school-info">
+                    <h1>Khatamari Shishu Bikash Academy</h1>
+                    <p class="tagline">Nurturing Young Minds, Building Bright Futures</p>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="admission.html">Admission</a></li>
+                    <li><a href="academic.html">Academic</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="login-btn">
+                            <i class="fas fa-user"></i>
+                            <span>Login / Register</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a>
+                            <a href="register.html"><i class="fas fa-user-plus"></i> Register</a>
+                        </div>
+                    </li>
+                </ul>
+                <div class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Dashboard Hero -->
+    <section class="dashboard-hero">
+        <div class="container">
+            <h1>Notifications</h1>
+        </div>
+    </section>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            
+            <ul class="sidebar-menu">
+                <li class="menu-heading">Main</li>
+                <li class="menu-item">
+                    <a href="profile.html" class="menu-link">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="profile.html#profile" class="menu-link">
+                        <i class="fas fa-user"></i>
+                        <span>My Profile</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="schedule.html" class="menu-link">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Class Schedule</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="subjects.html" class="menu-link">
+                        <i class="fas fa-book"></i>
+                        <span>Subjects</span>
+                    </a>
+                </li>
+                <li class="menu-divider"></li>
+                <li class="menu-heading">Academic</li>
+                <li class="menu-item">
+                    <a href="assignments.html" class="menu-link">
+                        <i class="fas fa-tasks"></i>
+                        <span>Assignments</span>
+                        <span class="menu-badge">3 New</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="results.html" class="menu-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Results</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="attendance.html" class="menu-link">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Attendance</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="exam-schedule.html" class="menu-link">
+                        <i class="fas fa-file-invoice"></i>
+                        <span>Exam Schedule</span>
+                    </a>
+                </li>
+                <li class="menu-divider"></li>
+                <li class="menu-heading">Other</li>
+                <li class="menu-item">
+                    <a href="fees.html" class="menu-link">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span>Fee Details</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="library.html" class="menu-link">
+                        <i class="fas fa-book-reader"></i>
+                        <span>Library</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="notifications.html" class="menu-link" class="menu-link">
+                        <i class="fas fa-bell"></i>
+                        <span>Notifications</span>
+                        <span class="menu-badge">5</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="settings.html" class="menu-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-content">
+            <div class="page-header">
+                <h2 class="page-title">My Notifications</h2>
+                <div class="page-actions">
+                    <a href="#" class="btn btn-outline">
+                        <i class="fas fa-check-double"></i> Mark All as Read
+                    </a>
+                    <a href="#" class="btn btn-outline">
+                        <i class="fas fa-trash-alt"></i> Clear All
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Filter Tabs -->
+            <div class="filter-tabs">
+                <div class="filter-tab active">All <span class="badge">12</span></div>
+                <div class="filter-tab">Unread <span class="badge">5</span></div>
+                <div class="filter-tab">Academic</div>
+                <div class="filter-tab">Fees</div>
+                <div class="filter-tab">Events</div>
+                <div class="filter-tab">Important</div>
+            </div>
+            
+            <!-- Notifications List -->
+            <div class="notifications-container">
+                <div class="notifications-header">
+                    <h3 class="notifications-title">Recent Notifications</h3>
+                    <div class="notifications-actions">
+                        <a href="#" class="btn btn-outline">
+                            <i class="fas fa-filter"></i> Filter
+                        </a>
+                        <a href="#" class="btn btn-outline">
+                            <i class="fas fa-sort"></i> Sort
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="notifications-list">
+                    <!-- Unread Notification 1 -->
+                    <div class="notification-item unread">
+                        <div class="notification-icon primary">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-title">
+                                <div>
+                                    <span class="notification-type type-academic">Academic</span>
+                                    New Assignment Posted
+                                    <span class="notification-badge"></span>
+                                </div>
+                                <div class="notification-time">
+                                    <i class="far fa-clock"></i> 2 hours ago
+                                </div>
+                            </div>
+                            <p class="notification-message">
+                                A new assignment has been posted for Mathematics - Chapter 5: Algebra. Due date: Sep 15, 2024.
+                            </p>
+                            <div class="notification-actions">
+                                <a href="#" class="btn btn-outline">View Assignment</a>
+                                <a href="#" class="btn btn-outline">Mark as Read</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Unread Notification 2 -->
+                    <div class="notification-item unread">
+                        <div class="notification-icon success">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-title">
+                                <div>
+                                    <span class="notification-type type-fee">Fees</span>
+                                    Fee Payment Reminder
+                                    <span class="notification-badge"></span>
+                                </div>
+                                <div class="notification-time">
+                                    <i class="far fa-clock"></i> 5 hours ago
+                                </div>
+                            </div>
+                            <p class="notification-message">
+                                Reminder: Your quarterly fee payment of ₹5,000 is due on Sep 10, 2024. Please make the payment to avoid late fees.
+                            </p>
+                            <div class="notification-actions">
+                                <a href="#" class="btn btn-outline">Pay Now</a>
+                                <a href="#" class="btn btn-outline">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Read Notification 1 -->
+                    <div class="notification-item">
+                        <div class="notification-icon warning">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-title">
+                                <div>
+                                    <span class="notification-type type-event">Event</span>
+                                    Annual Sports Day
+                                </div>
+                                <div class="notification-time">
+                                    <i class="far fa-clock"></i> 1 day ago
+                                </div>
+                            </div>
+                            <p class="notification-message">
+                                Don't miss our Annual Sports Day on September 25, 2024. Register your participation by September 15th.
+                            </p>
+                            <div class="notification-actions">
+                                <a href="#" class="btn btn-outline">View Details</a>
+                                <a href="#" class="btn btn-outline">Register Now</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Unread Notification 3 -->
+                    <div class="notification-item unread">
+                        <div class="notification-icon danger">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-title">
+                                <div>
+                                    <span class="notification-type type-important">Important</span>
+                                    School Holiday Announcement
+                                    <span class="notification-badge"></span>
+                                </div>
+                                <div class="notification-time">
+                                    <i class="far fa-clock"></i> 1 day ago
+                                </div>
+                            </div>
+                            <p class="notification-message">
+                                School will remain closed on September 17, 2024, on account of Mahalaya. Classes will resume as usual on September 18, 2024.
+                            </p>
+                            <div class="notification-actions">
+                                <a href="#" class="btn btn-outline">View Calendar</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Read Notification 2 -->
+                    <div class="notification-item">
+                        <div class="notification-icon primary">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-title">
+                                <div>
+                                    <span class="notification-type type-academic">Library</span>
+                                    Book Return Reminder
+                                </div>
+                                <div class="notification-time">
+                                    <i class="far fa-clock"></i> 2 days ago
+                                </div>
+                            </div>
+                            <p class="notification-message">
+                                Reminder: The book "Advanced Mathematics for Class 10" is due for return on September 12, 2024. Please return or renew it to avoid late fees.
+                            </p>
+                            <div class="notification-actions">
+                                <a href="#" class="btn btn-outline">Renew Book</a>
+                                <a href="#" class="btn btn-outline">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Unread Notification 4 -->
+                    <div class="notification-item unread">
+                        <div class="notification-icon success">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-title">
+                                <div>
+                                    <span class="notification-type type-academic">Results</span>
+                                    Unit Test Results Published
+                                    <span class="notification-badge"></span>
+                                </div>
+                                <div class="notification-time">
+                                    <i class="far fa-clock"></i> 3 days ago
+                                </div>
+                            </div>
+                            <p class="notification-message">
+                                The results for the Mathematics Unit Test (August 2024) have been published. Check your student portal for detailed marks and feedback.
+                            </p>
+                            <div class="notification-actions">
+                                <a href="#" class="btn btn-outline">View Results</a>
+                                <a href="#" class="btn btn-outline">Download Report</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Read Notification 3 -->
+                    <div class="notification-item">
+                        <div class="notification-icon warning">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-title">
+                                <div>
+                                    <span class="notification-type type-event">PTA Meeting</span>
+                                    Parent-Teacher Meeting
+                                </div>
+                                <div class="notification-time">
+                                    <i class="far fa-clock"></i> 4 days ago
+                                </div>
+                            </div>
+                            <p class="notification-message">
+                                The next Parent-Teacher Meeting is scheduled for September 20, 2024, from 10:00 AM to 2:00 PM. Please confirm your attendance.
+                            </p>
+                            <div class="notification-actions">
+                                <a href="#" class="btn btn-outline">RSVP Now</a>
+                                <a href="#" class="btn btn-outline">View Schedule</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Unread Notification 5 -->
+                    <div class="notification-item unread">
+                        <div class="notification-icon danger">
+                            <i class="fas fa-bullhorn"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-title">
+                                <div>
+                                    <span class="notification-type type-important">Announcement</span>
+                                    New School Timings
+                                    <span class="notification-badge"></span>
+                                </div>
+                                <div class="notification-time">
+                                    <i class="far fa-clock"></i> 5 days ago
+                                </div>
+                            </div>
+                            <p class="notification-message">
+                                Please be informed that from October 1, 2024, the school timings will be from 9:00 AM to 3:30 PM. Please make necessary arrangements.
+                            </p>
+                            <div class="notification-actions">
+                                <a href="#" class="btn btn-outline">View Notice</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Empty State (Hidden by default) -->
+                <!-- <div class="empty-state">
+                    <i class="far fa-bell-slash"></i>
+                    <h3>No New Notifications</h3>
+                    <p>You're all caught up! Check back later for new updates.</p>
+                    <a href="#" class="btn btn-outline">View All Notifications</a>
+                </div> -->
+                
+                <!-- Load More Button -->
+                <div style="text-align: center; padding: 15px; border-top: 1px solid #f1f5f9;">
+                    <a href="#" class="btn btn-outline">
+                        <i class="fas fa-sync-alt"></i> Load More
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Notification Settings -->
+            <div class="notification-settings">
+                <h3 class="settings-title">Notification Settings</h3>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Email Notifications</h4>
+                        <p>Receive important notifications via email</p>
+                    </div>
+                    <label class="form-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Push Notifications</h4>
+                        <p>Get instant alerts on your device</p>
+                    </div>
+                    <label class="form-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>SMS Alerts</h4>
+                        <p>Receive important updates via SMS</p>
+                    </div>
+                    <label class="form-switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Assignment Reminders</h4>
+                        <p>Get reminders for upcoming assignment deadlines</p>
+                    </div>
+                    <label class="form-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Fee Payment Reminders</h4>
+                        <p>Receive alerts for upcoming fee due dates</p>
+                    </div>
+                    <label class="form-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h4>Event Notifications</h4>
+                        <p>Get updates about school events and activities</p>
+                    </div>
+                    <label class="form-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                
+                <div style="text-align: right; margin-top: 20px;">
+                    <a href="#" class="btn btn-outline">Reset to Default</a>
+                    <a href="#" class="btn btn-primary">Save Changes</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="admission.html">Admission</a></li>
+                        <li><a href="academic.html">Academic</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 School Road, Khatamari, Dinhata, Coochbehar, 736168</p>
+                    <p><i class="fas fa-phone"></i> +91 98000 47149</p>
+                    <p><i class="fas fa-envelope"></i> ksba@gmail.com</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Khatamari Shishu Bikash Academy. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update active menu item
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            document.querySelectorAll('.menu-link').forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+            
+            // Mobile menu toggle
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const mainNav = document.querySelector('.main-nav ul');
+            
+            if (mobileMenuBtn) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    mainNav.classList.toggle('show');
+                });
+            }
+            
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.main-nav') && !e.target.closest('.mobile-menu-btn')) {
+                    mainNav.classList.remove('show');
+                }
+            });
+            
+            // Filter tabs
+            const filterTabs = document.querySelectorAll('.filter-tab');
+            filterTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    filterTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    // Here you would typically filter the notifications
+                });
+            });
+            
+            // Mark as read
+            const markAsReadButtons = document.querySelectorAll('.notification-item .btn-outline');
+            markAsReadButtons.forEach(button => {
+                if (button.textContent.includes('Mark as Read')) {
+                    button.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const notificationItem = this.closest('.notification-item');
+                        if (notificationItem) {
+                            notificationItem.classList.remove('unread');
+                            const badge = notificationItem.querySelector('.notification-badge');
+                            if (badge) badge.remove();
+                            
+                            // Update unread count in the tab
+                            const unreadTab = document.querySelector('.filter-tab:nth-child(2) .badge');
+                            if (unreadTab) {
+                                const currentCount = parseInt(unreadTab.textContent) - 1;
+                                unreadTab.textContent = currentCount > 0 ? currentCount : '';
+                                if (currentCount <= 0) unreadTab.style.display = 'none';
+                            }
+                            
+                            // Update header badge
+                            const headerBadge = document.querySelector('.menu-link[href="notifications.html" class="menu-link"] .menu-badge');
+                            if (headerBadge) {
+                                const currentCount = parseInt(headerBadge.textContent) - 1;
+                                headerBadge.textContent = currentCount > 0 ? currentCount : '';
+                                if (currentCount <= 0) headerBadge.style.display = 'none';
+                            }
+                        }
+                    });
+                }
+            });
+            
+            // Mark all as read
+            const markAllAsRead = document.querySelector('a[href="#"]:has(.fa-check-double)');
+            if (markAllAsRead) {
+                markAllAsRead.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelectorAll('.notification-item.unread').forEach(item => {
+                        item.classList.remove('unread');
+                        const badge = item.querySelector('.notification-badge');
+                        if (badge) badge.remove();
+                    });
+                    
+                    // Update unread count in the tab
+                    const unreadTab = document.querySelector('.filter-tab:nth-child(2) .badge');
+                    if (unreadTab) {
+                        unreadTab.style.display = 'none';
+                        unreadTab.textContent = '';
+                    }
+                    
+                    // Update header badge
+                    const headerBadge = document.querySelector('.menu-link[href="notifications.html" class="menu-link"] .menu-badge');
+                    if (headerBadge) {
+                        headerBadge.style.display = 'none';
+                        headerBadge.textContent = '';
+                    }
+                });
+            }
+            
+            // Clear all
+            const clearAll = document.querySelector('a[href="#"]:has(.fa-trash-alt)');
+            if (clearAll) {
+                clearAll.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (confirm('Are you sure you want to clear all notifications? This action cannot be undone.')) {
+                        const notificationsList = document.querySelector('.notifications-list');
+                        if (notificationsList) {
+                            notificationsList.innerHTML = `
+                                <div class="empty-state">
+                                    <i class="far fa-bell-slash"></i>
+                                    <h3>No Notifications</h3>
+                                    <p>All your notifications have been cleared.</p>
+                                </div>
+                            `;
+                            
+                            // Update unread count in the tab
+                            const unreadTab = document.querySelector('.filter-tab:nth-child(2) .badge');
+                            if (unreadTab) {
+                                unreadTab.style.display = 'none';
+                                unreadTab.textContent = '';
+                            }
+                            
+                            // Update header badge
+                            const headerBadge = document.querySelector('.menu-link[href="notifications.html" class="menu-link"] .menu-badge');
+                            if (headerBadge) {
+                                headerBadge.style.display = 'none';
+                                headerBadge.textContent = '';
+                            }
+                            
+                            // Update "All" tab count
+                            const allTab = document.querySelector('.filter-tab:first-child .badge');
+                            if (allTab) {
+                                allTab.style.display = 'none';
+                                allTab.textContent = '';
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

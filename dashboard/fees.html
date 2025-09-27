@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fees Management - School ERP Admin</title>
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Enhanced Modern Styling */
+        .action-bar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+        }
+        
+        .action-bar .btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .action-bar .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .filters {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+            border: 1px solid #f0f0f0;
+        }
+        
+        .filter-group select {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 12px 15px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: white;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #f0f0f0;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .stat-icon i {
+            font-size: 24px;
+            color: white;
+        }
+        
+        .stat-content h3 {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0 0 5px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .table-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            border: 1px solid #f0f0f0;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .data-table thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .data-table thead th {
+            color: white;
+            padding: 20px 15px;
+            font-weight: 600;
+            text-align: left;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+        
+        .data-table tbody tr {
+            transition: all 0.3s ease;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .data-table tbody tr:hover {
+            background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+            transform: scale(1.01);
+        }
+        
+        .data-table tbody td {
+            padding: 18px 15px;
+            font-size: 14px;
+            color: #333;
+        }
+        
+        .btn-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 3px;
+        }
+        
+        .btn-icon:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-icon.btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-icon.btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+        
+        .btn-icon.btn-danger {
+            background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
+            color: white;
+        }
+        
+        .modal {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: none;
+            overflow: hidden;
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px 30px;
+            border-bottom: none;
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        .form-group label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 12px 15px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+        
+        .search-box {
+            position: relative;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .search-box input {
+            border: none;
+            padding: 12px 15px 12px 45px;
+            width: 300px;
+            font-size: 14px;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+        
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-paid {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+        
+        .status-pending {
+            background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+            color: white;
+        }
+        
+        .status-overdue {
+            background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
+            color: white;
+        }
+        
+        .amount-display {
+            font-weight: 700;
+            font-size: 16px;
+        }
+        
+        .amount-positive {
+            color: #28a745;
+        }
+        
+        .amount-negative {
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>School ERP</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-dashboard"></i> Dashboard</a></li>
+                    <li><a href="students.html"><i class="fas fa-user-graduate"></i> Students</a></li>
+                    <li><a href="teachers.html"><i class="fas fa-chalkboard-teacher"></i> Teachers</a></li>
+                    <li><a href="classes.html"><i class="fas fa-door-open"></i> Classes</a></li>
+                    <li><a href="admissions.html"><i class="fas fa-user-plus"></i> Admissions</a></li>
+                    <li><a href="attendance.html"><i class="fas fa-calendar-check"></i> Attendance</a></li>
+                    <li class="active"><a href="fees.html"><i class="fas fa-money-bill-wave"></i> Fees</a></li>
+                    <li><a href="results.html"><i class="fas fa-chart-line"></i> Results</a></li>
+                    <li><a href="announcements.html"><i class="fas fa-bullhorn"></i> Announcements</a></li>
+                    <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Enhanced Header -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <button class="sidebar-toggle" id="mobileSidebarToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="page-title">Fees Management</h1>
+                    <nav class="breadcrumb">
+                        <span class="breadcrumb-item">
+                            <a href="index.html" class="breadcrumb-link">Dashboard</a>
+                        </span>
+                        <span class="breadcrumb-item">Fees</span>
+                    </nav>
+                </div>
+                <div class="header-right">
+                    <div class="header-search">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search fees..." id="headerSearch">
+                    </div>
+                    <div class="header-notifications">
+                        <button class="notification-btn">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge">3</span>
+                        </button>
+                    </div>
+                    <div class="user-profile">
+                        <button class="profile-toggle">
+                            <div class="profile-avatar">A</div>
+                            <div class="profile-info">
+                                <div class="profile-name">Admin User</div>
+                                <div class="profile-role">Administrator</div>
+                            </div>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="profile-dropdown">
+                            <a href="#" class="dropdown-item">
+                                <i class="fas fa-user"></i>
+                                Profile
+                            </a>
+                            <a href="settings.html" class="dropdown-item">
+                                <i class="fas fa-cog"></i>
+                                Settings
+                            </a>
+                            <a href="google-sheets-config.html" class="dropdown-item">
+                                <i class="fab fa-google"></i>
+                                Google Sheets
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a href="#" class="dropdown-item" onclick="logout(); return false;">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <div class="content">
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <button class="btn btn-primary" data-modal="addFeeModal">
+                        <i class="fas fa-plus"></i>
+                        Add Fee Record
+                    </button>
+                    <button class="btn btn-success" data-modal="addPaymentModal">
+                        <i class="fas fa-credit-card"></i>
+                        Record Payment
+                    </button>
+                    <button class="btn btn-secondary" onclick="exportFees()">
+                        <i class="fas fa-download"></i>
+                        Export Report
+                    </button>
+                    <button class="btn btn-info" onclick="generateInvoices()">
+                        <i class="fas fa-file-invoice"></i>
+                        Generate Invoices
+                    </button>
+                </div>
+
+                <!-- Statistics Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalFees">₹0</h3>
+                            <p>Total Fees</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="paidFees">₹0</h3>
+                            <p>Paid Fees</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="pendingFees">₹0</h3>
+                            <p>Pending Fees</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="overdueFees">₹0</h3>
+                            <p>Overdue Fees</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fees Table -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Fee Records</h3>
+                        <div class="card-actions">
+                            <button class="btn btn-success" onclick="syncFeesToGoogleSheets()">
+                                <i class="fab fa-google-drive"></i>
+                                Sync to Sheets
+                            </button>
+                            <select class="form-control" id="academicYearFilter" onchange="filterFees()">
+                                <option value="">All Years</option>
+                                <option value="2024-25" selected>2024-25</option>
+                                <option value="2023-24">2023-24</option>
+                                <option value="2022-23">2022-23</option>
+                            </select>
+                            <button class="btn btn-primary" data-modal="addFeeModal">
+                                <i class="fas fa-plus"></i>
+                                Add Fee Record
+                            </button>
+                            <button class="btn btn-secondary" onclick="exportFees()">
+                                <i class="fas fa-download"></i>
+                                Export
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-filters">
+                            <div class="filter-group">
+                                <select class="form-control" id="classFilter" onchange="filterFees()">
+                                    <option value="">All Classes</option>
+                                    <option value="Grade 8">Grade 8</option>
+                                    <option value="Grade 9">Grade 9</option>
+                                    <option value="Grade 10">Grade 10</option>
+                                    <option value="Grade 11">Grade 11</option>
+                                    <option value="Grade 12">Grade 12</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <select class="form-control" id="statusFilter" onchange="filterFees()">
+                                    <option value="">All Status</option>
+                                    <option value="paid">Paid</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="overdue">Overdue</option>
+                                    <option value="partial">Partial</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <select class="form-control" id="feeTypeFilter" onchange="filterFees()">
+                                    <option value="">All Types</option>
+                                    <option value="tuition">Tuition Fee</option>
+                                    <option value="admission">Admission Fee</option>
+                                    <option value="exam">Exam Fee</option>
+                                    <option value="library">Library Fee</option>
+                                    <option value="transport">Transport Fee</option>
+                                    <option value="sports">Sports Fee</option>
+                                </select>
+                            </div>
+                            <div class="search-group">
+                                <input type="text" class="form-control" id="searchInput" placeholder="Search students..." oninput="filterFees()">
+                                <i class="fas fa-search"></i>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Student ID</th>
+                                        <th>Student Name</th>
+                                        <th>Class</th>
+                                        <th>Fee Type</th>
+                                        <th>Amount</th>
+                                        <th>Paid</th>
+                                        <th>Balance</th>
+                                        <th>Due Date</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="feesTableBody">
+                                    <!-- Fee records will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Fee Modal -->
+    <div class="modal" id="addFeeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Fee Record</h3>
+                <button class="modal-close" data-modal="addFeeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addFeeForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="feeStudentSelect">Select Student</label>
+                            <select id="feeStudentSelect" name="studentId" class="form-control" required>
+                                <option value="">Select Student</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="feeType">Fee Type</label>
+                            <select id="feeType" name="feeType" class="form-control" required>
+                                <option value="">Select Fee Type</option>
+                                <option value="tuition">Tuition Fee</option>
+                                <option value="admission">Admission Fee</option>
+                                <option value="exam">Exam Fee</option>
+                                <option value="library">Library Fee</option>
+                                <option value="transport">Transport Fee</option>
+                                <option value="sports">Sports Fee</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="feeAmount">Amount (₹)</label>
+                            <input type="number" id="feeAmount" name="amount" class="form-control" required min="0" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label for="feeDueDate">Due Date</label>
+                            <input type="date" id="feeDueDate" name="dueDate" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="feeAcademicYear">Academic Year</label>
+                            <select id="feeAcademicYear" name="academicYear" class="form-control" required>
+                                <option value="2024-25" selected>2024-25</option>
+                                <option value="2023-24">2023-24</option>
+                                <option value="2022-23">2022-23</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="feeDescription">Description</label>
+                            <input type="text" id="feeDescription" name="description" class="form-control" placeholder="Optional description">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-modal="addFeeModal">Cancel</button>
+                <button type="submit" form="addFeeForm" class="btn btn-primary">Add Fee Record</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Payment Modal -->
+    <div class="modal" id="addPaymentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Record Payment</h3>
+                <button class="modal-close" data-modal="addPaymentModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addPaymentForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="paymentFeeSelect">Select Fee Record</label>
+                            <select id="paymentFeeSelect" name="feeId" class="form-control" required onchange="loadFeeDetails()">
+                                <option value="">Select Fee Record</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="paymentAmount">Payment Amount (₹)</label>
+                            <input type="number" id="paymentAmount" name="amount" class="form-control" required min="0" step="0.01">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="paymentMethod">Payment Method</label>
+                            <select id="paymentMethod" name="method" class="form-control" required>
+                                <option value="">Select Method</option>
+                                <option value="cash">Cash</option>
+                                <option value="card">Card</option>
+                                <option value="bank_transfer">Bank Transfer</option>
+                                <option value="upi">UPI</option>
+                                <option value="cheque">Cheque</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="paymentDate">Payment Date</label>
+                            <input type="date" id="paymentDate" name="date" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="paymentReference">Reference Number</label>
+                        <input type="text" id="paymentReference" name="reference" class="form-control" placeholder="Transaction/Receipt number">
+                    </div>
+                    <div class="fee-details" id="feeDetails" style="display: none;">
+                        <h4>Fee Details</h4>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <label>Student:</label>
+                                <span id="detailStudent"></span>
+                            </div>
+                            <div class="detail-item">
+                                <label>Fee Type:</label>
+                                <span id="detailFeeType"></span>
+                            </div>
+                            <div class="detail-item">
+                                <label>Total Amount:</label>
+                                <span id="detailTotalAmount"></span>
+                            </div>
+                            <div class="detail-item">
+                                <label>Already Paid:</label>
+                                <span id="detailPaidAmount"></span>
+                            </div>
+                            <div class="detail-item">
+                                <label>Balance:</label>
+                                <span id="detailBalance"></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-modal="addPaymentModal">Cancel</button>
+                <button type="submit" form="addPaymentForm" class="btn btn-success">Record Payment</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Fee Details Modal -->
+    <div class="modal" id="viewFeeModal">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h3>Fee Details</h3>
+                <button class="modal-close" data-modal="viewFeeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="fee-summary">
+                    <div class="summary-grid">
+                        <div class="summary-item">
+                            <label>Student:</label>
+                            <span id="viewStudentName"></span>
+                        </div>
+                        <div class="summary-item">
+                            <label>Class:</label>
+                            <span id="viewStudentClass"></span>
+                        </div>
+                        <div class="summary-item">
+                            <label>Fee Type:</label>
+                            <span id="viewFeeType"></span>
+                        </div>
+                        <div class="summary-item">
+                            <label>Total Amount:</label>
+                            <span id="viewTotalAmount"></span>
+                        </div>
+                        <div class="summary-item">
+                            <label>Paid Amount:</label>
+                            <span id="viewPaidAmount"></span>
+                        </div>
+                        <div class="summary-item">
+                            <label>Balance:</label>
+                            <span id="viewBalance"></span>
+                        </div>
+                        <div class="summary-item">
+                            <label>Due Date:</label>
+                            <span id="viewDueDate"></span>
+                        </div>
+                        <div class="summary-item">
+                            <label>Status:</label>
+                            <span id="viewStatus"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="payment-history">
+                    <h4>Payment History</h4>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Method</th>
+                                    <th>Reference</th>
+                                </tr>
+                            </thead>
+                            <tbody id="paymentHistoryBody">
+                                <!-- Payment history will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-modal="viewFeeModal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="printReceipt()">Print Receipt</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div class="notification-content">
+            <i class="fas fa-check-circle"></i>
+            <span id="notificationMessage"></span>
+        </div>
+    </div>
+
+    <script src="assets/js/dashboard.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/google-sheets.js"></script>
+</body>
+</html>
+
+<script>
+        // Fee records data (synchronized with students data)
+        let feesData = [
+            {
+                id: 1,
+                studentId: "STU001",
+                studentName: "John Doe",
+                className: "Grade 10",
+                feeType: "tuition",
+                totalAmount: 15000,
+                paidAmount: 15000,
+                balance: 0,
+                dueDate: "2024-04-15",
+                status: "paid",
+                academicYear: "2024-25",
+                description: "Quarterly tuition fee",
+                payments: [
+                    { date: "2024-04-10", amount: 15000, method: "bank_transfer", reference: "TXN123456" }
+                ]
+            },
+            {
+                id: 2,
+                studentId: "STU002",
+                studentName: "Sarah Wilson",
+                className: "Grade 9",
+                feeType: "tuition",
+                totalAmount: 12000,
+                paidAmount: 8000,
+                balance: 4000,
+                dueDate: "2024-04-15",
+                status: "partial",
+                academicYear: "2024-25",
+                description: "Quarterly tuition fee",
+                payments: [
+                    { date: "2024-04-05", amount: 8000, method: "cash", reference: "RCP001" }
+                ]
+            },
+            {
+                id: 3,
+                studentId: "STU003",
+                studentName: "Michael Johnson",
+                className: "Grade 11",
+                feeType: "exam",
+                totalAmount: 2500,
+                paidAmount: 0,
+                balance: 2500,
+                dueDate: "2024-03-30",
+                status: "overdue",
+                academicYear: "2024-25",
+                description: "Annual examination fee",
+                payments: []
+            },
+            {
+                id: 4,
+                studentId: "STU004",
+                studentName: "Emily Davis",
+                className: "Grade 8",
+                feeType: "library",
+                totalAmount: 1500,
+                paidAmount: 0,
+                balance: 1500,
+                dueDate: "2024-05-01",
+                status: "pending",
+                academicYear: "2024-25",
+                description: "Library membership fee",
+                payments: []
+            },
+            {
+                id: 5,
+                studentId: "STU005",
+                studentName: "James Brown",
+                className: "Grade 12",
+                feeType: "transport",
+                totalAmount: 8000,
+                paidAmount: 0,
+                balance: 8000,
+                dueDate: "2024-04-20",
+                status: "pending",
+                academicYear: "2024-25",
+                description: "Quarterly transport fee",
+                payments: []
+            }
+        ];
+
+        // Students data (synchronized with students.html)
+        let studentsData = [
+            { 
+                id: 1, 
+                studentId: "STU001", 
+                firstName: "John",
+                lastName: "Doe",
+                name: "John Doe", 
+                class: "Grade 10", 
+                grade: "10",
+                email: "john.doe@email.com",
+                phone: "+1 234 567 8901",
+                status: "active"
+            },
+            { 
+                id: 2, 
+                studentId: "STU002", 
+                firstName: "Sarah",
+                lastName: "Wilson",
+                name: "Sarah Wilson", 
+                class: "Grade 9", 
+                grade: "9",
+                email: "sarah.wilson@email.com",
+                phone: "+1 234 567 8902",
+                status: "active"
+            },
+            { 
+                id: 3, 
+                studentId: "STU003", 
+                firstName: "Michael",
+                lastName: "Johnson",
+                name: "Michael Johnson", 
+                class: "Grade 11", 
+                grade: "11",
+                email: "michael.johnson@email.com",
+                phone: "+1 234 567 8903",
+                status: "inactive"
+            },
+            { 
+                id: 4, 
+                studentId: "STU004", 
+                firstName: "Emily",
+                lastName: "Davis",
+                name: "Emily Davis", 
+                class: "Grade 8", 
+                grade: "8",
+                email: "emily.davis@email.com",
+                phone: "+1 234 567 8904",
+                status: "active"
+            },
+            { 
+                id: 5, 
+                studentId: "STU005", 
+                firstName: "James",
+                lastName: "Brown",
+                name: "James Brown", 
+                class: "Grade 12", 
+                grade: "12",
+                email: "james.brown@email.com",
+                phone: "+1 234 567 8905",
+                status: "active"
+            }
+        ];
+
+        let filteredFees = [...feesData];
+        let currentViewingFee = null;
+
+        // Google Sheets Integration Functions
+        async function syncFeesToGoogleSheets() {
+            try {
+                // Check if Google Sheets is configured
+                const config = localStorage.getItem('googleSheetsConfig');
+                if (!config) {
+                    showNotification('Google Sheets not configured. Please configure it first.', 'warning');
+                    window.location.href = 'google-sheets-config.html';
+                    return;
+                }
+
+                showNotification('Syncing fees to Google Sheets...', 'info');
+                
+                // Save current fees data to localStorage for sync
+                localStorage.setItem('feesData', JSON.stringify(feesData));
+                
+                // Sync to Google Sheets
+                await googleSheetsManager.syncFeesToSheet(feesData);
+                
+                showNotification('Fees synced to Google Sheets successfully!', 'success');
+            } catch (error) {
+                console.error('Sync error:', error);
+                showNotification('Failed to sync fees: ' + error.message, 'error');
+            }
+        }
+
+        function showNotification(message, type = 'info') {
+            // Create notification element if it doesn't exist
+            let notification = document.getElementById('notification');
+            if (!notification) {
+                notification = document.createElement('div');
+                notification.id = 'notification';
+                notification.className = 'notification';
+                notification.innerHTML = `
+                    <div class="notification-content">
+                        <i class="fas fa-info-circle"></i>
+                        <span id="notificationMessage"></span>
+                    </div>
+                `;
+                document.body.appendChild(notification);
+            }
+
+            const messageElement = document.getElementById('notificationMessage');
+            const iconElement = notification.querySelector('i');
+            
+            messageElement.textContent = message;
+            
+            // Update icon based on type
+            iconElement.className = `fas fa-${
+                type === 'success' ? 'check-circle' : 
+                type === 'error' ? 'exclamation-circle' : 
+                type === 'warning' ? 'exclamation-triangle' : 
+                'info-circle'
+            }`;
+            
+            notification.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFees();
+            updateStatistics();
+            populateStudentDropdown();
+            populateFeeDropdown();
+            setupEventListeners();
+            
+            // Set default payment date to today
+            document.getElementById('paymentDate').value = new Date().toISOString().split('T')[0];
+        });
+
+        function setupEventListeners() {
+            // Form submissions
+            document.getElementById('addFeeForm').addEventListener('submit', addFeeRecord);
+            document.getElementById('addPaymentForm').addEventListener('submit', recordPayment);
+            
+            // Event delegation for action buttons
+            document.addEventListener('click', function(e) {
+                const btn = e.target.closest('button');
+                if (!btn) return;
+                
+                const feeId = parseInt(btn.closest('tr')?.getAttribute('data-fee-id'));
+                if (isNaN(feeId)) return;
+                
+                if (btn.classList.contains('btn-info')) {
+                    viewFeeDetails(feeId);
+                }
+                else if (btn.classList.contains('btn-success')) {
+                    openPaymentModal(feeId);
+                }
+                else if (btn.classList.contains('btn-warning')) {
+                    editFeeRecord(feeId);
+                }
+                else if (btn.classList.contains('btn-danger')) {
+                    deleteFeeRecord(feeId);
+                }
+            });
+        }
+
+        function loadFees() {
+            const tableBody = document.getElementById('feesTableBody');
+            tableBody.innerHTML = '';
+
+            filteredFees.forEach(fee => {
+                const row = document.createElement('tr');
+                row.setAttribute('data-fee-id', fee.id);
+                row.innerHTML = `
+                    <td>${fee.studentId}</td>
+                    <td>${fee.studentName}</td>
+                    <td>${fee.className}</td>
+                    <td>${formatFeeType(fee.feeType)}</td>
+                    <td>₹${fee.totalAmount.toLocaleString()}</td>
+                    <td>₹${fee.paidAmount.toLocaleString()}</td>
+                    <td>₹${fee.balance.toLocaleString()}</td>
+                    <td>${new Date(fee.dueDate).toLocaleDateString()}</td>
+                    <td>
+                        <span class="status-badge ${fee.status}">
+                            ${fee.status.charAt(0).toUpperCase() + fee.status.slice(1)}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-sm btn-info" title="View Details">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${fee.balance > 0 ? `
+                                <button class="btn btn-sm btn-success" title="Record Payment">
+                                    <i class="fas fa-credit-card"></i>
+                                </button>
+                            ` : ''}
+                            <button class="btn btn-sm btn-warning" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function updateStatistics() {
+            const totalFees = feesData.reduce((sum, fee) => sum + fee.totalAmount, 0);
+            const paidFees = feesData.reduce((sum, fee) => sum + fee.paidAmount, 0);
+            const pendingFees = feesData.reduce((sum, fee) => sum + fee.balance, 0);
+            const overdueFees = feesData
+                .filter(fee => new Date(fee.dueDate) < new Date() && fee.balance > 0)
+                .reduce((sum, fee) => sum + fee.balance, 0);
+
+            document.getElementById('totalFees').textContent = `₹${totalFees.toLocaleString()}`;
+            document.getElementById('paidFees').textContent = `₹${paidFees.toLocaleString()}`;
+            document.getElementById('pendingFees').textContent = `₹${pendingFees.toLocaleString()}`;
+            document.getElementById('overdueFees').textContent = `₹${overdueFees.toLocaleString()}`;
+        }
+
+        function populateStudentDropdown() {
+            const select = document.getElementById('feeStudentSelect');
+            select.innerHTML = '<option value="">Select Student</option>';
+            
+            studentsData.filter(student => student.status === 'active').forEach(student => {
+                const option = document.createElement('option');
+                option.value = student.studentId;
+                option.textContent = `${student.firstName} ${student.lastName} (${student.studentId}) - ${student.class}`;
+                select.appendChild(option);
+            });
+        }
+
+        function populateFeeDropdown() {
+            const select = document.getElementById('paymentFeeSelect');
+            select.innerHTML = '<option value="">Select Fee Record</option>';
+            
+            feesData.filter(fee => fee.balance > 0).forEach(fee => {
+                const option = document.createElement('option');
+                option.value = fee.id;
+                option.textContent = `${fee.studentName} - ${formatFeeType(fee.feeType)} (₹${fee.balance} due)`;
+                select.appendChild(option);
+            });
+        }
+
+        function filterFees() {
+            const classFilter = document.getElementById('classFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+            const feeTypeFilter = document.getElementById('feeTypeFilter').value;
+            const academicYearFilter = document.getElementById('academicYearFilter').value;
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+
+            filteredFees = feesData.filter(fee => {
+                const matchesClass = !classFilter || fee.className === classFilter;
+                const matchesStatus = !statusFilter || fee.status === statusFilter;
+                const matchesFeeType = !feeTypeFilter || fee.feeType === feeTypeFilter;
+                const matchesYear = !academicYearFilter || fee.academicYear === academicYearFilter;
+                const matchesSearch = !searchTerm || 
+                    fee.studentName.toLowerCase().includes(searchTerm) ||
+                    fee.studentId.toLowerCase().includes(searchTerm);
+
+                return matchesClass && matchesStatus && matchesFeeType && matchesYear && matchesSearch;
+            });
+
+            loadFees();
+        }
+
+        function addFeeRecord(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const studentId = formData.get('studentId');
+            const student = studentsData.find(s => s.studentId === studentId);
+            
+            if (!student) {
+                showNotification('Student not found!', 'error');
+                return;
+            }
+
+            const newFee = {
+                id: Date.now(),
+                studentId: studentId,
+                studentName: `${student.firstName} ${student.lastName}`,
+                className: student.class,
+                feeType: formData.get('feeType'),
+                totalAmount: parseFloat(formData.get('amount')),
+                paidAmount: 0,
+                balance: parseFloat(formData.get('amount')),
+                dueDate: formData.get('dueDate'),
+                status: 'pending',
+                academicYear: formData.get('academicYear'),
+                description: formData.get('description') || '',
+                payments: []
+            };
+
+            // Check due date to set status
+            if (new Date(newFee.dueDate) < new Date()) {
+                newFee.status = 'overdue';
+            }
+
+            feesData.push(newFee);
+            filteredFees = [...feesData];
+            
+            loadFees();
+            updateStatistics();
+            populateFeeDropdown();
+            
+            closeModal('addFeeModal');
+            event.target.reset();
+            
+            showNotification('Fee record added successfully!', 'success');
+        }
+
+        function recordPayment(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const feeId = parseInt(formData.get('feeId'));
+            const paymentAmount = parseFloat(formData.get('amount'));
+            
+            const feeIndex = feesData.findIndex(f => f.id === feeId);
+            if (feeIndex === -1) {
+                showNotification('Fee record not found!', 'error');
+                return;
+            }
+
+            const fee = feesData[feeIndex];
+            
+            if (paymentAmount > fee.balance) {
+                showNotification('Payment amount cannot exceed balance!', 'error');
+                return;
+            }
+
+            // Add payment to history
+            const payment = {
+                date: formData.get('date'),
+                amount: paymentAmount,
+                method: formData.get('method'),
+                reference: formData.get('reference') || `PAY${Date.now()}`
+            };
+
+            fee.payments.push(payment);
+            fee.paidAmount += paymentAmount;
+            fee.balance -= paymentAmount;
+
+            // Update status
+            if (fee.balance === 0) {
+                fee.status = 'paid';
+            } else if (fee.paidAmount > 0) {
+                fee.status = 'partial';
+            }
+
+            filteredFees = [...feesData];
+            
+            loadFees();
+            updateStatistics();
+            populateFeeDropdown();
+            
+            closeModal('addPaymentModal');
+            event.target.reset();
+            
+            showNotification(`Payment of ₹${paymentAmount.toLocaleString()} recorded successfully!`, 'success');
+        }
+
+        function loadFeeDetails() {
+            const feeId = parseInt(document.getElementById('paymentFeeSelect').value);
+            const fee = feesData.find(f => f.id === feeId);
+            
+            if (!fee) {
+                document.getElementById('feeDetails').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('detailStudent').textContent = fee.studentName;
+            document.getElementById('detailFeeType').textContent = formatFeeType(fee.feeType);
+            document.getElementById('detailTotalAmount').textContent = `₹${fee.totalAmount.toLocaleString()}`;
+            document.getElementById('detailPaidAmount').textContent = `₹${fee.paidAmount.toLocaleString()}`;
+            document.getElementById('detailBalance').textContent = `₹${fee.balance.toLocaleString()}`;
+            
+            // Set max payment amount
+            document.getElementById('paymentAmount').max = fee.balance;
+            document.getElementById('paymentAmount').value = fee.balance;
+            
+            document.getElementById('feeDetails').style.display = 'block';
+        }
+
+        function viewFeeDetails(feeId) {
+            const fee = feesData.find(f => f.id === feeId);
+            if (!fee) return;
+
+            currentViewingFee = fee;
+
+            // Populate fee details
+            document.getElementById('viewStudentName').textContent = fee.studentName;
+            document.getElementById('viewStudentClass').textContent = fee.className;
+            document.getElementById('viewFeeType').textContent = formatFeeType(fee.feeType);
+            document.getElementById('viewTotalAmount').textContent = `₹${fee.totalAmount.toLocaleString()}`;
+            document.getElementById('viewPaidAmount').textContent = `₹${fee.paidAmount.toLocaleString()}`;
+            document.getElementById('viewBalance').textContent = `₹${fee.balance.toLocaleString()}`;
+            document.getElementById('viewDueDate').textContent = new Date(fee.dueDate).toLocaleDateString();
+            document.getElementById('viewStatus').innerHTML = `<span class="status-badge ${fee.status}">${fee.status.charAt(0).toUpperCase() + fee.status.slice(1)}</span>`;
+
+            // Populate payment history
+            const historyBody = document.getElementById('paymentHistoryBody');
+            historyBody.innerHTML = '';
+            
+            if (fee.payments.length === 0) {
+                historyBody.innerHTML = '<tr><td colspan="4" class="text-center">No payments recorded</td></tr>';
+            } else {
+                fee.payments.forEach(payment => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${new Date(payment.date).toLocaleDateString()}</td>
+                        <td>₹${payment.amount.toLocaleString()}</td>
+                        <td>${payment.method.replace('_', ' ').toUpperCase()}</td>
+                        <td>${payment.reference}</td>
+                    `;
+                    historyBody.appendChild(row);
+                });
+            }
+
+            openModal('viewFeeModal');
+        }
+
+        function openPaymentModal(feeId) {
+            const fee = feesData.find(f => f.id === feeId);
+            if (!fee || fee.balance <= 0) return;
+
+            document.getElementById('paymentFeeSelect').value = feeId;
+            loadFeeDetails();
+            openModal('addPaymentModal');
+        }
+
+        function editFeeRecord(feeId) {
+            const fee = feesData.find(f => f.id === feeId);
+            if (!fee) return;
+
+            const newAmount = prompt('Enter new fee amount:', fee.totalAmount);
+            if (!newAmount || isNaN(newAmount) || newAmount <= 0) return;
+
+            const newDueDate = prompt('Enter new due date (YYYY-MM-DD):', fee.dueDate);
+            if (!newDueDate) return;
+
+            const feeIndex = feesData.findIndex(f => f.id === feeId);
+            const amountDiff = parseFloat(newAmount) - fee.totalAmount;
+            
+            feesData[feeIndex].totalAmount = parseFloat(newAmount);
+            feesData[feeIndex].balance += amountDiff;
+            feesData[feeIndex].dueDate = newDueDate;
+
+            // Update status based on new due date
+            if (new Date(newDueDate) < new Date() && feesData[feeIndex].balance > 0) {
+                feesData[feeIndex].status = 'overdue';
+            } else if (feesData[feeIndex].balance > 0) {
+                feesData[feeIndex].status = feesData[feeIndex].paidAmount > 0 ? 'partial' : 'pending';
+            }
+
+            filteredFees = [...feesData];
+            loadFees();
+            updateStatistics();
+            populateFeeDropdown();
+            
+            showNotification('Fee record updated successfully!', 'success');
+        }
+
+        function deleteFeeRecord(feeId) {
+            const fee = feesData.find(f => f.id === feeId);
+            if (!fee) return;
+
+            if (!confirm(`Are you sure you want to delete the ${formatFeeType(fee.feeType)} record for ${fee.studentName}?`)) {
+                return;
+            }
+
+            const feeIndex = feesData.findIndex(f => f.id === feeId);
+            feesData.splice(feeIndex, 1);
+            filteredFees = [...feesData];
+            
+            loadFees();
+            updateStatistics();
+            populateFeeDropdown();
+            
+            showNotification('Fee record deleted successfully!', 'success');
+        }
+
+        function exportFees() {
+            const csvContent = [
+                ['Student ID', 'Student Name', 'Class', 'Fee Type', 'Total Amount', 'Paid Amount', 'Balance', 'Due Date', 'Status', 'Academic Year'],
+                ...filteredFees.map(fee => [
+                    fee.studentId,
+                    fee.studentName,
+                    fee.className,
+                    formatFeeType(fee.feeType),
+                    fee.totalAmount,
+                    fee.paidAmount,
+                    fee.balance,
+                    fee.dueDate,
+                    fee.status,
+                    fee.academicYear
+                ])
+            ].map(row => row.join(',')).join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'fees_report.csv';
+            a.click();
+            window.URL.revokeObjectURL(url);
+
+            showNotification('Fees report exported successfully!', 'success');
+        }
+
+        function generateInvoices() {
+            showNotification('Generating invoices for pending fees...', 'info');
+            
+            setTimeout(() => {
+                showNotification('Invoices generated successfully!', 'success');
+            }, 2000);
+        }
+
+        function printReceipt() {
+            if (!currentViewingFee) return;
+            
+            showNotification('Printing receipt...', 'info');
+            
+            // In a real application, this would generate and print a receipt
+            setTimeout(() => {
+                showNotification('Receipt printed successfully!', 'success');
+            }, 1000);
+        }
+
+        function formatFeeType(type) {
+            const types = {
+                'tuition': 'Tuition Fee',
+                'admission': 'Admission Fee',
+                'exam': 'Exam Fee',
+                'library': 'Library Fee',
+                'transport': 'Transport Fee',
+                'sports': 'Sports Fee'
+            };
+            return types[type] || type;
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const messageElement = document.getElementById('notificationMessage');
+            
+            messageElement.textContent = message;
+            notification.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('show');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        }
+    </script>
+    <style>
+        .quick-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-badge.paid { background: #d4edda; color: #155724; }
+        .status-badge.pending { background: #fff3cd; color: #856404; }
+        .status-badge.overdue { background: #f8d7da; color: #721c24; }
+        .status-badge.partial { background: #d1ecf1; color: #0c5460; }
+
+        .fee-details {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .detail-grid, .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .detail-item, .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .detail-item label, .summary-item label {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .fee-summary {
+            margin-bottom: 25px;
+        }
+
+        .payment-history h4 {
+            margin-bottom: 15px;
+            color: #495057;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+    </style>

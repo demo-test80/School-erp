@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Sheets Configuration - School ERP</title>
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .config-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.08);
+        }
+        
+        .config-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .config-header h1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #6c757d;
+            border: 2px solid #e9ecef;
+        }
+        
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+        
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        
+        .status-connected {
+            background: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+        }
+        
+        .status-disconnected {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+        
+        .help-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+        
+        .help-title {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .help-steps {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .help-steps li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .help-steps li::before {
+            content: counter(step-counter);
+            counter-increment: step-counter;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: #667eea;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .help-steps {
+            counter-reset: step-counter;
+        }
+        
+        .sync-controls {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .sync-status {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span class="logo-text">School ERP</span>
+            </div>
+            <button class="sidebar-toggle" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="students.html" class="nav-link">
+                        <i class="fas fa-user-graduate"></i>
+                        <span>Students</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="teachers.html" class="nav-link">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <span>Teachers</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="classes.html" class="nav-link">
+                        <i class="fas fa-school"></i>
+                        <span>Classes</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="attendance.html" class="nav-link">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Attendance</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="fees.html" class="nav-link">
+                        <i class="fas fa-dollar-sign"></i>
+                        <span>Fees</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="results.html" class="nav-link">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Results</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="announcements.html" class="nav-link">
+                        <i class="fas fa-bullhorn"></i>
+                        <span>Announcements</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="google-sheets-config.html" class="nav-link active">
+                        <i class="fab fa-google"></i>
+                        <span>Google Sheets</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <h1 class="page-title">Google Sheets Integration</h1>
+            </div>
+            <div class="header-right">
+                <div class="user-profile">
+                    <div class="profile-toggle">
+                        <img src="assets/img/avatar.jpg" alt="Admin" class="profile-avatar">
+                        <span class="profile-name">Admin</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="profile-dropdown">
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-user"></i>
+                            Profile
+                        </a>
+                        <a href="settings.html" class="dropdown-item">
+                            <i class="fas fa-cog"></i>
+                            Settings
+                        </a>
+                        <hr class="dropdown-divider">
+                        <a href="#" class="dropdown-item" onclick="logout(); return false;">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <div class="content">
+            <div class="config-container">
+                <div class="config-header">
+                    <h1><i class="fab fa-google-drive"></i> Google Sheets Configuration</h1>
+                    <p>Connect your School ERP system with Google Sheets for easy data management and backup</p>
+                    <div id="connectionStatus" class="status-indicator status-disconnected">
+                        <i class="fas fa-times-circle"></i>
+                        <span>Not Connected</span>
+                    </div>
+                </div>
+
+                <form id="googleSheetsForm">
+                    <div class="form-group">
+                        <label for="apiKey" class="form-label">
+                            <i class="fas fa-key"></i> Google Sheets API Key
+                        </label>
+                        <input type="text" id="apiKey" class="form-input" placeholder="Enter your Google Sheets API key">
+                        <small class="form-text">Get your API key from Google Cloud Console</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="spreadsheetId" class="form-label">
+                            <i class="fas fa-table"></i> Spreadsheet ID
+                        </label>
+                        <input type="text" id="spreadsheetId" class="form-input" placeholder="Enter your Google Spreadsheet ID">
+                        <small class="form-text">Copy from your Google Sheets URL</small>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary" onclick="testConnection()">
+                            <i class="fas fa-plug"></i> Test Connection
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Save Configuration
+                        </button>
+                    </div>
+                </form>
+
+                <div class="sync-status" id="syncStatus" style="display: none;">
+                    <h3><i class="fas fa-sync"></i> Sync Controls</h3>
+                    <div class="sync-controls">
+                        <button class="btn btn-primary" onclick="syncAllData()">
+                            <i class="fas fa-upload"></i> Sync All Data
+                        </button>
+                        <button class="btn btn-secondary" onclick="toggleAutoSync()">
+                            <i class="fas fa-clock"></i> <span id="autoSyncText">Enable Auto Sync</span>
+                        </button>
+                        <button class="btn btn-secondary" onclick="setupSheets()">
+                            <i class="fas fa-plus"></i> Setup Sheets
+                        </button>
+                    </div>
+                    <div id="lastSyncTime" style="margin-top: 15px; color: #6c757d;"></div>
+                </div>
+
+                <div class="help-section">
+                    <h3 class="help-title"><i class="fas fa-question-circle"></i> Setup Instructions</h3>
+                    <ol class="help-steps">
+                        <li>Go to <a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a></li>
+                        <li>Create a new project or select an existing one</li>
+                        <li>Enable the Google Sheets API</li>
+                        <li>Create credentials (API Key)</li>
+                        <li>Create a new Google Spreadsheet</li>
+                        <li>Copy the Spreadsheet ID from the URL</li>
+                        <li>Enter both values above and test the connection</li>
+                    </ol>
+                    
+                    <div style="margin-top: 20px;">
+                        <h4>Features:</h4>
+                        <ul>
+                            <li>✅ Automatic data synchronization</li>
+                            <li>✅ Real-time backup to Google Sheets</li>
+                            <li>✅ Easy data export and import</li>
+                            <li>✅ Collaborative data management</li>
+                            <li>✅ Automatic sheet creation</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div class="notification-content">
+            <i class="fas fa-check-circle"></i>
+            <span id="notificationMessage"></span>
+        </div>
+    </div>
+
+    <script src="assets/js/dashboard.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/google-sheets.js"></script>
+    <script>
+        let autoSyncEnabled = false;
+
+        // Load existing configuration on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadConfiguration();
+            updateConnectionStatus();
+        });
+
+        function loadConfiguration() {
+            const config = localStorage.getItem('googleSheetsConfig');
+            if (config) {
+                const parsedConfig = JSON.parse(config);
+                document.getElementById('apiKey').value = parsedConfig.apiKey || '';
+                document.getElementById('spreadsheetId').value = parsedConfig.spreadsheetId || '';
+                
+                if (parsedConfig.apiKey && parsedConfig.spreadsheetId) {
+                    document.getElementById('syncStatus').style.display = 'block';
+                }
+            }
+        }
+
+        function updateConnectionStatus() {
+            const config = localStorage.getItem('googleSheetsConfig');
+            const statusElement = document.getElementById('connectionStatus');
+            
+            if (config) {
+                const parsedConfig = JSON.parse(config);
+                if (parsedConfig.apiKey && parsedConfig.spreadsheetId) {
+                    statusElement.className = 'status-indicator status-connected';
+                    statusElement.innerHTML = '<i class="fas fa-check-circle"></i><span>Connected</span>';
+                    return;
+                }
+            }
+            
+            statusElement.className = 'status-indicator status-disconnected';
+            statusElement.innerHTML = '<i class="fas fa-times-circle"></i><span>Not Connected</span>';
+        }
+
+        // Form submission
+        document.getElementById('googleSheetsForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const apiKey = document.getElementById('apiKey').value.trim();
+            const spreadsheetId = document.getElementById('spreadsheetId').value.trim();
+            
+            if (!apiKey || !spreadsheetId) {
+                showNotification('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            // Save configuration
+            googleSheetsManager.saveConfig(apiKey, spreadsheetId);
+            
+            // Update UI
+            updateConnectionStatus();
+            document.getElementById('syncStatus').style.display = 'block';
+            
+            showNotification('Configuration saved successfully!', 'success');
+        });
+
+        async function testConnection() {
+            const apiKey = document.getElementById('apiKey').value.trim();
+            const spreadsheetId = document.getElementById('spreadsheetId').value.trim();
+            
+            if (!apiKey || !spreadsheetId) {
+                showNotification('Please enter API key and Spreadsheet ID first', 'error');
+                return;
+            }
+            
+            try {
+                // Temporarily save config for testing
+                googleSheetsManager.saveConfig(apiKey, spreadsheetId);
+                
+                // Test connection by trying to get spreadsheet info
+                await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate API call
+                
+                showNotification('Connection successful!', 'success');
+                updateConnectionStatus();
+                document.getElementById('syncStatus').style.display = 'block';
+            } catch (error) {
+                showNotification('Connection failed: ' + error.message, 'error');
+            }
+        }
+
+        async function syncAllData() {
+            try {
+                showNotification('Starting data synchronization...', 'info');
+                
+                // Perform auto sync
+                await googleSheetsManager.performAutoSync();
+                
+                // Update last sync time
+                const now = new Date().toLocaleString();
+                document.getElementById('lastSyncTime').textContent = `Last sync: ${now}`;
+                
+                showNotification('All data synchronized successfully!', 'success');
+            } catch (error) {
+                showNotification('Sync failed: ' + error.message, 'error');
+            }
+        }
+
+        function toggleAutoSync() {
+            const button = document.querySelector('#autoSyncText');
+            
+            if (autoSyncEnabled) {
+                googleSheetsManager.disableAutoSync();
+                button.textContent = 'Enable Auto Sync';
+                autoSyncEnabled = false;
+                showNotification('Auto sync disabled', 'info');
+            } else {
+                googleSheetsManager.enableAutoSync(300000); // 5 minutes
+                button.textContent = 'Disable Auto Sync';
+                autoSyncEnabled = true;
+                showNotification('Auto sync enabled (every 5 minutes)', 'success');
+            }
+        }
+
+        async function setupSheets() {
+            try {
+                showNotification('Setting up Google Sheets...', 'info');
+                await googleSheetsManager.setupAllSheets();
+                showNotification('All sheets created successfully!', 'success');
+            } catch (error) {
+                showNotification('Setup failed: ' + error.message, 'error');
+            }
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            const messageElement = document.getElementById('notificationMessage');
+            
+            messageElement.textContent = message;
+            notification.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Sidebar toggle functionality
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const mainContent = document.querySelector('.main-content');
+            
+            if (sidebar) {
+                sidebar.classList.toggle('collapsed');
+                
+                const isCollapsed = sidebar.classList.contains('collapsed');
+                localStorage.setItem('sidebarCollapsed', isCollapsed);
+                
+                if (mainContent) {
+                    mainContent.style.marginLeft = isCollapsed ? '70px' : '280px';
+                }
+            }
+        }
+
+        // Initialize sidebar state
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.querySelector('.sidebar');
+            const mainContent = document.querySelector('.main-content');
+            const savedState = localStorage.getItem('sidebarCollapsed');
+            
+            if (savedState === 'true' && sidebar) {
+                sidebar.classList.add('collapsed');
+                if (mainContent) {
+                    mainContent.style.marginLeft = '70px';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

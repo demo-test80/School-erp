@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - Khatamari Shishu Bikash Academy</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery-js/2.7.0/css/lightgallery.min.css">
+    <style>
+        /* Gallery Page Specific Styles */
+        .gallery-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('images/gallery-bg.jpg') no-repeat center center/cover;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: white;
+            margin-top: 90px;
+        }
+        
+        .gallery-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .breadcrumb {
+            padding: 15px 0;
+            background-color: #f8f9fa;
+            margin-bottom: 50px;
+        }
+        
+        .breadcrumb ul {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .breadcrumb ul li {
+            margin-right: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .breadcrumb ul li:after {
+            content: '/';
+            margin-left: 10px;
+            color: #6c757d;
+        }
+        
+        .breadcrumb ul li:last-child:after {
+            content: '';
+        }
+        
+        .breadcrumb ul li a {
+            color: #6c757d;
+        }
+        
+        .breadcrumb ul li:last-child a {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        .gallery-intro {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 60px;
+        }
+        
+        .gallery-intro h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .gallery-intro p {
+            color: #6c757d;
+            line-height: 1.8;
+        }
+        
+        .gallery-filters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+        
+        .filter-btn {
+            padding: 8px 20px;
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            color: #6c757d;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn.active, .filter-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .gallery-container {
+            margin-bottom: 60px;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .gallery-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 250px;
+            cursor: pointer;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            color: white;
+            padding: 20px 15px 10px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover .gallery-caption {
+            transform: translateY(0);
+        }
+        
+        .gallery-caption h3 {
+            margin: 0 0 5px;
+            font-size: 1.1rem;
+        }
+        
+        .gallery-category {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            font-size: 0.75rem;
+            padding: 3px 10px;
+            border-radius: 3px;
+            margin-bottom: 8px;
+        }
+        
+        .gallery-caption p {
+            margin: 0;
+            font-size: 0.9rem;
+            opacity: 0.9;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .video-gallery {
+            margin-top: 80px;
+        }
+        
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .video-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .video-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .video-thumbnail {
+            position: relative;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            overflow: hidden;
+        }
+        
+        .video-thumbnail img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px;
+            height: 70px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 24px;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+        
+        .video-item:hover .play-btn {
+            background-color: var(--accent-color);
+            color: white;
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+        
+        .video-info {
+            padding: 20px;
+            background-color: white;
+        }
+        
+        .video-info h3 {
+            margin: 0 0 10px;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+        
+        .video-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #6c757d;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+        }
+        
+        .video-desc {
+            color: #6c757d;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+        
+        .load-more {
+            text-align: center;
+            margin-top: 50px;
+        }
+        
+        .load-more-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 30px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .load-more-btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .load-more-btn i {
+            margin-right: 8px;
+        }
+        
+        /* Lightbox Styles */
+        .lg-backdrop {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+        
+        .lg-outer .lg-thumb-outer {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        
+        .lg-actions .lg-next, .lg-actions .lg-prev {
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .lg-actions .lg-next:hover, .lg-actions .lg-prev:hover {
+            background-color: var(--accent-color);
+        }
+        
+        @media (max-width: 992px) {
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .video-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .gallery-hero {
+                height: 300px;
+                margin-top: 80px;
+            }
+            
+            .gallery-hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .gallery-filters {
+                gap: 8px;
+            }
+            
+            .filter-btn {
+                padding: 6px 15px;
+                font-size: 0.85rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .gallery-hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .gallery-item {
+                height: 220px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container">
+            <div class="logo-container">
+                <img src="images/logo.png" alt="School Logo" class="logo">
+                <div class="school-info">
+                    <h1>Khatamari Shishu Bikash Academy</h1>
+                    <p class="tagline">Nurturing Young Minds, Building Bright Futures</p>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="admission.html">Admission</a></li>
+                    <li><a href="academic.html">Academic</a></li>
+                    <li><a href="gallery.html" class="active">Gallery</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="login.html" class="login-btn">Login</a></li>
+                </ul>
+                <div class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="gallery-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Our Gallery</h1>
+                <p>Capturing moments of learning, growth, and achievement</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Gallery Content -->
+    <section class="gallery-section">
+        <div class="container">
+            <div class="gallery-intro">
+                <h2>Photo Gallery</h2>
+                <p>Explore our collection of memorable moments from school events, activities, and daily life at Khatamari Shishu Bikash Academy.</p>
+            </div>
+            
+            <div class="gallery-filters">
+                <button class="filter-btn active" data-filter="all">All Photos</button>
+                <button class="filter-btn" data-filter="events">School Events</button>
+                <button class="filter-btn" data-filter="campus">Campus Life</button>
+                <button class="filter-btn" data-filter="sports">Sports Day</button>
+                <button class="filter-btn" data-filter="cultural">Cultural Programs</button>
+                <button class="filter-btn" data-filter="classroom">Classroom Activities</button>
+            </div>
+            
+            <div class="gallery-container">
+                <div class="gallery-grid" id="lightgallery">
+                    <!-- Event 1 -->
+                    <a href="images/gallery/event1.jpg" class="gallery-item" data-src="images/gallery/event1.jpg" data-sub-html="<h3>Annual Sports Day 2025</h3><p>Students participating in the 100m race during our annual sports day.</p>" data-category="events">
+                        <img src="images/gallery/event1-thumb.jpg" alt="Sports Day 2025">
+                        <div class="gallery-caption">
+                            <span class="gallery-category">Events</span>
+                            <h3>Annual Sports Day 2025</h3>
+                            <p>Students participating in the 100m race during our annual sports day.</p>
+                        </div>
+                    </a>
+                    
+                    <!-- Event 2 -->
+                    <a href="images/gallery/event2.jpg" class="gallery-item" data-src="images/gallery/event2.jpg" data-sub-html="<h3>Science Fair Exhibition</h3><p>Students showcasing their innovative science projects to judges and visitors.</p>" data-category="events">
+                        <img src="images/gallery/event2-thumb.jpg" alt="Science Fair">
+                        <div class="gallery-caption">
+                            <span class="gallery-category">Events</span>
+                            <h3>Science Fair Exhibition</h3>
+                            <p>Students showcasing their innovative science projects to judges and visitors.</p>
+                        </div>
+                    </a>
+                    
+                    <!-- Campus 1 -->
+                    <a href="images/gallery/campus1.jpg" class="gallery-item" data-src="images/gallery/campus1.jpg" data-sub-html="<h3>School Building</h3><p>Our beautiful school building with modern facilities and spacious classrooms.</p>" data-category="campus">
+                        <img src="images/gallery/campus1-thumb.jpg" alt="School Building">
+                        <div class="gallery-caption">
+                            <span class="gallery-category">Campus</span>
+                            <h3>School Building</h3>
+                            <p>Our beautiful school building with modern facilities and spacious classrooms.</p>
+                        </div>
+                    </a>
+                    
+                    <!-- Classroom 1 -->
+                    <a href="images/gallery/class1.jpg" class="gallery-item" data-src="images/gallery/class1.jpg" data-sub-html="<h3>Interactive Learning</h3><p>Students engaged in a group activity during their mathematics class.</p>" data-category="classroom">
+                        <img src="images/gallery/class1-thumb.jpg" alt="Classroom Activity">
+                        <div class="gallery-caption">
+                            <span class="gallery-category">Classroom</span>
+                            <h3>Interactive Learning</h3>
+                            <p>Students engaged in a group activity during their mathematics class.</p>
+                        </div>
+                    </a>
+                    
+                    <!-- Cultural 1 -->
+                    <a href="images/gallery/cultural1.jpg" class="gallery-item" data-src="images/gallery/cultural1.jpg" data-sub-html="<h3>Cultural Performance</h3><p>Students performing a traditional dance during the annual cultural program.</p>" data-category="cultural">
+                        <img src="images/gallery/cultural1-thumb.jpg" alt="Cultural Performance">
+                        <div class="gallery-caption">
+                            <span class="gallery-category">Cultural</span>
+                            <h3>Cultural Performance</h3>
+                            <p>Students performing a traditional dance during the annual cultural program.</p>
+                        </div>
+                    </a>
+                    
+                    <!-- Sports 1 -->
+                    <a href="images/gallery/sports1.jpg" class="gallery-item" data-src="images/gallery/sports1.jpg" data-sub-html="<h3>Basketball Match</h3><p>Exciting moments from the inter-class basketball championship finals.</p>" data-category="sports">
+                        <img src="images/gallery/sports1-thumb.jpg" alt="Basketball Match">
+                        <div class="gallery-caption">
+                            <span class="gallery-category">Sports</span>
+                            <h3>Basketball Match</h3>
+                            <p>Exciting moments from the inter-class basketball championship finals.</p>
+                        </div>
+                    </a>
+                    
+                    <!-- Campus 2 -->
+                    <a href="images/gallery/campus2.jpg" class="gallery-item" data-src="images/gallery/campus2.jpg" data-sub-html="<h3>School Library</h3><p>Our well-stocked library with a wide range of books for all age groups.</p>" data-category="campus">
+                        <img src="images/gallery/campus2-thumb.jpg" alt="School Library">
+                        <div class="gallery-caption">
+                            <span class="gallery-category">Campus</span>
+                            <h3>School Library</h3>
+                            <p>Our well-stocked library with a wide range of books for all age groups.</p>
+                        </div>
+                    </a>
+                    
+                    <!-- Event 3 -->
+                    <a href="images/gallery/event3.jpg" class="gallery-item" data-src="images/gallery/event3.jpg" data-sub-html="<h3>Prize Distribution</h3><p>Honoring outstanding students during the annual prize distribution ceremony.</p>" data-category="events">
+                        <img src="images/gallery/event3-thumb.jpg" alt="Prize Distribution">
+                        <div class="gallery-caption">
+                            <span class="gallery-category">Events</span>
+                            <h3>Prize Distribution</h3>
+                            <p>Honoring outstanding students during the annual prize distribution ceremony.</p>
+                        </div>
+                    </a>
+                    
+                    <!-- Classroom 2 -->
+                    <a href="images/gallery/class2.jpg" class="gallery-item" data-src="images/gallery/class2.jpg" data-sub-html="<h3>Science Lab</h3><p>Students conducting experiments in our well-equipped science laboratory.</p>" data-category="classroom">
+                        <img src="images/gallery/class2-thumb.jpg" alt="Science Lab">
+                        <div class="gallery-caption">
+                            <span class="gallery-category">Classroom</span>
+                            <h3>Science Lab</h3>
+                            <p>Students conducting experiments in our well-equipped science laboratory.</p>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="load-more">
+                    <button class="load-more-btn">
+                        <i class="fas fa-spinner"></i> Load More
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Video Gallery Section -->
+            <div class="video-gallery">
+                <div class="section-header">
+                    <h2>Video Gallery</h2>
+                    <p>Watch highlights from our school events and activities</p>
+                </div>
+                
+                <div class="video-grid">
+                    <!-- Video 1 -->
+                    <div class="video-item">
+                        <div class="video-thumbnail">
+                            <img src="images/gallery/video1-thumb.jpg" alt="Annual Day Celebration">
+                            <div class="play-btn">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <a class="video-link" href="https://www.youtube.com/watch?v=example1" style="display:none;"></a>
+                        </div>
+                        <div class="video-info">
+                            <h3>Annual Day Celebration 2025</h3>
+                            <div class="video-meta">
+                                <span><i class="far fa-calendar-alt"></i> March 15, 2025</span>
+                                <span><i class="far fa-clock"></i> 5:32</span>
+                            </div>
+                            <p class="video-desc">Highlights from our spectacular annual day celebration featuring cultural performances by our talented students.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Video 2 -->
+                    <div class="video-item">
+                        <div class="video-thumbnail">
+                            <img src="images/gallery/video2-thumb.jpg" alt="Sports Day Highlights">
+                            <div class="play-btn">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <a class="video-link" href="https://www.youtube.com/watch?v=example2" style="display:none;"></a>
+                        </div>
+                        <div class="video-info">
+                            <h3>Sports Day 2025 Highlights</h3>
+                            <div class="video-meta">
+                                <span><i class="far fa-calendar-alt"></i> February 28, 2025</span>
+                                <span><i class="far fa-clock"></i> 3:45</span>
+                            </div>
+                            <p class="video-desc">Relive the excitement of our annual sports day with this action-packed highlights reel.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Video 3 -->
+                    <div class="video-item">
+                        <div class="video-thumbnail">
+                            <img src="images/gallery/video3-thumb.jpg" alt="Science Exhibition">
+                            <div class="play-btn">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <a class="video-link" href="https://www.youtube.com/watch?v=example3" style="display:none;"></a>
+                        </div>
+                        <div class="video-info">
+                            <h3>Science & Innovation Exhibition</h3>
+                            <div class="video-meta">
+                                <span><i class="far fa-calendar-alt"></i> January 22, 2025</span>
+                                <span><i class="far fa-clock"></i> 7:18</span>
+                            </div>
+                            <p class="video-desc">Exploring the innovative projects presented by our students at the annual science exhibition.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="load-more">
+                    <button class="load-more-btn">
+                        <i class="fas fa-video"></i> View More Videos
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="admission.html">Admission</a></li>
+                        <li><a href="academic.html">Academic</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 School Road, Khatamari, dinhata, coochbihar, 736168</p>
+                    <p><i class="fas fa-phone"></i> +91 98000 47149</p>
+                    <p><i class="fas fa-envelope"></i>ksba@gmail.com</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Khatamari Shishu Bikash Academy. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery-js/2.7.0/lightgallery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery-js/2.7.0/plugins/thumbnail/lg-thumbnail.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery-js/2.7.0/plugins/fullscreen/lg-fullscreen.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery-js/2.7.0/plugins/zoom/lg-zoom.min.js"></script>
+    <script>
+        // Initialize lightGallery
+        document.addEventListener('DOMContentLoaded', function() {
+            const gallery = document.getElementById('lightgallery');
+            if (gallery) {
+                lightGallery(gallery, {
+                    selector: '.gallery-item',
+                    download: false,
+                    counter: false,
+                    getCaptionFromTitleOrAlt: false,
+                    enableDrag: true,
+                    enableSwipe: true,
+                    speed: 500,
+                    thumbnail: true,
+                    animateThumb: true,
+                    showThumbByDefault: false,
+                    plugins: [lgThumbnail, lgFullscreen, lgZoom]
+                });
+            }
+            
+            // Filter gallery items
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterBtns.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    const filterValue = this.getAttribute('data-filter');
+                    
+                    galleryItems.forEach(item => {
+                        if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // Video play functionality
+            const videoItems = document.querySelectorAll('.video-item');
+            
+            videoItems.forEach(item => {
+                const playBtn = item.querySelector('.play-btn');
+                const videoLink = item.querySelector('.video-link').getAttribute('href');
+                
+                playBtn.addEventListener('click', function() {
+                    // In a real implementation, you would open a lightbox with the video
+                    // For now, we'll just open the YouTube link in a new tab
+                    window.open(videoLink, '_blank');
+                });
+            });
+            
+            // Load more functionality
+            const loadMoreBtn = document.querySelector('.load-more-btn');
+            if (loadMoreBtn) {
+                loadMoreBtn.addEventListener('click', function() {
+                    // In a real implementation, this would load more items via AJAX
+                    // For now, we'll just show an alert
+                    alert('In a full implementation, this would load more gallery items.');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Test Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <style>
+        .test-section {
+            background: white;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        .test-pass {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .test-fail {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .test-button {
+            margin: 5px;
+            padding: 8px 16px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .test-button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-graduation-cap logo-icon"></i>
+                <span class="logo-text">School ERP</span>
+            </div>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link active">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="students.html" class="nav-link">
+                        <i class="fas fa-user-graduate"></i>
+                        <span>Students</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="teachers.html" class="nav-link">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <span>Teachers</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Enhanced Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <button class="mobile-sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="page-title">Dashboard Test</h1>
+                <nav class="breadcrumb">
+                    <span class="breadcrumb-item">Test</span>
+                </nav>
+            </div>
+            
+            <div class="header-right">
+                <div class="header-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search..." id="headerSearch">
+                </div>
+                <div class="header-notifications">
+                    <button class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </button>
+                </div>
+                <div class="user-profile">
+                    <button class="profile-toggle">
+                        <div class="profile-avatar">A</div>
+                        <div class="profile-info">
+                            <div class="profile-name">Admin User</div>
+                            <div class="profile-role">Administrator</div>
+                        </div>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="profile-dropdown">
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-user"></i>
+                            Profile
+                        </a>
+                        <a href="settings.html" class="dropdown-item">
+                            <i class="fas fa-cog"></i>
+                            Settings
+                        </a>
+                        <hr class="dropdown-divider">
+                        <a href="../login.html" class="dropdown-item">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Test Content -->
+        <div class="content">
+            <div class="test-section">
+                <h2>Dashboard Functionality Tests</h2>
+                <div id="test-results"></div>
+                
+                <h3>Interactive Tests</h3>
+                <button class="test-button" onclick="testModal()">Test Modal</button>
+                <button class="test-button" onclick="testNotification()">Test Notification</button>
+                <button class="test-button" onclick="testSearch()">Test Search</button>
+                <button class="test-button" onclick="testSidebar()">Test Sidebar</button>
+                <button class="test-button" onclick="testProfile()">Test Profile Dropdown</button>
+                <button class="test-button" onclick="runAllTests()">Run All Tests</button>
+            </div>
+
+            <!-- Test Elements -->
+            <div class="searchable" style="display: none;">Test searchable content</div>
+            <div class="searchable" style="display: none;">Another test item</div>
+        </div>
+    </main>
+
+    <!-- Test Modal -->
+    <div id="testModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Test Modal</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>This is a test modal to verify modal functionality.</p>
+                <form data-ajax>
+                    <div class="form-group">
+                        <label for="testInput">Test Input</label>
+                        <input type="text" id="testInput" class="form-control" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-modal-close>Cancel</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/dashboard.js"></script>
+    <script>
+        // Test functions
+        function addTestResult(testName, passed, message) {
+            const resultsDiv = document.getElementById('test-results');
+            const resultDiv = document.createElement('div');
+            resultDiv.className = `test-result ${passed ? 'test-pass' : 'test-fail'}`;
+            resultDiv.innerHTML = `<strong>${testName}:</strong> ${message}`;
+            resultsDiv.appendChild(resultDiv);
+        }
+
+        function testModal() {
+            try {
+                const modal = document.getElementById('testModal');
+                if (modal) {
+                    modal.classList.add('active');
+                    setTimeout(() => {
+                        modal.classList.remove('active');
+                        addTestResult('Modal Test', true, 'Modal opens and closes successfully');
+                    }, 2000);
+                } else {
+                    addTestResult('Modal Test', false, 'Modal element not found');
+                }
+            } catch (error) {
+                addTestResult('Modal Test', false, `Error: ${error.message}`);
+            }
+        }
+
+        function testNotification() {
+            try {
+                if (window.Dashboard && typeof window.Dashboard === 'function') {
+                    const dashboard = new Dashboard();
+                    dashboard.showNotification('Test notification', 'success');
+                    addTestResult('Notification Test', true, 'Notification displayed successfully');
+                } else {
+                    addTestResult('Notification Test', false, 'Dashboard class not available');
+                }
+            } catch (error) {
+                addTestResult('Notification Test', false, `Error: ${error.message}`);
+            }
+        }
+
+        function testSearch() {
+            try {
+                const searchInput = document.getElementById('headerSearch');
+                if (searchInput) {
+                    searchInput.value = 'test';
+                    searchInput.dispatchEvent(new Event('input'));
+                    addTestResult('Search Test', true, 'Search input responds to events');
+                } else {
+                    addTestResult('Search Test', false, 'Search input not found');
+                }
+            } catch (error) {
+                addTestResult('Search Test', false, `Error: ${error.message}`);
+            }
+        }
+
+        function testSidebar() {
+            try {
+                const sidebar = document.querySelector('.sidebar');
+                const toggle = document.querySelector('.mobile-sidebar-toggle');
+                if (sidebar && toggle) {
+                    toggle.click();
+                    const hasActive = sidebar.classList.contains('active');
+                    addTestResult('Sidebar Test', true, `Sidebar toggle works (active: ${hasActive})`);
+                } else {
+                    addTestResult('Sidebar Test', false, 'Sidebar or toggle button not found');
+                }
+            } catch (error) {
+                addTestResult('Sidebar Test', false, `Error: ${error.message}`);
+            }
+        }
+
+        function testProfile() {
+            try {
+                const profileToggle = document.querySelector('.profile-toggle');
+                const userProfile = document.querySelector('.user-profile');
+                if (profileToggle && userProfile) {
+                    profileToggle.click();
+                    const hasActive = userProfile.classList.contains('active');
+                    addTestResult('Profile Dropdown Test', true, `Profile dropdown works (active: ${hasActive})`);
+                } else {
+                    addTestResult('Profile Dropdown Test', false, 'Profile elements not found');
+                }
+            } catch (error) {
+                addTestResult('Profile Dropdown Test', false, `Error: ${error.message}`);
+            }
+        }
+
+        function runAllTests() {
+            document.getElementById('test-results').innerHTML = '';
+            
+            // Test CSS loading
+            const computedStyle = getComputedStyle(document.body);
+            addTestResult('CSS Loading', computedStyle.fontFamily !== '', 'CSS styles loaded successfully');
+            
+            // Test JavaScript loading
+            addTestResult('JavaScript Loading', typeof Dashboard !== 'undefined', 'Dashboard JavaScript loaded');
+            
+            // Test DOM elements
+            const requiredElements = ['.sidebar', '.main-content', '.dashboard-header', '.profile-toggle'];
+            requiredElements.forEach(selector => {
+                const element = document.querySelector(selector);
+                addTestResult(`Element ${selector}`, !!element, element ? 'Element found' : 'Element missing');
+            });
+            
+            // Run interactive tests
+            setTimeout(() => {
+                testModal();
+                testNotification();
+                testSearch();
+                testSidebar();
+                testProfile();
+            }, 1000);
+        }
+
+        // Auto-run basic tests on load
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(runAllTests, 500);
+        });
+    </script>
+</body>
+</html>
